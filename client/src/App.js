@@ -4,14 +4,17 @@ import Navbar from './components/layout/Navbar';
 import Home from './components/home/Home';
 
 import './App.css';
+import Register from './components/auth/Register';
 
 const App = () => {
   return (
     <Router>
       <Fragment className='App'>
         <Navbar />
-        <Route exact path='/' component={Home} />
-        <Switch></Switch>
+        <Switch>
+          <Route exact path='/' component={Home} />
+          <Route exact path='/register' component={Register} />
+        </Switch>
       </Fragment>
     </Router>
   );

@@ -8,6 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from 'react-router-dom';
 import { LogonModal } from '../auth/LogonModal';
+import { colViridianGreen } from '../../helpers/colors';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,7 +32,12 @@ const Navbar = () => {
 
   return (
     <div className={classes.root} style={{ paddingBottom: '40px' }}>
-      <AppBar position='static'>
+      <AppBar
+        position='static'
+        style={{
+          backgroundColor: colViridianGreen,
+        }}
+      >
         <Toolbar>
           <IconButton
             edge='start'
