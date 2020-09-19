@@ -3,9 +3,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-import { Button, Paper, Typography } from '@material-ui/core';
+import {
+  Button,
+  Divider,
+  FormControl,
+  Paper,
+  TextField,
+  Typography,
+} from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faLock } from '@fortawesome/free-solid-svg-icons';
 
 const useStyles = makeStyles(() => ({
   modal: {
@@ -36,22 +43,55 @@ export const LogonModal = ({ onCloseClick }) => {
       <Fade in={true}>
         <Paper
           style={{
-            width: '600px',
-            textAlign: 'center',
+            width: '500px',
+            position: 'relative',
             outline: 'none',
+            textAlign: 'center',
+            borderRadius: '20px',
+            padding: '10px',
           }}
           elevation={2}
         >
-          <div style={{ backgroundColor: '#dbdbdb', width: '100%' }}>
-            <Typography variant='h5' style={{ fontFamily: 'Quicksand' }}>
-              Login
-            </Typography>
-          </div>
-          <div className={classes.modal} style={{ paddingTop: '10px' }}>
-            <FontAwesomeIcon icon={faUser} color='purple' size='6x' />
+          <FontAwesomeIcon
+            icon={faLock}
+            style={{
+              position: 'relative',
+              marginTop: '-60px',
+              height: '70px',
+              width: '70px',
+              color: 'white',
+              backgroundColor: '#5eb6e6',
+              padding: '20px',
+              borderRadius: '60px',
+            }}
+          />
 
-            <Button onClick={() => handleCloseClick()}>Click me</Button>
-          </div>
+          <FormControl className={classes.modal} style={{ paddingTop: '10px' }}>
+            <TextField
+              id='outlined-basic'
+              label='Username'
+              variant='outlined'
+            />
+
+            <TextField
+              id='outlined-basic'
+              label='Password'
+              variant='outlined'
+              style={{ marginTop: '10px', marginBottom: '10px' }}
+            />
+
+            <Button
+              variant='contained'
+              color='primary'
+              onClick={() => handleCloseClick()}
+            >
+              Logon
+            </Button>
+
+            <Divider orientation='vertical' />
+
+            <Typography>Not A Member?</Typography>
+          </FormControl>
         </Paper>
       </Fade>
     </Modal>
