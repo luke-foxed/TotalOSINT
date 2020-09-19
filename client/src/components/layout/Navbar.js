@@ -38,28 +38,15 @@ const Navbar = () => {
           backgroundColor: colViridianGreen,
         }}
       >
-        <Toolbar>
-          <IconButton
-            edge='start'
-            className={classes.menuButton}
-            color='inherit'
-            aria-label='menu'
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant='h6' className={classes.title}>
-            News
+        <Toolbar
+          style={{
+            width: '65%',
+            margin: 'auto',
+          }}
+        >
+          <Typography variant='h5' className={classes.title}>
+            GameCatcher
           </Typography>
-
-          {/* <Link
-            to='/auth'
-            style={{
-              textDecoration: 'none',
-              color: 'white',
-            }}
-          >
-            <Button color='inherit'>Login</Button>
-          </Link> */}
 
           <Button color='inherit' onClick={() => openModal(true)}>
             Login
