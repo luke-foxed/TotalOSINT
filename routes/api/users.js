@@ -12,7 +12,7 @@ const User = require('../../models/User');
 router.post(
   '/create',
   [
-    check('name', 'Name is required').notEmpty(),
+    check('username', 'Username is required').notEmpty(),
     check('email', 'Please provide a valid email').isEmail(),
     check(
       'password',
@@ -29,10 +29,10 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, email, password, preferences } = req.body;
+    const { username, email, password, preferences } = req.body;
 
     try {
-      let user = await User.findOne({ email });
+      let user = await User.findOne({ username });
 
       if (user) {
         return res
@@ -48,10 +48,11 @@ router.post(
       let avatar = `https://api.adorable.io/avatars/face/eyes${randNum}/nose${randNum}/mouth${randNum}/${randCol}/300`;
 
       user = new User({
-        name,
+        username,
         email,
         password,
         preferences,
+        avatar,
       });
 
       const salt = await bcrypt.genSalt(10);

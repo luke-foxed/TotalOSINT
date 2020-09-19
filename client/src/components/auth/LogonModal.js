@@ -3,9 +3,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
+import { login } from '../../actions/auth';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import {
   Button,
-  Divider,
   FormControl,
   Paper,
   TextField,
@@ -41,6 +43,22 @@ const useStyles = makeStyles(() => ({
 
 export const LogonModal = ({ onCloseClick }) => {
   const classes = useStyles();
+  const [loginData, setLoginData] = useState({
+    login_username: '',
+    login_password: '',
+  });
+
+  const { login_username, login_password } = loginData;
+
+  const submitLogin = async () => {
+    console.log('CLICKED');
+    if (login_username === '' || login_password === '') {
+      console.log('Please Enter Your Username & Password', 'error');
+    } else {
+      login(login_username, login_password);
+      handleCloseClick();
+    }
+  };
 
   const handleCloseClick = () => {
     onCloseClick();
@@ -74,25 +92,43 @@ export const LogonModal = ({ onCloseClick }) => {
 
           <FormControl className={classes.modal}>
             <TextField
-              id='outlined-basic'
               label='Username'
+              required
               variant='outlined'
               size='small'
+              id='login_username'
+              name='login_username'
+              onInput={(e) =>
+                setLoginData({
+                  ...loginData,
+                  [e.target.name]: e.target.value,
+                })
+              }
               className={classes.padded}
             />
 
             <TextField
-              id='outlined-basic'
-              label='Password'
+              className={classes.padded}
+              required
               variant='outlined'
               size='small'
-              className={classes.padded}
+              name='login_password'
+              label='Password'
+              type='password'
+              id='login_password'
+              onInput={(e) =>
+                setLoginData({
+                  ...loginData,
+                  [e.target.name]: e.target.value,
+                })
+              }
+              autoComplete='current-password'
             />
 
             <Button
               variant='contained'
               color='primary'
-              onClick={() => handleCloseClick()}
+              onClick={() => submitLogin()}
               style={{ backgroundColor: colSalmon, width: '220px' }}
               className={classes.padded}
             >
@@ -126,3 +162,13 @@ export const LogonModal = ({ onCloseClick }) => {
     </Modal>
   );
 };
+
+LogonModal.propTypes = {
+  login: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps, {})(LogonModal);
