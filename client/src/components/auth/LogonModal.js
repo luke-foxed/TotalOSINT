@@ -3,9 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-import { login } from '../../actions/auth';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { setAlert } from '../../actions/alert';
 import {
   Button,
   FormControl,
@@ -41,7 +41,7 @@ const useStyles = makeStyles(() => ({
   padded: { marginTop: '10px', marginBottom: '10px' },
 }));
 
-export const LogonModal = ({ onCloseClick }) => {
+export const LogonModal = ({ onCloseClick, onLogonClick, onSetAlert }) => {
   const classes = useStyles();
   const [loginData, setLoginData] = useState({
     login_username: '',
@@ -51,12 +51,10 @@ export const LogonModal = ({ onCloseClick }) => {
   const { login_username, login_password } = loginData;
 
   const submitLogin = async () => {
-    console.log('CLICKED');
     if (login_username === '' || login_password === '') {
-      console.log('Please Enter Your Username & Password', 'error');
+      onSetAlert('Please Enter Your Username & Password', 'error');
     } else {
-      login(login_username, login_password);
-      handleCloseClick();
+      onLogonClick(login_username, login_password);
     }
   };
 
@@ -162,13 +160,3 @@ export const LogonModal = ({ onCloseClick }) => {
     </Modal>
   );
 };
-
-LogonModal.propTypes = {
-  login: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  isAuthenticated: state.auth.isAuthenticated,
-});
-
-export default connect(mapStateToProps, {})(LogonModal);

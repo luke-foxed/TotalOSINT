@@ -31,7 +31,6 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.5",
     "nodemon": "^2.0.4",
-    "redux-devtools-extension": "^2.13.8",
     "request": "^2.88.2"
   }
 }

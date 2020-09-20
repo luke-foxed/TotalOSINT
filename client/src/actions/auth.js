@@ -9,6 +9,7 @@ import {
 } from './types';
 // import { setAlert } from './alert';
 import setAuthToken from '../helpers/tokenHelper';
+import { setAlert } from './alert';
 
 /**
  * Load User via their JWT token
@@ -81,16 +82,10 @@ export const register = ({ name, email, password }) => async (dispatch) => {
  */
 
 export const login = (username, password) => async (dispatch) => {
-  const config = {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  };
-
-  const body = JSON.stringify({ username, password });
+  const body = { username, password };
 
   try {
-    const res = await axios.post('/api/auth/login', body, config);
+    const res = await axios.post('/api/auth/login', body);
 
     await dispatch({
       type: LOGIN_SUCCESS,
@@ -98,13 +93,12 @@ export const login = (username, password) => async (dispatch) => {
     });
 
     await dispatch(loadUser());
-    console.log(res);
+    window.location.reload();
   } catch (err) {
-    console.log(err);
     const errors = err.response.data.errors;
 
     if (errors) {
-      // errors.forEach((error) => dispatch(setAlert(error.msg, 'warning')));
+      errors.forEach((error) => dispatch(setAlert(error.msg, 'warning')));
     }
   }
 };

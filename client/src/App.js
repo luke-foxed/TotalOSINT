@@ -6,8 +6,9 @@ import store from './store';
 import Register from './components/auth/Register';
 import setAuthToken from './helpers/tokenHelper';
 import { Provider } from 'react-redux';
-import './App.css';
+import Alerter from './components/layout/Alerter';
 import { loadUser } from './actions/auth';
+import './App.css';
 
 const App = () => {
   if (localStorage.token) {
@@ -23,6 +24,7 @@ const App = () => {
       <Router>
         <Fragment className='App'>
           <Navbar />
+          <Alerter />
           <Switch>
             <Route exact path='/' component={Home} />
             <Route exact path='/register' component={Register} />

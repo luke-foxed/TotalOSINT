@@ -4,11 +4,12 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import { Link } from 'react-router-dom';
+import { login } from '../../actions/auth';
+import { connect } from 'react-redux';
 import { LogonModal } from '../auth/LogonModal';
 import { colViridianGreen } from '../../helpers/colors';
+import { setAlert } from '../../actions/alert';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navbar = () => {
+const Navbar = ({ login, setAlert }) => {
   const classes = useStyles();
   const [isOpen, setOpen] = useState(false);
 
@@ -52,11 +53,26 @@ const Navbar = () => {
             Login
           </Button>
 
-          {isOpen && <LogonModal onCloseClick={() => setOpen(false)} />}
+          {isOpen && (
+            <LogonModal
+              onCloseClick={() => setOpen(false)}
+              onLogonClick={(username, password) => login(username, password)}
+              onSetAlert={(message, type) => setAlert(message, type)}
+            />
+          )}
         </Toolbar>
       </AppBar>
     </div>
   );
 };
 
-export default Navbar;
+Navbar.propTypes = {
+  setAlert: PropTypes.func.isRequired,
+  login: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps, { setAlert, login })(Navbar);
