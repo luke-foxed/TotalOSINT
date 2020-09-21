@@ -93,7 +93,7 @@ const Navbar = ({ login, setAlert, user, isAuthenticated, logout }) => {
             direction='row'
           >
             <Grid item xs={2}>
-              <Typography variant='h5'>GameCatcher</Typography>
+              <Typography variant='h5'>TotalOSINT</Typography>
             </Grid>
 
             <Grid item xs={4}>

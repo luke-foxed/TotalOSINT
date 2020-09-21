@@ -16,15 +16,7 @@ const UserSchema = new mongoose.Schema({
   avatar: {
     type: String,
   },
-  game_preferences: {
-    type: Array,
-  },
-  reviews: {
-    type: Array,
-  },
-  wishlist: {
-    type: Array,
-  },
+
   comments: {
     type: String,
   },
