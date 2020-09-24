@@ -11,9 +11,13 @@ const searchVT = async (searchType, value) => {
       value: '',
       detections: 0,
       engines: 0,
+      fileName: '',
+      fileSize: '',
       owner: '',
       range: '',
       country: '',
+      registrar: '',
+      creationDate: 0,
     };
 
     switch (searchType) {
@@ -38,7 +42,7 @@ const searchVT = async (searchType, value) => {
         results.detections = ipDetections;
         results.engines = ipEngines;
 
-        // then get 'whois' info
+        // get 'whois' info
         results.range = ipText['0'].__miniGraphInfo.network;
         results.owner = ipText['0'].__miniGraphInfo.as_owner;
         results.country = ipText['0'].__miniGraphInfo.country;
@@ -65,6 +69,10 @@ const searchVT = async (searchType, value) => {
         results.detections = fileDetections;
         results.engines = fileEngines;
 
+        // get file info
+        results.fileName = fileText['0'].__headerProperties.fileName;
+        results.fileSize = fileText['0'].__headerProperties.size;
+
         await browser.close();
         break;
 
@@ -87,9 +95,9 @@ const searchVT = async (searchType, value) => {
         results.detections = domainDetections;
         results.engines = domainEngines;
 
-        // then get 'whois' info
-        results.owner = domainText['0'].__miniGraphInfo.as_owner;
-        results.country = domainText['0'].__miniGraphInfo.owner;
+        // get domain info
+        results.registrar = domainText['0'].__headerProperties.registrar;
+        results.creationDate = domainText['0'].__headerProperties.creationDate;
 
         await browser.close();
         break;
