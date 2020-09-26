@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // routes
-app.get('/', (req, res) => res.send('Welcome to GameCatcher'));
+app.get('/', (req, res) => res.send('Welcome to TotalOSINT'));
 app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/scrape', require('./routes/api/scrape'));

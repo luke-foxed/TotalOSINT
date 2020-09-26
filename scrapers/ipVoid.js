@@ -7,7 +7,7 @@ const searchIPVoid = async (value) => {
 
     await page.setViewport({ width: 1366, height: 768 });
     await page.goto('https://www.ipvoid.com/ip-blacklist-check/');
-    await page.waitForSelector('.col-md-8 #ipAddr');
+    await page.waitForSelector('.col-md-8 #ipAddr', { timeout: 6000 });
 
     // delete current field input and type value
     await page.evaluate(() => {
@@ -19,12 +19,13 @@ const searchIPVoid = async (value) => {
     await page.type('.col-md-8 #ipAddr', value, { delay: 50 });
 
     await page.waitForSelector(
-      '.row > .col-md-8 > .articles-col > .form > .btn'
+      '.row > .col-md-8 > .articles-col > .form > .btn',
+      { timeout: 3000 }
     );
 
     await page.click('.row > .col-md-8 > .articles-col > .form > .btn');
 
-    await page.waitForSelector('table');
+    await page.waitForSelector('table', { timeout: 6000 });
 
     const tableData = await page.evaluate(() => {
       const tds = Array.from(document.querySelectorAll('table tr td'));

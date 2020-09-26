@@ -1,51 +1,28 @@
 const puppeteer = require('puppeteer');
 
-const searchVT = async (searchType, value) => {
+const searchMetadefender = async (searchType, value) => {
   try {
     let browser = await puppeteer.launch({ headless: false });
     let page = await browser.newPage();
-    await page.setViewport({ width: 1366, height: 768 });
 
-    // data to be returned
-    let results = {
-      value: '',
-      detections: 0,
-      engines: 0,
-      fileName: '',
-      fileSize: '',
-      owner: '',
-      range: '',
-      country: '',
-      registrar: '',
-      creationDate: 0,
-    };
+    await page.setViewport({ width: 1366, height: 768 });
 
     switch (searchType) {
       case 'ip':
-        // first get main details
+        let base64IP = Buffer.from(value).toString('base64');
+
         await page.goto(
-          `https://www.virustotal.com/gui/ip-address/${value}/detection`
+          `https://metadefender.opswat.com/results/ip/${base64IP}`
         );
 
-        await page.waitForSelector('body #ip-address-view');
+        await page.waitForSelector('.row > .col-lg-3 > .scoreHeader');
 
-        const ipText = await page.evaluate(() =>
-          document.querySelectorAll('body #ip-address-view')
-        );
+        let ipScore = await page.evaluate(() => {
+          let text = document.querySelector('.score');
+          return text.innerText;
+        });
 
-        let {
-          __engineDetections: ipDetections,
-          __totalEngines: ipEngines,
-        } = ipText['0'];
-
-        results.value = value;
-        results.detections = ipDetections;
-        results.engines = ipEngines;
-
-        // get 'whois' info
-        results.range = ipText['0'].__miniGraphInfo.network;
-        results.owner = ipText['0'].__miniGraphInfo.as_owner;
-        results.country = ipText['0'].__miniGraphInfo.country;
+        console.log(ipScore.replace(/^\s+|\s+$/g, ''));
 
         await browser.close();
         break;
@@ -102,7 +79,7 @@ const searchVT = async (searchType, value) => {
         await browser.close();
         break;
     }
-    return results;
+    return 'hello';
   } catch (error) {
     console.log(error);
     return error;
@@ -110,5 +87,5 @@ const searchVT = async (searchType, value) => {
 };
 
 module.exports = {
-  searchVT,
+  searchMetadefender,
 };
