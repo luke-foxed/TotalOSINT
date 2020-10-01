@@ -15,66 +15,37 @@ const searchMetadefender = async (searchType, value) => {
           `https://metadefender.opswat.com/results/ip/${base64IP}`
         );
 
-        await page.waitForSelector('.row > .col-lg-3 > .scoreHeader');
+        await page.waitForSelector('.row > .col-lg-3 > .scoreHeader .score');
 
         let ipScore = await page.evaluate(() => {
-          let text = document.querySelector('.score');
-          return text.innerText;
+          let text = Array.from(document.querySelectorAll('.score > p'));
+          return text.map((label) => label.innerText).toString();
         });
 
-        console.log(ipScore.replace(/^\s+|\s+$/g, ''));
+        console.log(ipScore);
 
         await browser.close();
         break;
 
       case 'hash':
-        await page.goto(
-          `https://www.virustotal.com/gui/file/${value}/detection`
-        );
-
-        await page.waitForSelector('body #file-view');
-
-        const fileText = await page.evaluate(() =>
-          document.querySelectorAll('body #file-view')
-        );
-
-        let {
-          __engineDetections: fileDetections,
-          __totalEngines: fileEngines,
-        } = fileText['0'];
-
-        results.detections = fileDetections;
-        results.engines = fileEngines;
-
-        // get file info
-        results.fileName = fileText['0'].__headerProperties.fileName;
-        results.fileSize = fileText['0'].__headerProperties.size;
-
         await browser.close();
         break;
 
       case 'domain':
+        let base64Domain = Buffer.from(value).toString('base64');
+
         await page.goto(
-          `https://www.virustotal.com/gui/domain/${value}/detection`
+          `https://metadefender.opswat.com/results/domain/${base64Domain}`
         );
 
-        await page.waitForSelector('body #domain-view', { timeout: 6000 });
+        await page.waitForSelector('.row > .col-lg-3 > .scoreHeader');
 
-        const domainText = await page.evaluate(() =>
-          document.querySelectorAll('body #domain-view')
-        );
+        let domainScore = await page.evaluate(() => {
+          let text = document.querySelector('.score');
+          return text.innerText;
+        });
 
-        let {
-          __engineDetections: domainDetections,
-          __totalEngines: domainEngines,
-        } = domainText['0'];
-
-        results.detections = domainDetections;
-        results.engines = domainEngines;
-
-        // get domain info
-        results.registrar = domainText['0'].__headerProperties.registrar;
-        results.creationDate = domainText['0'].__headerProperties.creationDate;
+        console.log(domainScore.replace(/^\s+|\s+$/g, ''));
 
         await browser.close();
         break;

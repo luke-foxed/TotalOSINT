@@ -5,66 +5,37 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { login, logout } from '../../actions/auth';
-import SearchIcon from '@material-ui/icons/Search';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import { connect } from 'react-redux';
 import { LogonModal } from '../auth/LogonModal';
-import { colViridianGreen } from '../../helpers/colors';
 import { setAlert } from '../../actions/alert';
 import PropTypes from 'prop-types';
-import { Grid, InputBase, TextField } from '@material-ui/core';
+import { Fade, Grid, Grow } from '@material-ui/core';
+import { Spin as Hamburger } from 'hamburger-react';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  search: {
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
-    },
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  inputRoot: {
-    color: 'inherit',
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
-  },
 }));
 
 const Navbar = ({ login, setAlert, user, isAuthenticated, logout }) => {
-  console.log(user);
   const classes = useStyles();
-  const [isOpen, setOpen] = useState(false);
+  const [isLogonOpen, setLogonOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const openModal = () => {
-    setOpen(true);
+    setLogonOpen(true);
   };
 
   const attemptLogin = async (username, password) => {
@@ -76,7 +47,7 @@ const Navbar = ({ login, setAlert, user, isAuthenticated, logout }) => {
       <AppBar
         position='static'
         style={{
-          backgroundColor: colViridianGreen,
+          backgroundColor: 'transparent',
         }}
       >
         <Toolbar
@@ -96,31 +67,17 @@ const Navbar = ({ login, setAlert, user, isAuthenticated, logout }) => {
               <Typography variant='h5'>TotalOSINT</Typography>
             </Grid>
 
-            <Grid item xs={4}>
-              <div className={classes.search}>
-                <div className={classes.searchIcon}>
-                  <SearchIcon />
-                </div>
-                <InputBase
-                  placeholder='Search…'
-                  classes={{
-                    root: classes.inputRoot,
-                    input: classes.inputInput,
-                  }}
-                  inputProps={{ 'aria-label': 'search' }}
-                />
-              </div>
-            </Grid>
+            <Grid item xs={5} />
 
-            <Grid item xs={1} />
-
-            <Grid item xs={5} alignItems='center'>
+            <Grid item xs={4} alignItems='center'>
               {isAuthenticated & (user != null) ? (
                 <Grid container justify='flex-end'>
                   <Typography style={{ padding: '10px' }}>
                     {user.username}
                   </Typography>
-                  <Button onClick={() => logout()}>Log Out</Button>
+                  <Button color='inherit' onClick={() => logout()}>
+                    Log Out
+                  </Button>
                 </Grid>
               ) : (
                 <Grid container justify='flex-end'>
@@ -130,11 +87,30 @@ const Navbar = ({ login, setAlert, user, isAuthenticated, logout }) => {
                 </Grid>
               )}
             </Grid>
+            <Grid container xs={1} justify='center'>
+              <Button size='small' onClick={handleClick}>
+                <Hamburger size={25} toggled={open} color='white' />
+              </Button>
+              <Menu
+                anchorEl={anchorEl}
+                getContentAnchorEl={null}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+                open={open}
+                onClose={handleClose}
+                transitionDuration={500}
+                TransitionComponent={Grow}
+              >
+                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleClose}>Logout</MenuItem>
+              </Menu>
+            </Grid>
           </Grid>
 
-          {isOpen && (
+          {isLogonOpen && (
             <LogonModal
-              onCloseClick={() => setOpen(false)}
+              onCloseClick={() => setLogonOpen(false)}
               onLogonClick={(username, password) =>
                 attemptLogin(username, password)
               }
