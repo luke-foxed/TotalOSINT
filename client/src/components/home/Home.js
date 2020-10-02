@@ -11,6 +11,7 @@ import {
   MenuList,
   ClickAwayListener,
   withStyles,
+  Typography,
 } from '@material-ui/core';
 import {
   Search,
@@ -72,10 +73,12 @@ const Home = () => {
   const [open, setOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(1);
   const [value, setValue] = useState('');
+  const [isError, setIsError] = useState(false);
 
   const handleMenuItemClick = (_, index) => {
     setSelectedIndex(index);
     setOpen(false);
+    setIsError(false);
   };
 
   const handleToggle = () => {
@@ -90,7 +93,9 @@ const Home = () => {
   };
 
   const handleSearchClick = () => {
-    console.log(checkInput(options[selectedIndex], value));
+    if (!checkInput(options[selectedIndex], value)) {
+      setIsError(true);
+    }
   };
 
   return (
@@ -101,7 +106,7 @@ const Home = () => {
         alignItems='center'
         justify='center'
         spacing={0}
-        style={{ minHeight: '75vh' }}
+        style={{ minHeight: '20vh', marginTop: '200px' }}
       >
         <Grid container item xs={3} sm={2} justify='center'>
           <Button
@@ -178,6 +183,16 @@ const Home = () => {
             }}
             inputProps={{ style: { fontSize: 20 } }} // font size of input text
           />
+        </Grid>
+        <Grid container xs={12} justify='center'>
+          {isError && (
+            <Typography>
+              Please enter a valid{' '}
+              <b style={{ color: '#a44be3' }}>
+                {options[selectedIndex].toUpperCase()}
+              </b>
+            </Typography>
+          )}
         </Grid>
       </Grid>
     </div>
