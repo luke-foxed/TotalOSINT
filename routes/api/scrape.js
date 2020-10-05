@@ -25,4 +25,17 @@ router.post('/metadefender', async (req, res) => {
   res.send(results);
 });
 
+router.post('/scrape-all', async (req, res) => {
+  let results = [];
+
+  switch (req.body.type) {
+    case 'domain':
+      results.push(await searchMetadefender(req.body.type, req.body.value));
+      results.push(await searchVT(req.body.type, req.body.value));
+
+    default:
+      break;
+  }
+});
+
 module.exports = router;

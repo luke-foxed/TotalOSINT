@@ -3,9 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { setAlert } from '../../actions/alert';
 import {
   Button,
   FormControl,
@@ -15,13 +12,8 @@ import {
 } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
-import {
-  colMagenta,
-  colPurple,
-  colSalmon,
-  colViridianGreen,
-} from '../../helpers/colors';
 import { Link } from 'react-router-dom';
+import { colPrimary, colSecondary } from '../../helpers/colors';
 
 const useStyles = makeStyles(() => ({
   modal: {
@@ -82,7 +74,7 @@ export const LogonModal = ({ onCloseClick, onLogonClick, onSetAlert }) => {
               height: '70px',
               width: '70px',
               color: 'white',
-              backgroundColor: colPurple,
+              backgroundColor: colSecondary,
               padding: '20px',
               borderRadius: '60px',
             }}
@@ -127,7 +119,7 @@ export const LogonModal = ({ onCloseClick, onLogonClick, onSetAlert }) => {
               variant='contained'
               color='primary'
               onClick={() => submitLogin()}
-              style={{ backgroundColor: colSalmon, width: '220px' }}
+              style={{ backgroundColor: colPrimary, width: '220px' }}
               className={classes.padded}
             >
               Logon
@@ -147,7 +139,7 @@ export const LogonModal = ({ onCloseClick, onLogonClick, onSetAlert }) => {
 
             <Link to='/register' style={{ textDecoration: 'none' }}>
               <Button
-                style={{ color: colSalmon }}
+                style={{ color: colPrimary }}
                 className={classes.padded}
                 onClick={() => handleCloseClick()}
               >

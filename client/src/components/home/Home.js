@@ -1,4 +1,8 @@
 import React, { useRef, useState } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { performSearch } from '../../actions/search';
+import { setAlert } from '../../actions/alert';
 import {
   makeStyles,
   Grid,
@@ -21,20 +25,21 @@ import {
   Description,
 } from '@material-ui/icons/';
 import { checkInput } from '../../helpers';
+import { colPrimary } from '../../helpers/colors';
 
 const useStyles = makeStyles(() => ({
   textBoxRadius: {
     borderRadius: '15px',
   },
   searchButton: {
-    backgroundColor: '#a44be3',
+    backgroundColor: colPrimary,
     height: '100%',
     borderRadius: '15px',
     position: 'absolute',
     transition: 'all .2s ease-in-out',
     right: '0',
     '&:hover': {
-      backgroundColor: '#a44be3',
+      backgroundColor: colPrimary,
       transform: 'scale(0.8)',
     },
   },
@@ -67,18 +72,16 @@ const RenderIcon = (index) => {
 
 const options = ['Domain', 'Hash', 'IP'];
 
-const Home = () => {
+const Home = ({ setAlert, performSearch }) => {
   const classes = useStyles();
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(1);
   const [value, setValue] = useState('');
-  const [isError, setIsError] = useState(false);
 
   const handleMenuItemClick = (_, index) => {
     setSelectedIndex(index);
     setOpen(false);
-    setIsError(false);
   };
 
   const handleToggle = () => {
@@ -92,9 +95,12 @@ const Home = () => {
     setOpen(false);
   };
 
-  const handleSearchClick = () => {
+  const handleSearchClick = async () => {
     if (!checkInput(options[selectedIndex], value)) {
-      setIsError(true);
+      setAlert(`Please enter a valid ${options[selectedIndex]}`, 'error');
+    } else {
+      let data = performSearch(value, options[selectedIndex].toLowerCase());
+      console.log(data);
     }
   };
 
@@ -118,7 +124,7 @@ const Home = () => {
               height: '55px',
               width: '110px',
               borderRadius: '15px',
-              backgroundColor: '#a44be3',
+              backgroundColor: colPrimary,
             }}
             onClick={handleToggle}
           >
@@ -184,19 +190,14 @@ const Home = () => {
             inputProps={{ style: { fontSize: 20 } }} // font size of input text
           />
         </Grid>
-        <Grid container xs={12} justify='center'>
-          {isError && (
-            <Typography>
-              Please enter a valid{' '}
-              <b style={{ color: '#a44be3' }}>
-                {options[selectedIndex].toUpperCase()}
-              </b>
-            </Typography>
-          )}
-        </Grid>
       </Grid>
     </div>
   );
 };
 
-export default Home;
+Home.propTypes = {
+  setAlert: PropTypes.func.isRequired,
+  performSearch: PropTypes.func.isRequired,
+};
+
+export default connect(null, { setAlert, performSearch })(Home);

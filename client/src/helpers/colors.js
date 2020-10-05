@@ -1,13 +1,11 @@
-const colViridianGreen = '#0FA3B1';
-const colMagenta = '#993955';
-const colPurple = '#AE76A6';
-const colSalmon = '#F7A072';
-const colLinen = '#F2E9DC';
+const colPrimary = '#A44BE3';
+const colSecondary = '#49B6FF';
+const colSuccess = '#E15554';
+const colError = '#3BB273';
 
 module.exports = {
-  colViridianGreen,
-  colMagenta,
-  colPurple,
-  colSalmon,
-  colLinen,
+  colPrimary,
+  colSecondary,
+  colSuccess,
+  colError,
 };

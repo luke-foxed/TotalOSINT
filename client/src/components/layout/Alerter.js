@@ -3,7 +3,7 @@ import Alert from '@material-ui/lab/Alert';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { colMagenta } from '../../helpers/colors';
+import { colError, colSuccess } from '../../helpers/colors';
 
 const Alerter = ({ alerts }) =>
   alert !== null &&
@@ -17,7 +17,11 @@ const Alerter = ({ alerts }) =>
         elevation={6}
         variant='filled'
         severity={alert.alertType}
-        style={{ backgroundColor: colMagenta }}
+        style={
+          alert.alertType === 'success'
+            ? { backgroundColor: colError }
+            : { backgroundColor: colSuccess }
+        }
         key={alert.id}
       >
         {alert.msg}

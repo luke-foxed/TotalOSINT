@@ -22,10 +22,8 @@ const searchMetadefender = async (searchType, value) => {
           return text.map((label) => label.innerText).toString();
         });
 
-        console.log(ipScore);
-
         await browser.close();
-        break;
+        return ipScore;
 
       case 'hash':
         await browser.close();
@@ -38,19 +36,16 @@ const searchMetadefender = async (searchType, value) => {
           `https://metadefender.opswat.com/results/domain/${base64Domain}`
         );
 
-        await page.waitForSelector('.row > .col-lg-3 > .scoreHeader');
+        await page.waitForSelector('.row > .col-lg-3 > .scoreHeader .score');
 
         let domainScore = await page.evaluate(() => {
-          let text = document.querySelector('.score');
-          return text.innerText;
+          let text = Array.from(document.querySelectorAll('.score > p'));
+          return text.map((label) => label.innerText).toString();
         });
 
-        console.log(domainScore.replace(/^\s+|\s+$/g, ''));
-
         await browser.close();
-        break;
+        return domainScore;
     }
-    return 'hello';
   } catch (error) {
     console.log(error);
     return error;
