@@ -6,9 +6,8 @@ html {
 }
 
 body {
-  background: linear-gradient(
-    0deg,
-    rgba(92, 92, 92, 1) 0%,
-    rgba(177, 177, 177, 1) 100%
-  );
+  background-image: url('../src/assets/background1.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
 }

@@ -133,8 +133,8 @@ export const LogonModal = ({ onCloseClick, onLogonClick, onSetAlert }) => {
               }}
             />
 
-            <Typography style={{ fontFamily: 'Quicksand' }}>
-              Not A Member?
+            <Typography style={{ fontFamily: 'Yanone Kaffeesatz', fontSize:'20px' }}>
+              NOT A MEMBER?
             </Typography>
 
             <Link to='/register' style={{ textDecoration: 'none' }}>

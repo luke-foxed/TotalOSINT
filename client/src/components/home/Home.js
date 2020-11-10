@@ -27,9 +27,11 @@ import {
 import { checkInput } from '../../helpers';
 import { colPrimary } from '../../helpers/colors';
 
+
 const useStyles = makeStyles(() => ({
   textBoxRadius: {
     borderRadius: '15px',
+    borderColor: 'rgba(255,255,255,.4)',
   },
   searchButton: {
     backgroundColor: colPrimary,
@@ -49,10 +51,10 @@ const CssTextField = withStyles({
   root: {
     '& .MuiOutlinedInput-root': {
       '&:hover fieldset': {
-        borderColor: 'rgba(0,0,0,0.2)',
+        borderColor: 'rgba(255,255,255,.6)',
       },
       '&.Mui-focused fieldset': {
-        borderColor: 'rgba(0,0,0,0.2)',
+          borderColor: 'rgba(255,255,255,.6)',
         border: '1px solid',
       },
     },
@@ -105,15 +107,26 @@ const Home = ({ setAlert, performSearch }) => {
   };
 
   return (
-    <div style={{ width: '67%', margin: 'auto' }}>
+
+    <div
+      style={{
+        width: '67%',
+        margin: 'auto',
+        maxHeight: '100vh',
+      }}
+    >
+      <Typography style={{ textAlign: 'center', margin: '90px', fontFamily: 'Yanone Kaffeesatz', color: 'white', fontSize: '50px' }}>
+        ANY <b style={{color:colPrimary}}>IP</b> ADDRESS, FILE <b style={{color:colPrimary}}>HASH</b> OR <b style={{color:colPrimary}}>DOMAIN</b> 
+      </Typography>
       <Grid
         container
         direction='row'
         alignItems='center'
         justify='center'
         spacing={0}
-        style={{ minHeight: '20vh', marginTop: '200px' }}
+        style={{ minHeight: '10vh' }}
       >
+        
         <Grid container item xs={3} sm={2} justify='center'>
           <Button
             ref={anchorRef}
@@ -169,7 +182,9 @@ const Home = ({ setAlert, performSearch }) => {
           <CssTextField
             variant='outlined'
             style={{ width: '100%' }}
-            onInput={(e) => setValue(e.target.value)}
+            onInput={(e) => {
+              setValue(e.target.value)
+            }}
             InputProps={{
               style: {
                 color: 'white',
@@ -191,7 +206,8 @@ const Home = ({ setAlert, performSearch }) => {
           />
         </Grid>
       </Grid>
-    </div>
+      </div>
+
   );
 };
 

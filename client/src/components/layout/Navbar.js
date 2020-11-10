@@ -64,12 +64,13 @@ const Navbar = ({ login, setAlert, user, isAuthenticated, logout }) => {
             direction='row'
           >
             <Grid item xs={2}>
-              <Typography variant='h5'>TotalOSINT</Typography>
+              <img src={require('../../assets/logo.png')} height={80}/>
+             
             </Grid>
 
             <Grid item xs={5} />
 
-            <Grid item xs={4} alignItems='center'>
+            <Grid item xs={4} >
               {isAuthenticated & (user != null) ? (
                 <Grid container justify='flex-end'>
                   <Typography style={{ padding: '10px' }}>

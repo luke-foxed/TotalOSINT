@@ -22,7 +22,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <Router>
-        <Fragment className='App'>
+        <Fragment >
           <Navbar />
           <Alerter />
           <Switch>
