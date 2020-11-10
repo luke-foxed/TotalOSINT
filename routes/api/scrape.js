@@ -3,6 +3,7 @@ const { searchIPVoid } = require('../../scrapers/ipVoid');
 const { searchVT } = require('../../scrapers/virusTotal');
 const { abuseIP } = require('../../scrapers/abuseIP');
 const { searchMetadefender } = require('../../scrapers/metaDefender');
+const { Cluster } = require('puppeteer-cluster');
 const router = express.Router();
 
 // TEST VALUES //
@@ -40,13 +41,32 @@ router.post('/metadefender', async (req, res) => {
 // https://github.com/puppeteer/puppeteer/issues/1873
 
 router.post('/scrape-all', async (req, res) => {
-  let results = [];
+  let results = {};
 
   switch (req.body.type) {
     case 'domain':
-      results.push(await searchMetadefender(req.body.type, req.body.value));
-      results.push(await searchVT(req.body.type, req.body.value));
-      return results;
+      const cluster = await Cluster.launch({
+        concurrency: Cluster.CONCURRENCY_CONTEXT,
+        maxConcurrency: 3,
+      });
+
+      cluster.queue(async () => {
+        results['metadefender'] = await searchMetadefender(
+          req.body.type,
+          req.body.value
+        );
+      });
+
+      cluster.queue(async () => {
+        results['virustotal'] = await searchVT(req.body.type, req.body.value);
+      });
+
+      await cluster.idle();
+      await cluster.close();
+
+      console.log(results);
+
+      break;
 
     default:
       break;
