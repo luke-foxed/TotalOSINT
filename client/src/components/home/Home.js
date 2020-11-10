@@ -1,8 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { performSearch } from '../../actions/search';
 import { setAlert } from '../../actions/alert';
+import { useDencrypt } from 'use-dencrypt-effect';
 import {
   makeStyles,
   Grid,
@@ -17,6 +18,7 @@ import {
   withStyles,
   Typography,
   InputAdornment,
+  Divider,
 } from '@material-ui/core';
 import {
   Search,
@@ -43,6 +45,13 @@ const useStyles = makeStyles(() => ({
     '&:hover': {
       backgroundColor: colPrimary,
       transform: 'scale(0.8)',
+    },
+  },
+  siteImage: {
+    padding: '20px',
+    transition: 'all .2s ease-in-out',
+    '&:hover': {
+      transform: 'scale(1.2)',
     },
   },
 }));
@@ -78,13 +87,27 @@ const RenderIcon = (index) => {
 };
 
 const options = ['Domain', 'Hash', 'IP'];
+const headerValues = ['FILE HASH', 'IP ADDRESS', 'DOMAIN'];
 
 const Home = ({ setAlert, performSearch }) => {
+  const { result, dencrypt } = useDencrypt();
   const classes = useStyles();
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(1);
   const [value, setValue] = useState('');
+
+  useEffect(() => {
+    let i = 0;
+
+    const action = setInterval(() => {
+      dencrypt(headerValues[i]);
+
+      i = i === headerValues.length - 1 ? 0 : i + 1;
+    }, 3000);
+
+    return () => clearInterval(action);
+  }, []);
 
   const handleMenuItemClick = (_, index) => {
     setSelectedIndex(index);
@@ -122,23 +145,21 @@ const Home = ({ setAlert, performSearch }) => {
       <Typography
         style={{
           textAlign: 'center',
-          margin: '90px',
+          margin: '80px',
           fontFamily: 'Yanone Kaffeesatz',
           color: 'white',
           fontSize: '50px',
         }}
       >
-        ANY <b style={{ color: colPrimary }}>IP</b> ADDRESS, FILE{' '}
-        <b style={{ color: colPrimary }}>HASH</b> OR{' '}
-        <b style={{ color: colPrimary }}>DOMAIN</b>
+        ANY <b style={{ color: colPrimary }}>{result}</b>
       </Typography>
+
       <Grid
         container
         direction='row'
         alignItems='center'
         justify='center'
         spacing={0}
-        style={{ minHeight: '10vh' }}
       >
         <Grid container item xs={3} sm={2} justify='center'>
           <Button
@@ -218,6 +239,46 @@ const Home = ({ setAlert, performSearch }) => {
             inputProps={{ style: { fontSize: 20 } }} // font size of input text
           />
         </Grid>
+      </Grid>
+
+      <Grid
+        container
+        direction='row'
+        alignContent='center'
+        alignItems='center'
+        justify='center'
+        spacing={4}
+        style={{ marginTop: '200px' }}
+      >
+        <img
+          src={require('../../assets/vt.png')}
+          width={100}
+          className={classes.siteImage}
+        />
+
+        <img
+          src={require('../../assets/abuse.png')}
+          width={100}
+          className={classes.siteImage}
+        />
+
+        <img
+          src={require('../../assets/meta.png')}
+          width={100}
+          className={classes.siteImage}
+        />
+
+        <img
+          src={require('../../assets/ipvoid.png')}
+          width={80}
+          className={classes.siteImage}
+        />
+
+        <img
+          src={require('../../assets/talos.png')}
+          width={80}
+          className={classes.siteImage}
+        />
       </Grid>
     </div>
   );

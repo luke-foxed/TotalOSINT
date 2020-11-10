@@ -8,6 +8,4 @@ html {
 body {
   background-image: url('../src/assets/background1.png');
   background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
 }
