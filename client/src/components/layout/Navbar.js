@@ -47,7 +47,7 @@ const Navbar = ({ login, setAlert, user, isAuthenticated, logout }) => {
       <AppBar
         position='static'
         style={{
-          backgroundColor: 'transparent',
+          backgroundColor: 'rgba(50,50,50,0.2)',
         }}
       >
         <Toolbar

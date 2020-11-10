@@ -5,6 +5,17 @@ const { abuseIP } = require('../../scrapers/abuseIP');
 const { searchMetadefender } = require('../../scrapers/metaDefender');
 const router = express.Router();
 
+// TEST VALUES //
+
+// malicious hash: 36F9CA40B3CE96FCEE1CF1D4A7222935536FD25B
+// clean hash: e75717a75f2a35130bf7f7aee09dcb7d
+
+// clean IP: 43.250.192.22
+// malicious IP: 89.248.167.164
+
+// clean domain: google.com
+// malicious domain: halifax-fraud-alert.com
+
 router.post('/vt', async (req, res) => {
   let results = await searchVT(req.body.type, req.body.value);
   res.send(results);
@@ -25,6 +36,9 @@ router.post('/metadefender', async (req, res) => {
   res.send(results);
 });
 
+// link for running sessions in parallel
+// https://github.com/puppeteer/puppeteer/issues/1873
+
 router.post('/scrape-all', async (req, res) => {
   let results = [];
 
@@ -32,6 +46,7 @@ router.post('/scrape-all', async (req, res) => {
     case 'domain':
       results.push(await searchMetadefender(req.body.type, req.body.value));
       results.push(await searchVT(req.body.type, req.body.value));
+      return results;
 
     default:
       break;
