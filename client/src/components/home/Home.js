@@ -16,6 +16,7 @@ import {
   ClickAwayListener,
   withStyles,
   Typography,
+  InputAdornment,
 } from '@material-ui/core';
 import {
   Search,
@@ -26,7 +27,6 @@ import {
 } from '@material-ui/icons/';
 import { checkInput } from '../../helpers';
 import { colPrimary } from '../../helpers/colors';
-
 
 const useStyles = makeStyles(() => ({
   textBoxRadius: {
@@ -54,7 +54,7 @@ const CssTextField = withStyles({
         borderColor: 'rgba(255,255,255,.6)',
       },
       '&.Mui-focused fieldset': {
-          borderColor: 'rgba(255,255,255,.6)',
+        borderColor: 'rgba(255,255,255,.6)',
         border: '1px solid',
       },
     },
@@ -64,7 +64,12 @@ const CssTextField = withStyles({
 const RenderIcon = (index) => {
   switch (index) {
     case 0:
-      return <Language style={{ color: 'white', paddingRight: '10px' }} />;
+      return (
+        <InputAdornment>
+          <Language style={{ color: 'white', paddingRight: '10px' }} />
+          <i style={{ paddingRight: '5px', color: colPrimary }}>www.</i>
+        </InputAdornment>
+      );
     case 1:
       return <Description style={{ color: 'white', paddingRight: '10px' }} />;
     case 2:
@@ -107,7 +112,6 @@ const Home = ({ setAlert, performSearch }) => {
   };
 
   return (
-
     <div
       style={{
         width: '67%',
@@ -115,8 +119,18 @@ const Home = ({ setAlert, performSearch }) => {
         maxHeight: '100vh',
       }}
     >
-      <Typography style={{ textAlign: 'center', margin: '90px', fontFamily: 'Yanone Kaffeesatz', color: 'white', fontSize: '50px' }}>
-        ANY <b style={{color:colPrimary}}>IP</b> ADDRESS, FILE <b style={{color:colPrimary}}>HASH</b> OR <b style={{color:colPrimary}}>DOMAIN</b> 
+      <Typography
+        style={{
+          textAlign: 'center',
+          margin: '90px',
+          fontFamily: 'Yanone Kaffeesatz',
+          color: 'white',
+          fontSize: '50px',
+        }}
+      >
+        ANY <b style={{ color: colPrimary }}>IP</b> ADDRESS, FILE{' '}
+        <b style={{ color: colPrimary }}>HASH</b> OR{' '}
+        <b style={{ color: colPrimary }}>DOMAIN</b>
       </Typography>
       <Grid
         container
@@ -126,7 +140,6 @@ const Home = ({ setAlert, performSearch }) => {
         spacing={0}
         style={{ minHeight: '10vh' }}
       >
-        
         <Grid container item xs={3} sm={2} justify='center'>
           <Button
             ref={anchorRef}
@@ -183,7 +196,7 @@ const Home = ({ setAlert, performSearch }) => {
             variant='outlined'
             style={{ width: '100%' }}
             onInput={(e) => {
-              setValue(e.target.value)
+              setValue(e.target.value);
             }}
             InputProps={{
               style: {
@@ -206,8 +219,7 @@ const Home = ({ setAlert, performSearch }) => {
           />
         </Grid>
       </Grid>
-      </div>
-
+    </div>
   );
 };
 

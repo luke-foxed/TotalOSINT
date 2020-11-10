@@ -6,6 +6,7 @@ import Fade from '@material-ui/core/Fade';
 import {
   Button,
   FormControl,
+  IconButton,
   Paper,
   TextField,
   Typography,
@@ -14,6 +15,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { colPrimary, colSecondary } from '../../helpers/colors';
+import { Close } from '@material-ui/icons';
 
 const useStyles = makeStyles(() => ({
   modal: {
@@ -79,6 +81,12 @@ export const LogonModal = ({ onCloseClick, onLogonClick, onSetAlert }) => {
               borderRadius: '60px',
             }}
           />
+          <IconButton
+            style={{ position: 'absolute', right: 5 }}
+            onClick={() => handleCloseClick()}
+          >
+            <Close />
+          </IconButton>
 
           <FormControl className={classes.modal}>
             <TextField
@@ -133,7 +141,9 @@ export const LogonModal = ({ onCloseClick, onLogonClick, onSetAlert }) => {
               }}
             />
 
-            <Typography style={{ fontFamily: 'Yanone Kaffeesatz', fontSize:'20px' }}>
+            <Typography
+              style={{ fontFamily: 'Yanone Kaffeesatz', fontSize: '20px' }}
+            >
               NOT A MEMBER?
             </Typography>
 
