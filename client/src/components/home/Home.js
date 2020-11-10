@@ -18,7 +18,6 @@ import {
   withStyles,
   Typography,
   InputAdornment,
-  Divider,
 } from '@material-ui/core';
 import {
   Search,
@@ -241,6 +240,14 @@ const Home = ({ setAlert, performSearch }) => {
         </Grid>
       </Grid>
 
+      <hr
+        style={{
+          border: '1px solid #d1d1d1',
+          backgroundColor: '#d1d1d1',
+          width: '100px',
+          marginTop: '220px',
+        }}
+      />
       <Grid
         container
         direction='row'
@@ -248,7 +255,7 @@ const Home = ({ setAlert, performSearch }) => {
         alignItems='center'
         justify='center'
         spacing={4}
-        style={{ marginTop: '200px' }}
+        style={{ marginTop: '5px' }}
       >
         <img
           src={require('../../assets/vt.png')}
