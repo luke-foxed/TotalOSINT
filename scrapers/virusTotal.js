@@ -1,6 +1,12 @@
 const puppeteer = require('puppeteer');
+const { QueryHandler } = require('query-selector-shadow-dom/plugins/puppeteer');
 
 const searchVT = async (searchType, value) => {
+  await puppeteer.__experimental_registerCustomQueryHandler(
+    'shadow',
+    QueryHandler
+  );
+
   try {
     let browser = await puppeteer.launch({ headless: false });
     let page = await browser.newPage();
@@ -52,26 +58,51 @@ const searchVT = async (searchType, value) => {
 
       case 'hash':
         await page.goto(
-          `https://www.virustotal.com/gui/file/${value}/detection`
+          `https://www.virustotal.com/gui/file/${value}/detection`,
+          { waitUntil: 'networkidle0' }
         );
 
-        await page.waitForSelector('body #file-view');
+        await page.waitForSelector('shadow/.engines .circle');
+        let enginesDiv = (await page.$('shadow/.engines .circle')).asElement();
 
-        const fileText = await page.evaluate(() =>
-          document.querySelectorAll('body #file-view')
-        );
+        let detections = await (
+          await enginesDiv.getProperty('textContent')
+        ).jsonValue();
 
-        let {
-          __engineDetections: fileDetections,
-          __totalEngines: fileEngines,
-        } = fileText['0'];
+        let formattedDetections = detections
+          .replace(/\s{2,}/g, ' ')
+          .split(' ')
+          .filter((item) => item);
 
-        results.detections = fileDetections;
-        results.engines = fileEngines;
+        try {
+          results.detections = parseInt(formattedDetections[0]);
+          results.engines = parseInt(formattedDetections[2]);
+        } catch (error) {
+          console.log(error);
+        }
 
-        // get file info
-        results.fileName = fileText['0'].__headerProperties.fileName;
-        results.fileSize = fileText['0'].__headerProperties.size;
+        await page.waitForSelector('shadow/div[slot="body"]');
+        let fileDiv = (await page.$('shadow/div[slot="body"]')).asElement();
+
+        let fileDetails = await (
+          await fileDiv.getProperty('textContent')
+        ).jsonValue();
+
+        let formattedFileDetails = fileDetails
+          .replace(/\s{2,}/g, ' ')
+          .split(' ')
+          .filter((item) => item);
+
+        try {
+          results.fileName = formattedFileDetails[1];
+          results.fileSize = formattedFileDetails[2] + formattedFileDetails[3];
+        } catch (error) {
+          console.log(error);
+        }
+
+        results.value = value;
+
+        console.log(results);
 
         await browser.close();
         break;
