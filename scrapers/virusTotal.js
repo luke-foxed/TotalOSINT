@@ -1,7 +1,27 @@
 const puppeteer = require('puppeteer');
 const { QueryHandler } = require('query-selector-shadow-dom/plugins/puppeteer');
 
+const getDetections = async (page) => {
+  await page.waitForSelector('shadow/.engines .circle');
+
+  let enginesDiv = await page.$('shadow/.engines .circle');
+  let detections = await (
+    await enginesDiv.getProperty('textContent')
+  ).jsonValue();
+
+  return detections.split(' ').filter((item) => item);
+};
+
+const getDetails = async (page) => {
+  await page.waitForSelector('shadow/div[slot="body"]');
+
+  let detailsDiv = await page.$('shadow/div[slot="body"]');
+  let details = await (await detailsDiv.getProperty('innerText')).jsonValue();
+  return details.split('\n').filter((item) => item);
+};
+
 const searchVT = async (searchType, value) => {
+  // setup custom handler for accessing shadow dom
   await puppeteer.__experimental_registerCustomQueryHandler(
     'shadow',
     QueryHandler
@@ -28,78 +48,43 @@ const searchVT = async (searchType, value) => {
 
     switch (searchType) {
       case 'ip':
-        // first get main details
         await page.goto(
           `https://www.virustotal.com/gui/ip-address/${value}/detection`
         );
 
-        await page.waitForSelector('body #ip-address-view');
+        let ipDetections = await getDetections(page);
+        let ipDetails = await getDetails(page);
 
-        const ipText = await page.evaluate(() =>
-          document.querySelectorAll('body #ip-address-view')
-        );
-
-        let {
-          __engineDetections: ipDetections,
-          __totalEngines: ipEngines,
-        } = ipText['0'];
-
+        try {
+          results.detections = parseInt(ipDetections[0]);
+          results.engines = parseInt(ipDetections[2]);
+          results.range = ipDetails[0];
+          results.owner = ipDetails[1];
+          results.country = ipDetails[2];
+        } catch (error) {
+          console.log(error);
+        }
         results.value = value;
-        results.detections = ipDetections;
-        results.engines = ipEngines;
-
-        // get 'whois' info
-        results.range = ipText['0'].__miniGraphInfo.network;
-        results.owner = ipText['0'].__miniGraphInfo.as_owner;
-        results.country = ipText['0'].__miniGraphInfo.country;
 
         await browser.close();
         break;
 
       case 'hash':
         await page.goto(
-          `https://www.virustotal.com/gui/file/${value}/detection`,
-          { waitUntil: 'networkidle0' }
+          `https://www.virustotal.com/gui/file/${value}/detection`
         );
 
-        await page.waitForSelector('shadow/.engines .circle');
-        let enginesDiv = (await page.$('shadow/.engines .circle')).asElement();
-
-        let detections = await (
-          await enginesDiv.getProperty('textContent')
-        ).jsonValue();
-
-        let formattedDetections = detections
-          .replace(/\s{2,}/g, ' ')
-          .split(' ')
-          .filter((item) => item);
+        let fileDetections = await getDetections(page);
+        let fileDetails = await getDetails(page);
 
         try {
-          results.detections = parseInt(formattedDetections[0]);
-          results.engines = parseInt(formattedDetections[2]);
+          results.detections = parseInt(fileDetections[0]);
+          results.engines = parseInt(fileDetections[2]);
+          results.fileName = fileDetails[1];
+          results.fileSize = fileDetails[2] + fileDetails[3];
         } catch (error) {
           console.log(error);
         }
-
-        await page.waitForSelector('shadow/div[slot="body"]');
-        let fileDiv = (await page.$('shadow/div[slot="body"]')).asElement();
-
-        let fileDetails = await (
-          await fileDiv.getProperty('textContent')
-        ).jsonValue();
-
-        let formattedFileDetails = fileDetails
-          .replace(/\s{2,}/g, ' ')
-          .split(' ')
-          .filter((item) => item);
-
-        try {
-          results.fileName = formattedFileDetails[1];
-          results.fileSize = formattedFileDetails[2] + formattedFileDetails[3];
-        } catch (error) {
-          console.log(error);
-        }
-
         results.value = value;
 
         console.log(results);
@@ -133,6 +118,9 @@ const searchVT = async (searchType, value) => {
         await browser.close();
         break;
     }
+
+    await puppeteer.__experimental_unregisterCustomQueryHandler('shadow');
+
     return results;
   } catch (error) {
     console.log(error);
