@@ -17,7 +17,20 @@ const getDetails = async (page) => {
 
   let detailsDiv = await page.$('shadow/div[slot="body"]');
   let details = await (await detailsDiv.getProperty('innerText')).jsonValue();
-  return details.split('\n').filter((item) => item);
+
+  if (page.url().includes('domain')) {
+    let createdDate = await detailsDiv.$eval(
+      '.row > .field > a > vt-ui-time-ago',
+      (el) => el.getAttribute('title')
+    );
+
+    return details
+      .split('\n')
+      .filter((item) => item)
+      .concat([createdDate]);
+  } else {
+    return details.split('\n').filter((item) => item);
+  }
 };
 
 const searchVT = async (searchType, value) => {
@@ -97,23 +110,18 @@ const searchVT = async (searchType, value) => {
           `https://www.virustotal.com/gui/domain/${value}/detection`
         );
 
-        await page.waitForSelector('body #domain-view', { timeout: 6000 });
+        let domainDetections = await getDetections(page);
+        let domainDetails = await getDetails(page);
 
-        const domainText = await page.evaluate(() =>
-          document.querySelectorAll('body #domain-view')
-        );
+        console.log(domainDetections);
+        console.log(domainDetails);
 
-        let {
-          __engineDetections: domainDetections,
-          __totalEngines: domainEngines,
-        } = domainText['0'];
+        // results.detections = domainDetections;
+        // results.engines = domainEngines;
 
-        results.detections = domainDetections;
-        results.engines = domainEngines;
-
-        // get domain info
-        results.registrar = domainText['0'].__headerProperties.registrar;
-        results.creationDate = domainText['0'].__headerProperties.creationDate;
+        // // get domain info
+        // results.registrar = domainText['0'].__headerProperties.registrar;
+        // results.creationDate = domainText['0'].__headerProperties.creationDate;
 
         await browser.close();
         break;
