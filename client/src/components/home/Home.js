@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import ClimbingBoxLoader from 'react-spinners/ClimbingBoxLoader';
 import { performSearch } from '../../actions/search';
 import { setAlert } from '../../actions/alert';
 import { useDencrypt } from 'use-dencrypt-effect';
@@ -18,6 +19,7 @@ import {
   withStyles,
   Typography,
   InputAdornment,
+  Backdrop,
 } from '@material-ui/core';
 import {
   Search,
@@ -33,6 +35,11 @@ const useStyles = makeStyles(() => ({
   textBoxRadius: {
     borderRadius: '15px',
     borderColor: 'rgba(255,255,255,.4)',
+  },
+  backdrop: {
+    backdropFilter: 'blur(6px)',
+    color: 'black',
+    zIndex: 99,
   },
   searchButton: {
     backgroundColor: colPrimary,
@@ -96,6 +103,9 @@ const Home = ({ setAlert, performSearch }) => {
   const [selectedIndex, setSelectedIndex] = useState(1);
   const [value, setValue] = useState('');
 
+  const [searchResults, setSearchResults] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     let i = 0;
 
@@ -128,8 +138,13 @@ const Home = ({ setAlert, performSearch }) => {
     if (!checkInput(options[selectedIndex], value)) {
       setAlert(`Please enter a valid ${options[selectedIndex]}`, 'error');
     } else {
-      let data = performSearch(value, options[selectedIndex].toLowerCase());
-      console.log(data);
+      setIsLoading(true);
+      let response = await performSearch(
+        value,
+        options[selectedIndex].toLowerCase()
+      );
+      setSearchResults(response);
+      setIsLoading(false);
     }
   };
 
@@ -282,11 +297,17 @@ const Home = ({ setAlert, performSearch }) => {
         />
 
         <img
-          src={require('../../assets/talos.png')}
-          width={80}
+          src={require('../../assets/xforce.png')}
+          width={120}
           className={classes.siteImage}
         />
       </Grid>
+
+      <Backdrop open={isLoading} className={classes.backdrop}>
+        {/* https://react-sticky.netlify.app/#/relative */}
+
+        <ClimbingBoxLoader size={25} color={colPrimary} loading={isLoading} />
+      </Backdrop>
     </div>
   );
 };
