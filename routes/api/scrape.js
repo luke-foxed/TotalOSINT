@@ -1,8 +1,9 @@
 const express = require('express');
 const { searchIPVoid } = require('../../scrapers/ipVoid');
 const { searchVT } = require('../../scrapers/virusTotal');
-const { abuseIP } = require('../../scrapers/abuseIP');
+const { searchAbuseIP } = require('../../scrapers/abuseIP');
 const { searchMetadefender } = require('../../scrapers/metaDefender');
+const { searchXForce } = require('../../scrapers/xForce.js');
 const { Cluster } = require('puppeteer-cluster');
 const router = express.Router();
 
@@ -28,12 +29,17 @@ router.post('/ipvoid', async (req, res) => {
 });
 
 router.post('/abuse', async (req, res) => {
-  let results = await abuseIP(req.body.value);
+  let results = await searchAbuseIP(req.body.value);
   res.send(results);
 });
 
 router.post('/metadefender', async (req, res) => {
   let results = await searchMetadefender(req.body.type, req.body.value);
+  res.send(results);
+});
+
+router.post('/xforce', async (req, res) => {
+  let results = await searchXForce(req.body.type, req.body.value);
   res.send(results);
 });
 
@@ -43,13 +49,13 @@ router.post('/metadefender', async (req, res) => {
 router.post('/scrape-all', async (req, res) => {
   let results = {};
 
+  const cluster = await Cluster.launch({
+    concurrency: Cluster.CONCURRENCY_CONTEXT,
+    maxConcurrency: 5,
+  });
+
   switch (req.body.type) {
     case 'domain':
-      const cluster = await Cluster.launch({
-        concurrency: Cluster.CONCURRENCY_CONTEXT,
-        maxConcurrency: 3,
-      });
-
       cluster.queue(async () => {
         results['metadefender'] = await searchMetadefender(
           req.body.type,
@@ -61,16 +67,47 @@ router.post('/scrape-all', async (req, res) => {
         results['virustotal'] = await searchVT(req.body.type, req.body.value);
       });
 
+      cluster.queue(async () => {
+        results['xforce'] = await searchXForce(req.body.type, req.body.value);
+      });
+
       await cluster.idle();
       await cluster.close();
+      break;
 
-      console.log(results);
+    case 'ip':
+      cluster.queue(async () => {
+        results['metadefender'] = await searchMetadefender(
+          req.body.type,
+          req.body.value
+        );
+      });
 
+      cluster.queue(async () => {
+        results['virustotal'] = await searchVT(req.body.type, req.body.value);
+      });
+
+      cluster.queue(async () => {
+        results['xforce'] = await searchXForce(req.body.type, req.body.value);
+      });
+
+      cluster.queue(async () => {
+        results['ipvoid'] = await searchIPVoid(req.body.value);
+      });
+
+      cluster.queue(async () => {
+        results['abuseip'] = await searchAbuseIP(req.body.value);
+      });
+
+      await cluster.idle();
+      await cluster.close();
       break;
 
     default:
       break;
   }
+
+  res.send(results);
 });
 
 module.exports = router;

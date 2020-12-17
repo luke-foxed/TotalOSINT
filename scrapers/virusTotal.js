@@ -46,18 +46,7 @@ const searchVT = async (searchType, value) => {
     await page.setViewport({ width: 1366, height: 768 });
 
     // data to be returned
-    let results = {
-      value: '',
-      detections: 0,
-      engines: 0,
-      fileName: '',
-      fileSize: '',
-      owner: '',
-      range: '',
-      country: '',
-      registrar: '',
-      creationDate: 0,
-    };
+    let results = {};
 
     switch (searchType) {
       case 'ip':
@@ -100,8 +89,6 @@ const searchVT = async (searchType, value) => {
         }
         results.value = value;
 
-        console.log(results);
-
         await browser.close();
         break;
 
@@ -111,17 +98,10 @@ const searchVT = async (searchType, value) => {
         );
 
         let domainDetections = await getDetections(page);
-        let domainDetails = await getDetails(page);
 
-        console.log(domainDetections);
-        console.log(domainDetails);
-
-        // results.detections = domainDetections;
-        // results.engines = domainEngines;
-
-        // // get domain info
-        // results.registrar = domainText['0'].__headerProperties.registrar;
-        // results.creationDate = domainText['0'].__headerProperties.creationDate;
+        results.detections = parseInt(domainDetections[0]);
+        results.engines = parseInt(domainDetections[2]);
+        results.value = value;
 
         await browser.close();
         break;
@@ -131,7 +111,6 @@ const searchVT = async (searchType, value) => {
 
     return results;
   } catch (error) {
-    console.log(error);
     return error;
   }
 };

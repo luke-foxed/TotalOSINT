@@ -37,7 +37,10 @@ const searchIPVoid = async (value) => {
       reverseDNS: tableData[9],
       asnOwnser: tableData[13],
       isp: tableData[15],
+      country: tableData[19],
     };
+
+    console.log(tableData);
 
     await browser.close();
 

@@ -16,7 +16,6 @@ const User = require('../../models/User');
 router.get('/', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
-
     res.json(user);
   } catch (err) {
     console.error(err.message);
@@ -29,10 +28,6 @@ router.get('/', auth, async (req, res) => {
  * @desc     Finds matching user in DB and returns JWT on success
  * @access   Public
  */
-
-router.post('/test', async (req, res) => {
-  res.send('TEST');
-});
 
 router.post(
   '/login',
@@ -83,6 +78,7 @@ router.post(
       );
     } catch (err) {
       console.error(err.message);
+      console.log('HERE');
       return res.status(500).send('Server error');
     }
   }

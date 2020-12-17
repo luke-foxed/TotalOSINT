@@ -19,11 +19,20 @@ const searchMetadefender = async (searchType, value) => {
 
         let ipScore = await page.evaluate(() => {
           let text = Array.from(document.querySelectorAll('.score > p'));
-          return text.map((label) => label.innerText).toString();
+          let labels = text.map((label) => label.innerText).toString();
+          if (labels.substring(0, 1) === ',') {
+            labels = '0' + labels;
+          }
+          return labels.split('\n')[0].replace(',', '');
         });
 
         await browser.close();
-        return ipScore;
+
+        let ipScoreFormatted = {
+          detections: parseInt(ipScore.split('/')[0]),
+          engines: parseInt(ipScore.split('/')[1]),
+        };
+        return ipScoreFormatted;
 
       case 'hash':
         await page.goto(
@@ -36,11 +45,21 @@ const searchMetadefender = async (searchType, value) => {
           let text = Array.from(
             document.querySelectorAll('.scoreHeader > .score  > p')
           );
-          return text.map((label) => label.innerText).toString();
+          let labels = text.map((label) => label.innerText).toString();
+          if (labels.substring(0, 1) === ',') {
+            labels = '0' + labels;
+          }
+          return labels.split('\n')[0].replace(',', '');
         });
 
         await browser.close();
-        return hashScore;
+
+        let hashScoreFormatted = {
+          detections: parseInt(hashScore.split('/')[0]),
+          engines: parseInt(hashScore.split('/')[1]),
+        };
+
+        return hashScoreFormatted;
 
       case 'domain':
         let base64Domain = Buffer.from(value).toString('base64');
@@ -51,15 +70,25 @@ const searchMetadefender = async (searchType, value) => {
 
         await page.waitForSelector('.scoreHeader > .score');
 
-        let domainScore = await page.evaluate(() => {
+        let dominScore = await page.evaluate(() => {
           let text = Array.from(
             document.querySelectorAll('.scoreHeader > .score  > p')
           );
-          return text.map((label) => label.innerText).toString();
+          let labels = text.map((label) => label.innerText).toString();
+          if (labels.substring(0, 1) === ',') {
+            labels = '0' + labels;
+          }
+          return labels.split('\n')[0].replace(',', '');
         });
 
         await browser.close();
-        return domainScore;
+
+        let domainScoreFormatted = {
+          detections: parseInt(dominScore.split('/')[0]),
+          engines: parseInt(dominScore.split('/')[1]),
+        };
+
+        return domainScoreFormatted;
     }
   } catch (error) {
     console.log(error);
