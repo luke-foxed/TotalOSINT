@@ -33,20 +33,28 @@ const searchIPVoid = async (value) => {
     });
 
     let results = {
+      url: page.url(),
       blacklists: tableData[5],
+      detections: tableData[5]
+        .replace(/[A-Za-z]/g, '')
+        .split('/')[0]
+        .trim(),
+      engines: tableData[5]
+        .replace(/[A-Za-z]/g, '')
+        .split('/')[1]
+        .trim(),
       reverseDNS: tableData[9],
       asnOwnser: tableData[13],
       isp: tableData[15],
       country: tableData[19],
     };
 
-    console.log(tableData);
-
     await browser.close();
 
     return results;
   } catch (error) {
     console.log(error);
+    return 'Error Scraping IPVoid: ' + error.msg;
   }
 };
 

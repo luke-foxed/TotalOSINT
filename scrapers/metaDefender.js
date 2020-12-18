@@ -29,8 +29,9 @@ const searchMetadefender = async (searchType, value) => {
         await browser.close();
 
         let ipScoreFormatted = {
-          detections: parseInt(ipScore.split('/')[0]),
-          engines: parseInt(ipScore.split('/')[1]),
+          url: page.url(),
+          detections: ipScore.split('/')[0],
+          engines: ipScore.split('/')[1],
         };
         return ipScoreFormatted;
 
@@ -55,8 +56,9 @@ const searchMetadefender = async (searchType, value) => {
         await browser.close();
 
         let hashScoreFormatted = {
-          detections: parseInt(hashScore.split('/')[0]),
-          engines: parseInt(hashScore.split('/')[1]),
+          url: page.url(),
+          detections: hashScore.split('/')[0],
+          engines: hashScore.split('/')[1],
         };
 
         return hashScoreFormatted;
@@ -84,15 +86,16 @@ const searchMetadefender = async (searchType, value) => {
         await browser.close();
 
         let domainScoreFormatted = {
-          detections: parseInt(dominScore.split('/')[0]),
-          engines: parseInt(dominScore.split('/')[1]),
+          url: page.url(),
+          detections: dominScore.split('/')[0],
+          engines: dominScore.split('/')[1],
         };
 
         return domainScoreFormatted;
     }
   } catch (error) {
     console.log(error);
-    return error;
+    return 'Error Scraping MetaDefender: ' + error.msg;
   }
 };
 

@@ -33,9 +33,8 @@ const searchAbuseIP = async (value) => {
         return tds.map((td) => td.innerText);
       });
 
-      console.log(tableData);
-
       reportData = {
+        url: page.url(),
         numberOfReports: report[0],
         abuseScore: report[1],
         isp: tableData[0],

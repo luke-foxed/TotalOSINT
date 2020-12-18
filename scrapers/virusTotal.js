@@ -58,15 +58,17 @@ const searchVT = async (searchType, value) => {
         let ipDetails = await getDetails(page);
 
         try {
-          results.detections = parseInt(ipDetections[0]);
-          results.engines = parseInt(ipDetections[2]);
+          results.url = page.url();
+          results.detections = ipDetections[0];
+          results.engines = ipDetections[2];
           results.range = ipDetails[0];
           results.owner = ipDetails[1];
           results.country = ipDetails[2];
         } catch (error) {
-          console.log(error);
+          results.url = page.url();
+          results.detections = ipDetections[0];
+          results.engines = ipDetections[2];
         }
-        results.value = value;
 
         await browser.close();
         break;
@@ -80,14 +82,16 @@ const searchVT = async (searchType, value) => {
         let fileDetails = await getDetails(page);
 
         try {
-          results.detections = parseInt(fileDetections[0]);
-          results.engines = parseInt(fileDetections[2]);
+          results.url = page.url();
+          results.detections = fileDetections[0];
+          results.engines = fileDetections[2];
           results.fileName = fileDetails[1];
           results.fileSize = fileDetails[2] + fileDetails[3];
         } catch (error) {
-          console.log(error);
+          results.detections = fileDetections[0];
+          results.engines = fileDetections[2];
+          results.url = page.url();
         }
-        results.value = value;
 
         await browser.close();
         break;
@@ -99,9 +103,9 @@ const searchVT = async (searchType, value) => {
 
         let domainDetections = await getDetections(page);
 
-        results.detections = parseInt(domainDetections[0]);
-        results.engines = parseInt(domainDetections[2]);
-        results.value = value;
+        results.detections = domainDetections[0];
+        results.engines = domainDetections[2];
+        results.url = page.url();
 
         await browser.close();
         break;

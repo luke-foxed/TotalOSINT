@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import ClimbingBoxLoader from 'react-spinners/ClimbingBoxLoader';
+import ScaleLoader from 'react-spinners/ScaleLoader';
 import { performSearch } from '../../actions/search';
 import { setAlert } from '../../actions/alert';
+import { StickyContainer, Sticky } from 'react-sticky';
 import { useDencrypt } from 'use-dencrypt-effect';
 import {
   makeStyles,
@@ -30,6 +31,48 @@ import {
 } from '@material-ui/icons/';
 import { checkInput } from '../../helpers';
 import { colPrimary } from '../../helpers/colors';
+
+/////////////////////
+
+const sampleIP = {
+  virustotal: {
+    url: 'https://www.virustotal.com/gui/ip-address/89.248.167.164/detection',
+    detections: 5,
+    engines: 86,
+    range: '89.248.167.164 (89.248.160.0/21)',
+    owner: 'AS 202425 ( IP Volume inc )',
+    country: 'NL',
+  },
+  metadefender: {
+    url:
+      'https://metadefender.opswat.com/results/ip/ODkuMjQ4LjE2Ny4xNjQ=/overview?lang=en',
+    detections: 2,
+    engines: 7,
+  },
+  abuseip: {
+    url: 'https://www.abuseipdb.com/check/89.248.167.164',
+    numberOfReports: '141',
+    abuseScore: '87%',
+    isp: 'Incrediserve Ltd',
+    domain: 'incrediserve.net',
+    country: ' Seychelles',
+  },
+  ipvoid: {
+    url: 'https://www.ipvoid.com/ip-blacklist-check/',
+    blacklists: 'BLACKLISTED 7/115',
+    reverseDNS: 'Unknown',
+    asnOwnser: 'IP Volume inc',
+    isp: 'IP Volume inc',
+    country: ' (NL) Netherlands',
+  },
+  xforce: {
+    url: 'https://exchange.xforce.ibmcloud.com/ip/89.248.167.164',
+    risk: '10',
+    category: 'Scanning IPs(100%)',
+  },
+};
+
+//////////////////////
 
 const useStyles = makeStyles(() => ({
   textBoxRadius: {
@@ -149,166 +192,191 @@ const Home = ({ setAlert, performSearch }) => {
   };
 
   return (
-    <div
-      style={{
-        width: '67%',
-        margin: 'auto',
-        maxHeight: '100vh',
-      }}
-    >
-      <Typography
+    <StickyContainer className='base'>
+      <div
+        className='home'
         style={{
-          textAlign: 'center',
-          margin: '80px',
-          fontFamily: 'Yanone Kaffeesatz',
-          color: 'white',
-          fontSize: '50px',
+          width: '67%',
+          margin: 'auto',
+          maxHeight: `100vh`,
         }}
       >
-        ANY <b style={{ color: colPrimary }}>{result}</b>
-      </Typography>
+        <Typography
+          style={{
+            textAlign: 'center',
+            margin: '80px',
+            fontFamily: 'Yanone Kaffeesatz',
+            color: 'white',
+            fontSize: '50px',
+          }}
+        >
+          ANY <b style={{ color: colPrimary }}>{result}</b>
+        </Typography>
 
-      <Grid
-        container
-        direction='row'
-        alignItems='center'
-        justify='center'
-        spacing={0}
-      >
-        <Grid container item xs={3} sm={2} justify='center'>
-          <Button
-            ref={anchorRef}
-            color='primary'
-            size='medium'
-            variant='contained'
-            style={{
-              height: '55px',
-              width: '110px',
-              borderRadius: '15px',
-              backgroundColor: colPrimary,
-            }}
-            onClick={handleToggle}
-          >
-            {options[selectedIndex]}
-            <ArrowDropDown />
-          </Button>
-          <Popper
-            open={open}
-            anchorEl={anchorRef.current}
-            getContentAnchorEl={null}
-            transition
-          >
-            {({ TransitionProps, placement }) => (
-              <Grow
-                {...TransitionProps}
-                style={{
-                  transformOrigin:
-                    placement === 'bottom' ? 'center top' : 'center bottom',
-                }}
-              >
-                <Paper style={{ marginTop: '10px', borderRadius: '15px' }}>
-                  <ClickAwayListener onClickAway={handleClose}>
-                    <MenuList id='split-button-menu'>
-                      {options.map((option, index) => (
-                        <MenuItem
-                          key={option}
-                          selected={index === selectedIndex}
-                          onClick={(event) => handleMenuItemClick(event, index)}
-                        >
-                          {option}
-                        </MenuItem>
-                      ))}
-                    </MenuList>
-                  </ClickAwayListener>
-                </Paper>
-              </Grow>
-            )}
-          </Popper>
-        </Grid>
-
-        <Grid container item xs={9} sm={10} justify='center'>
-          <CssTextField
-            variant='outlined'
-            style={{ width: '100%' }}
-            onInput={(e) => {
-              setValue(e.target.value);
-            }}
-            InputProps={{
-              style: {
-                color: 'white',
-              },
-              classes: {
-                notchedOutline: classes.textBoxRadius,
-              },
-              startAdornment: RenderIcon(selectedIndex),
-              endAdornment: (
+        <Sticky topOffset={160}>
+          {({ style }) => (
+            <Grid
+              container
+              direction='row'
+              alignItems='center'
+              justify='center'
+              spacing={0}
+              style={style}
+            >
+              <Grid container item xs={3} sm={2} justify='center'>
                 <Button
-                  className={classes.searchButton}
-                  onClick={() => handleSearchClick()}
+                  ref={anchorRef}
+                  color='primary'
+                  size='medium'
+                  variant='contained'
+                  style={{
+                    height: '55px',
+                    width: '110px',
+                    borderRadius: '15px',
+                    backgroundColor: colPrimary,
+                  }}
+                  onClick={handleToggle}
                 >
-                  <Search style={{ color: 'white' }} />
+                  {options[selectedIndex]}
+                  <ArrowDropDown />
                 </Button>
-              ),
-            }}
-            inputProps={{ style: { fontSize: 20 } }} // font size of input text
+                <Popper
+                  open={open}
+                  anchorEl={anchorRef.current}
+                  getContentAnchorEl={null}
+                  transition
+                >
+                  {({ TransitionProps, placement }) => (
+                    <Grow
+                      {...TransitionProps}
+                      style={{
+                        transformOrigin:
+                          placement === 'bottom'
+                            ? 'center top'
+                            : 'center bottom',
+                      }}
+                    >
+                      <Paper
+                        style={{ marginTop: '10px', borderRadius: '15px' }}
+                      >
+                        <ClickAwayListener onClickAway={handleClose}>
+                          <MenuList id='split-button-menu'>
+                            {options.map((option, index) => (
+                              <MenuItem
+                                key={option}
+                                selected={index === selectedIndex}
+                                onClick={(event) =>
+                                  handleMenuItemClick(event, index)
+                                }
+                              >
+                                {option}
+                              </MenuItem>
+                            ))}
+                          </MenuList>
+                        </ClickAwayListener>
+                      </Paper>
+                    </Grow>
+                  )}
+                </Popper>
+              </Grid>
+
+              <Grid container item xs={9} sm={10} justify='center'>
+                <CssTextField
+                  variant='outlined'
+                  style={{ width: '100%' }}
+                  onInput={(e) => {
+                    setValue(e.target.value);
+                  }}
+                  InputProps={{
+                    style: {
+                      color: 'white',
+                    },
+                    classes: {
+                      notchedOutline: classes.textBoxRadius,
+                    },
+                    startAdornment: RenderIcon(selectedIndex),
+                    endAdornment: (
+                      <Button
+                        className={classes.searchButton}
+                        onClick={() => handleSearchClick()}
+                      >
+                        <Search style={{ color: 'white' }} />
+                      </Button>
+                    ),
+                  }}
+                  inputProps={{ style: { fontSize: 20 } }} // font size of input text
+                />
+              </Grid>
+            </Grid>
+          )}
+        </Sticky>
+
+        <hr
+          style={{
+            border: '1px solid #d1d1d1',
+            backgroundColor: '#d1d1d1',
+            width: '100px',
+            marginTop: '220px',
+          }}
+        />
+        <Grid
+          container
+          direction='row'
+          alignContent='center'
+          alignItems='center'
+          justify='center'
+          spacing={4}
+          style={{ marginTop: '5px' }}
+        >
+          <img
+            src={require('../../assets/vt.png')}
+            width={100}
+            className={classes.siteImage}
+          />
+
+          <img
+            src={require('../../assets/abuse.png')}
+            width={100}
+            className={classes.siteImage}
+          />
+
+          <img
+            src={require('../../assets/meta.png')}
+            width={100}
+            className={classes.siteImage}
+          />
+
+          <img
+            src={require('../../assets/ipvoid.png')}
+            width={80}
+            className={classes.siteImage}
+          />
+
+          <img
+            src={require('../../assets/xforce.png')}
+            width={120}
+            className={classes.siteImage}
           />
         </Grid>
-      </Grid>
 
-      <hr
+        <Backdrop open={isLoading} className={classes.backdrop}>
+          {/* https://react-sticky.netlify.app/#/relative */}
+
+          <ScaleLoader size={35} color={colPrimary} loading={isLoading} />
+        </Backdrop>
+      </div>
+
+      {/* {Object.keys(searchResults).length !== 0 && ( */}
+      <div
+        className='results'
         style={{
-          border: '1px solid #d1d1d1',
-          backgroundColor: '#d1d1d1',
-          width: '100px',
-          marginTop: '220px',
+          width: '67%',
+          margin: 'auto',
+          height: '100vh',
         }}
-      />
-      <Grid
-        container
-        direction='row'
-        alignContent='center'
-        alignItems='center'
-        justify='center'
-        spacing={4}
-        style={{ marginTop: '5px' }}
-      >
-        <img
-          src={require('../../assets/vt.png')}
-          width={100}
-          className={classes.siteImage}
-        />
-
-        <img
-          src={require('../../assets/abuse.png')}
-          width={100}
-          className={classes.siteImage}
-        />
-
-        <img
-          src={require('../../assets/meta.png')}
-          width={100}
-          className={classes.siteImage}
-        />
-
-        <img
-          src={require('../../assets/ipvoid.png')}
-          width={80}
-          className={classes.siteImage}
-        />
-
-        <img
-          src={require('../../assets/xforce.png')}
-          width={120}
-          className={classes.siteImage}
-        />
-      </Grid>
-
-      <Backdrop open={isLoading} className={classes.backdrop}>
-        {/* https://react-sticky.netlify.app/#/relative */}
-
-        <ClimbingBoxLoader size={25} color={colPrimary} loading={isLoading} />
-      </Backdrop>
-    </div>
+      ></div>
+      {/* )} */}
+    </StickyContainer>
   );
 };
 
