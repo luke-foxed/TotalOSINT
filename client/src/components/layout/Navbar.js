@@ -52,7 +52,7 @@ const Navbar = ({ login, setAlert, user, isAuthenticated, logout }) => {
       >
         <Toolbar
           style={{
-            width: '65%',
+            width: '70%',
             margin: 'auto',
           }}
         >
@@ -64,13 +64,12 @@ const Navbar = ({ login, setAlert, user, isAuthenticated, logout }) => {
             direction='row'
           >
             <Grid item xs={2}>
-              <img src={require('../../assets/logo.png')} height={80}/>
-             
+              <img src={require('../../assets/logo.png')} height={80} />
             </Grid>
 
             <Grid item xs={5} />
 
-            <Grid item xs={4} >
+            <Grid item xs={4}>
               {isAuthenticated & (user != null) ? (
                 <Grid container justify='flex-end'>
                   <Typography style={{ padding: '10px' }}>

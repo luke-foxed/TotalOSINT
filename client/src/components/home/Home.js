@@ -31,6 +31,7 @@ import {
 } from '@material-ui/icons/';
 import { checkInput } from '../../helpers';
 import { colPrimary } from '../../helpers/colors';
+import { Results } from '../layout/Results';
 
 /////////////////////
 
@@ -196,7 +197,7 @@ const Home = ({ setAlert, performSearch }) => {
       <div
         className='home'
         style={{
-          width: '67%',
+          width: '75%',
           margin: 'auto',
           maxHeight: `100vh`,
         }}
@@ -329,19 +330,19 @@ const Home = ({ setAlert, performSearch }) => {
           style={{ marginTop: '5px' }}
         >
           <img
-            src={require('../../assets/vt.png')}
+            src={require('../../assets/virustotal.png')}
             width={100}
             className={classes.siteImage}
           />
 
           <img
-            src={require('../../assets/abuse.png')}
+            src={require('../../assets/abuseip.png')}
             width={100}
             className={classes.siteImage}
           />
 
           <img
-            src={require('../../assets/meta.png')}
+            src={require('../../assets/metadefender.png')}
             width={100}
             className={classes.siteImage}
           />
@@ -370,11 +371,13 @@ const Home = ({ setAlert, performSearch }) => {
       <div
         className='results'
         style={{
-          width: '67%',
+          width: '80%',
           margin: 'auto',
-          height: '100vh',
+          height: '70vh',
         }}
-      ></div>
+      >
+        <Results data={sampleIP} />
+      </div>
       {/* )} */}
     </StickyContainer>
   );
