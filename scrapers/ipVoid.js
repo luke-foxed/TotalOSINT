@@ -43,9 +43,9 @@ const searchIPVoid = async (value) => {
         .replace(/[A-Za-z]/g, '')
         .split('/')[1]
         .trim(),
-      reverseDNS: tableData[9],
-      asnOwnser: tableData[13],
-      isp: tableData[15],
+      reverse_DNS: tableData[9],
+      ASN_ownser: tableData[13],
+      ISP: tableData[15],
       country: tableData[19],
     };
 

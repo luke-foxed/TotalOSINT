@@ -35,9 +35,9 @@ const searchAbuseIP = async (value) => {
 
       reportData = {
         url: page.url(),
-        numberOfReports: report[0],
-        abuseScore: report[1],
-        isp: tableData[0],
+        number_of_reports: report[0],
+        abuse_score: report[1],
+        ISP: tableData[0],
         domain: tableData[2],
         country: tableData[3],
       };

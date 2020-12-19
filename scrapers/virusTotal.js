@@ -85,8 +85,8 @@ const searchVT = async (searchType, value) => {
           results.url = page.url();
           results.detections = fileDetections[0];
           results.engines = fileDetections[2];
-          results.fileName = fileDetails[1];
-          results.fileSize = fileDetails[2] + fileDetails[3];
+          results.file_name = fileDetails[1];
+          results.file_size = fileDetails[2] + fileDetails[3];
         } catch (error) {
           results.detections = fileDetections[0];
           results.engines = fileDetections[2];

@@ -13,9 +13,7 @@ const useStyles = makeStyles(() => ({
     borderRadius: '15px',
     paddingTop: '10px',
     height: '300px',
-    backgroundColor: colPrimary,
     alignItems: 'center',
-
     textAlign: 'center',
   },
 }));
@@ -49,8 +47,8 @@ export const Results = ({ data }) => {
             <Paper className={classes.paper}>
               <div style={{ height: '40px' }}>
                 <img
-                  src={require(`../../assets/${key}.png`)}
-                  width={140}
+                  src={require(`../../assets/${key}_blue.png`)}
+                  width={150}
                   style={{ position: 'relative', top: '0' }}
                 />
               </div>

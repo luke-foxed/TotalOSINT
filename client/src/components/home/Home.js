@@ -60,7 +60,8 @@ const sampleIP = {
   },
   ipvoid: {
     url: 'https://www.ipvoid.com/ip-blacklist-check/',
-    blacklists: 'BLACKLISTED 7/115',
+    detections: '8',
+    engines: '115',
     reverseDNS: 'Unknown',
     asnOwnser: 'IP Volume inc',
     isp: 'IP Volume inc',
@@ -349,7 +350,7 @@ const Home = ({ setAlert, performSearch }) => {
 
           <img
             src={require('../../assets/ipvoid.png')}
-            width={80}
+            width={100}
             className={classes.siteImage}
           />
 
