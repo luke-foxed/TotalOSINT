@@ -36,51 +36,62 @@ import { Results } from '../layout/Results';
 /////////////////////
 
 const sampleIP = {
-  abuseip: {
-    url: 'https://www.abuseipdb.com/check/89.248.167.164',
-    number_of_reports: '141',
-    abuse_score: '87%',
-    isp: 'Incrediserve Ltd',
-    domain: 'incrediserve.net',
-    country: ' Seychelles',
-  },
   whois: {
-    organization: 'Google LLC',
-    country: 'UNITED STATES',
-    domain_name: 'google.com',
-    registrar_name: 'MarkMonitor, Inc.',
-    whois_server: 'whois.markmonitor.com',
-    created_date_normalized: '1997-09-15 07:00:00 UTC',
-    domainNameExt: '.com',
+    details: {
+      organization: 'Google LLC',
+      country: 'UNITED STATES',
+      domain_name: 'google.com',
+      registrar_name: 'MarkMonitor, Inc.',
+      whois_server: 'whois.markmonitor.com',
+      created_date: '1997-09-15 07:00:00 UTC',
+      domain_ext: '.com',
+    },
   },
   virustotal: {
-    url: 'https://www.virustotal.com/gui/ip-address/89.248.167.164/detection',
     detections: '5',
     engines: '86',
-    range: '89.248.167.164 (89.248.160.0/21)',
-    owner: 'AS 202425 ( IP Volume inc )',
-    country: 'NL',
+    details: {
+      url: 'https://www.virustotal.com/gui/ip-address/89.248.167.164/detection',
+      range: '89.248.167.164 (89.248.160.0/21)',
+      owner: 'AS 202425 ( IP Volume inc )',
+      country: 'NL',
+    },
   },
   metadefender: {
-    url:
-      'https://metadefender.opswat.com/results/ip/ODkuMjQ4LjE2Ny4xNjQ=/overview?lang=en',
     detections: '2',
     engines: '7',
+    details: {
+      url:
+        'https://metadefender.opswat.com/results/ip/ODkuMjQ4LjE2Ny4xNjQ=/overview?lang=en',
+    },
   },
-
+  abuseip: {
+    abuse_score: '92%',
+    details: {
+      url: 'https://www.abuseipdb.com/check/89.248.167.164',
+      ISP: 'Incrediserve Ltd',
+      domain: 'incrediserve.net',
+      country: ' Seychelles',
+      number_of_reports: '148',
+    },
+  },
   ipvoid: {
-    url: 'https://www.ipvoid.com/ip-blacklist-check/',
-    detections: '8',
+    detections: '7',
     engines: '115',
-    reverse_DNS: 'Unknown',
-    ASN_ownser: 'IP Volume inc',
-    ISP: 'IP Volume inc',
-    country: ' (NL) Netherlands',
+    details: {
+      url: 'https://www.ipvoid.com/ip-blacklist-check/',
+      reverse_DNS: 'Unknown',
+      ASN_ownser: 'IP Volume inc',
+      ISP: 'IP Volume inc',
+      country: ' (NL) Netherlands',
+    },
   },
   xforce: {
-    url: 'https://exchange.xforce.ibmcloud.com/ip/89.248.167.164',
     risk: '10',
-    category: 'Scanning IPs(100%)',
+    details: {
+      url: 'https://exchange.xforce.ibmcloud.com/ip/89.248.167.164',
+      category: 'Scanning IPs(100%)',
+    },
   },
 };
 

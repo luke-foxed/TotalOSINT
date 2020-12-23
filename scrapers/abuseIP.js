@@ -34,12 +34,14 @@ const searchAbuseIP = async (value) => {
       });
 
       reportData = {
-        url: page.url(),
         number_of_reports: report[0],
         abuse_score: report[1],
-        ISP: tableData[0],
-        domain: tableData[2],
-        country: tableData[3],
+        details: {
+          url: page.url(),
+          ISP: tableData[0],
+          domain: tableData[2],
+          country: tableData[3],
+        },
       };
     }
 

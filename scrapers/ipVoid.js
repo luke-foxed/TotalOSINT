@@ -7,9 +7,8 @@ const searchIPVoid = async (value) => {
 
     await page.setViewport({ width: 1366, height: 768 });
     await page.goto('https://www.ipvoid.com/ip-blacklist-check/');
-    await page.waitForSelector('.col-md-8 #ipAddr', { timeout: 6000 });
+    await page.waitForSelector('.col-md-8 #ipAddr');
 
-    // delete current field input and type value
     await page.evaluate(() => {
       window.scrollBy(0, 200);
     });
@@ -25,7 +24,7 @@ const searchIPVoid = async (value) => {
 
     await page.click('.row > .col-md-8 > .articles-col > .form > .btn');
 
-    await page.waitForSelector('table', { timeout: 6000 });
+    await page.waitForSelector('.table-responsive');
 
     const tableData = await page.evaluate(() => {
       const tds = Array.from(document.querySelectorAll('table tr td'));
@@ -33,8 +32,6 @@ const searchIPVoid = async (value) => {
     });
 
     let results = {
-      url: page.url(),
-      blacklists: tableData[5],
       detections: tableData[5]
         .replace(/[A-Za-z]/g, '')
         .split('/')[0]
@@ -43,10 +40,13 @@ const searchIPVoid = async (value) => {
         .replace(/[A-Za-z]/g, '')
         .split('/')[1]
         .trim(),
-      reverse_DNS: tableData[9],
-      ASN_ownser: tableData[13],
-      ISP: tableData[15],
-      country: tableData[19],
+      details: {
+        url: page.url(),
+        reverse_DNS: tableData[9],
+        ASN_ownser: tableData[13],
+        ISP: tableData[15],
+        country: tableData[19],
+      },
     };
 
     await browser.close();

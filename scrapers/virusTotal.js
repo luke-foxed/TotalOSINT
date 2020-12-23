@@ -57,18 +57,16 @@ const searchVT = async (searchType, value) => {
         let ipDetections = await getDetections(page);
         let ipDetails = await getDetails(page);
 
-        try {
-          results.url = page.url();
-          results.detections = ipDetections[0];
-          results.engines = ipDetections[2];
-          results.range = ipDetails[0];
-          results.owner = ipDetails[1];
-          results.country = ipDetails[2];
-        } catch (error) {
-          results.url = page.url();
-          results.detections = ipDetections[0];
-          results.engines = ipDetections[2];
-        }
+        results = {
+          detections: ipDetections[0],
+          engines: ipDetections[2],
+          details: {
+            url: page.url(),
+            range: ipDetails[0],
+            owner: ipDetails[1],
+            country: ipDetails[2],
+          },
+        };
 
         await browser.close();
         break;
@@ -81,17 +79,15 @@ const searchVT = async (searchType, value) => {
         let fileDetections = await getDetections(page);
         let fileDetails = await getDetails(page);
 
-        try {
-          results.url = page.url();
-          results.detections = fileDetections[0];
-          results.engines = fileDetections[2];
-          results.file_name = fileDetails[1];
-          results.file_size = fileDetails[2] + fileDetails[3];
-        } catch (error) {
-          results.detections = fileDetections[0];
-          results.engines = fileDetections[2];
-          results.url = page.url();
-        }
+        results = {
+          detections: fileDetections[0],
+          engines: fileDetections[2],
+          details: {
+            url: page.url(),
+            file_name: fileDetails[1],
+            file_size: fileDetails[2] + fileDetails[3],
+          },
+        };
 
         await browser.close();
         break;
@@ -103,9 +99,13 @@ const searchVT = async (searchType, value) => {
 
         let domainDetections = await getDetections(page);
 
-        results.detections = domainDetections[0];
-        results.engines = domainDetections[2];
-        results.url = page.url();
+        results = {
+          detections: domainDetections[0],
+          engines: domainDetections[2],
+          details: {
+            url: page.url(),
+          },
+        };
 
         await browser.close();
         break;

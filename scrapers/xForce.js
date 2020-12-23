@@ -34,9 +34,11 @@ const searchXForce = async (searchType, value) => {
         let ipDetails = await getTableDetails(page);
 
         let ipResults = {
-          url: page.url(),
           risk: ipRisk,
-          category: ipDetails[0],
+          details: {
+            url: page.url(),
+            category: ipDetails[0],
+          },
         };
 
         await browser.close();
@@ -50,9 +52,11 @@ const searchXForce = async (searchType, value) => {
         let urlDetails = await getTableDetails(page);
 
         let urlResults = {
-          url: page.url(),
           risk: urlRisk,
-          category: urlDetails[0],
+          details: {
+            url: page.url(),
+            category: urlDetails[0],
+          },
         };
 
         await browser.close();
@@ -77,15 +81,19 @@ const searchXForce = async (searchType, value) => {
 
           hashResults = {
             risk: score,
-            url: page.url(),
-            family: tableData[3],
-            firstSeen: tableData[1],
-            type: tableData[4],
+            details: {
+              url: page.url(),
+              family: tableData[3],
+              firstSeen: tableData[1],
+              type: tableData[4],
+            },
           };
         } else {
           hashResults = {
             risk: score,
-            url: page.url(),
+            details: {
+              url: page.url(),
+            },
           };
         }
 

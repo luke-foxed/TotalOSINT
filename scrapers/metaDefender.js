@@ -29,9 +29,11 @@ const searchMetadefender = async (searchType, value) => {
         await browser.close();
 
         let ipScoreFormatted = {
-          url: page.url(),
           detections: ipScore.split('/')[0],
           engines: ipScore.split('/')[1],
+          details: {
+            url: page.url(),
+          },
         };
         return ipScoreFormatted;
 
@@ -56,9 +58,11 @@ const searchMetadefender = async (searchType, value) => {
         await browser.close();
 
         let hashScoreFormatted = {
-          url: page.url(),
           detections: hashScore.split('/')[0],
           engines: hashScore.split('/')[1],
+          details: {
+            url: page.url(),
+          },
         };
 
         return hashScoreFormatted;
@@ -86,9 +90,11 @@ const searchMetadefender = async (searchType, value) => {
         await browser.close();
 
         let domainScoreFormatted = {
-          url: page.url(),
           detections: dominScore.split('/')[0],
           engines: dominScore.split('/')[1],
+          details: {
+            url: page.url(),
+          },
         };
 
         return domainScoreFormatted;

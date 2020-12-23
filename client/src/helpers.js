@@ -9,8 +9,6 @@ export const checkInput = (type, value) => {
       return validIPRegex.test(value);
 
     case 'Domain':
-      console.log(value)
-      console.log(validDomainRegex.test(value))
       return validDomainRegex.test(value);
 
     case 'Hash':
