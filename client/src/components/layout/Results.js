@@ -3,14 +3,19 @@ import {
   AccordionDetails,
   AccordionSummary,
   Button,
+  Chip,
   Grid,
   makeStyles,
   Paper,
   Typography,
 } from '@material-ui/core';
-import { ExpandMore } from '@material-ui/icons';
 import React from 'react';
-import { colPrimary, colSecondary } from '../../helpers/colors';
+import {
+  colError,
+  colPrimary,
+  colSecondary,
+  colSuccess,
+} from '../../helpers/colors';
 import { ScoreWidget } from './ScoreWidget';
 
 const useStyles = makeStyles(() => ({
@@ -20,14 +25,23 @@ const useStyles = makeStyles(() => ({
     background:
       'linear-gradient(180deg, rgba(164,75,227,1) 10%, rgba(73,182,255,1) 90%);',
   },
+
+  chipContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    width: '300px',
+  },
   paper: {
     display: 'flex',
     flexDirection: 'column',
     borderRadius: '15px',
-    minHeight: '400px',
+    minHeight: '440px',
+    maxWidth: '100%',
     alignItems: 'center',
     textAlign: 'center',
   },
+
   sticky: {
     flexGrow: 1,
     display: 'flex',
@@ -43,15 +57,16 @@ export const Results = ({ data }) => {
   const RenderDetails = ({ values }) => {
     return Object.entries(values.details).map(([label, value]) => {
       if (label !== 'url') {
+        let formattedLabel = label
+          .replace('_', ' ')
+          .split(' ')
+          .map((word) => word.charAt(0).toUpperCase() + word.substring(1));
+
         return (
-          <Typography>
-            {label
-              .replace('_', ' ')
-              .split(' ')
-              .map((word) => word.charAt(0).toUpperCase() + word.substring(1))
-              .join(' ')}
-            :{' ' + value}
-          </Typography>
+          <div className={classes.chipContainer}>
+            <Chip style={{ margin: '2px' }} label={formattedLabel} />
+            <Chip label={value} variant='outlined' />
+          </div>
         );
       }
     });
@@ -60,25 +75,40 @@ export const Results = ({ data }) => {
   const RenderScore = ({ source, values }) => {
     switch (source) {
       case 'xforce':
-        return <Typography>Risk: {values.risk}</Typography>;
-      case 'abuseip':
         return (
-          <Typography>Confidence Of Abuse: {values.abuse_score}</Typography>
-        );
-      case 'whois':
-        return <Typography />;
-      default:
-        return (
-          <Typography>
-            {values.detections} / {values.engines}
+          <Typography style={{ fontFamily: 'Quicksand' }}>
+            Risk:
+            <Typography
+              style={{
+                fontSize: '80px',
+                fontFamily: 'Quicksand',
+                color: values.abuse_score !== '0%' ? colError : colSuccess,
+              }}
+            >
+              {values.risk}
+            </Typography>
           </Typography>
         );
+      case 'abuseip':
+        return (
+          <Typography style={{ fontFamily: 'Quicksand' }}>
+            Confidence Of Abuse:
+            <Typography
+              style={{
+                fontSize: '80px',
+                fontFamily: 'Quicksand',
+                color: values.abuse_score !== '0%' ? colError : colSuccess,
+              }}
+            >
+              {values.abuse_score}
+            </Typography>
+          </Typography>
+        );
+      case 'whois':
+        return <Typography>WhoIs Information</Typography>;
+      default:
+        return <ScoreWidget score={values} />;
     }
-  };
-
-  let test = {
-    detections: '5',
-    engines: '30',
   };
 
   return (
@@ -101,17 +131,10 @@ export const Results = ({ data }) => {
                     style={{ position: 'relative', top: '0', padding: '5px' }}
                   />
                 </div>
-                {/* <RenderScore source={key} values={value} /> */}
-                <ScoreWidget score={test} />
 
-                <Accordion style={{ width: '100%' }}>
-                  <AccordionSummary expandIcon={<ExpandMore />}>
-                    <Typography>More Details</Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <RenderDetails values={value} />
-                  </AccordionDetails>
-                </Accordion>
+                <RenderScore source={key} values={value} />
+
+                <RenderDetails values={value} />
 
                 <div className={classes.sticky}>
                   <Button

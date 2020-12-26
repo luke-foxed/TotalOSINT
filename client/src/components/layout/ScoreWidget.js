@@ -30,7 +30,7 @@ export const ScoreWidget = ({ score }) => {
   let color = score.detections > 0 ? colError : colSuccess;
 
   return (
-    <div style={{ margin: '10px' }}>
+    <div style={{ margin: '20px' }}>
       <Paper
         className={classes.frame}
         style={{ backgroundColor: color }}
@@ -52,8 +52,6 @@ export const ScoreWidget = ({ score }) => {
           </Typography>
         </div>
       </Paper>
-      <br />
-      Malicious Detections Found!
     </div>
   );
 };
