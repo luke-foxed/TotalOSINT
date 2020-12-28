@@ -4,6 +4,7 @@ const { searchVT } = require('../../scrapers/virusTotal');
 const { searchAbuseIP } = require('../../scrapers/abuseIP');
 const { searchMetadefender } = require('../../scrapers/metaDefender');
 const { searchXForce } = require('../../scrapers/xForce.js');
+const { getWhoIs } = require('../../scrapers/whoIs');
 const { Cluster } = require('puppeteer-cluster');
 const router = express.Router();
 
@@ -71,6 +72,8 @@ router.post('/scrape-all', async (req, res) => {
         results['xforce'] = await searchXForce(req.body.type, req.body.value);
       });
 
+      results['whois'] = await getWhoIs(req.body.type, req.body.value);
+
       await cluster.idle();
       await cluster.close();
       break;
@@ -98,6 +101,8 @@ router.post('/scrape-all', async (req, res) => {
       cluster.queue(async () => {
         results['abuseip'] = await searchAbuseIP(req.body.value);
       });
+
+      results['whois'] = await getWhoIs(req.body.type, req.body.value);
 
       await cluster.idle();
       await cluster.close();

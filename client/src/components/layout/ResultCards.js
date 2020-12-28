@@ -51,13 +51,13 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const Results = ({ data }) => {
+export const ResultCards = ({ data }) => {
   const classes = useStyles();
 
   const RenderDetails = ({ values }) => {
-    return Object.entries(values.details).map(([label, value]) => {
-      if (label !== 'url') {
-        let formattedLabel = label
+    return Object.entries(values.details).map(([key, value]) => {
+      if (key !== 'url') {
+        let formattedLabel = key
           .replace('_', ' ')
           .split(' ')
           .map((word) => word.charAt(0).toUpperCase() + word.substring(1));
@@ -105,17 +105,26 @@ export const Results = ({ data }) => {
           </Typography>
         );
       case 'whois':
-        return <Typography>WhoIs Information</Typography>;
+        return (
+          <Typography
+            style={{
+              fontSize: '30px',
+              fontFamily: 'Quicksand',
+            }}
+          >
+            WhoIs Information
+          </Typography>
+        );
       default:
         return <ScoreWidget score={values} />;
     }
   };
 
   return (
-    <div style={{ marginTop: '250px' }}>
+    <div style={{ marginTop: '50px' }}>
       <Grid container spacing={2} justify='center'>
         {Object.entries(data).map(([key, value]) => (
-          <Grid item xs={12} sm={5} md={5} lg={4} xl={2}>
+          <Grid item xs={12} sm={5} md={5} lg={4} xl={4}>
             <div className={classes.frame}>
               <Paper className={classes.paper} elevation={0}>
                 <div

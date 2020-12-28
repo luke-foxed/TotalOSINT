@@ -31,7 +31,7 @@ import {
 } from '@material-ui/icons/';
 import { checkInput } from '../../helpers';
 import { colPrimary } from '../../helpers/colors';
-import { Results } from '../layout/Results';
+import { ResultCards } from '../layout/ResultCards';
 
 /////////////////////
 
@@ -215,7 +215,7 @@ const Home = ({ setAlert, performSearch }) => {
   };
 
   return (
-    <StickyContainer className='base'>
+    <div>
       <div
         className='home'
         style={{
@@ -236,103 +236,94 @@ const Home = ({ setAlert, performSearch }) => {
           ANY <b style={{ color: colPrimary }}>{result}</b>
         </Typography>
 
-        <Sticky topOffset={160}>
-          {({ style }) => (
-            <Grid
-              container
-              direction='row'
-              alignItems='center'
-              justify='center'
-              spacing={0}
-              style={style}
+        <Grid
+          container
+          direction='row'
+          alignItems='center'
+          justify='center'
+          spacing={0}
+        >
+          <Grid container item xs={3} sm={2} justify='center'>
+            <Button
+              ref={anchorRef}
+              color='primary'
+              size='medium'
+              variant='contained'
+              style={{
+                height: '55px',
+                width: '110px',
+                borderRadius: '15px',
+                backgroundColor: colPrimary,
+              }}
+              onClick={handleToggle}
             >
-              <Grid container item xs={3} sm={2} justify='center'>
-                <Button
-                  ref={anchorRef}
-                  color='primary'
-                  size='medium'
-                  variant='contained'
+              {options[selectedIndex]}
+              <ArrowDropDown />
+            </Button>
+            <Popper
+              open={open}
+              anchorEl={anchorRef.current}
+              getContentAnchorEl={null}
+              transition
+            >
+              {({ TransitionProps, placement }) => (
+                <Grow
+                  {...TransitionProps}
                   style={{
-                    height: '55px',
-                    width: '110px',
-                    borderRadius: '15px',
-                    backgroundColor: colPrimary,
+                    transformOrigin:
+                      placement === 'bottom' ? 'center top' : 'center bottom',
                   }}
-                  onClick={handleToggle}
                 >
-                  {options[selectedIndex]}
-                  <ArrowDropDown />
-                </Button>
-                <Popper
-                  open={open}
-                  anchorEl={anchorRef.current}
-                  getContentAnchorEl={null}
-                  transition
-                >
-                  {({ TransitionProps, placement }) => (
-                    <Grow
-                      {...TransitionProps}
-                      style={{
-                        transformOrigin:
-                          placement === 'bottom'
-                            ? 'center top'
-                            : 'center bottom',
-                      }}
-                    >
-                      <Paper
-                        style={{ marginTop: '10px', borderRadius: '15px' }}
-                      >
-                        <ClickAwayListener onClickAway={handleClose}>
-                          <MenuList id='split-button-menu'>
-                            {options.map((option, index) => (
-                              <MenuItem
-                                key={option}
-                                selected={index === selectedIndex}
-                                onClick={(event) =>
-                                  handleMenuItemClick(event, index)
-                                }
-                              >
-                                {option}
-                              </MenuItem>
-                            ))}
-                          </MenuList>
-                        </ClickAwayListener>
-                      </Paper>
-                    </Grow>
-                  )}
-                </Popper>
-              </Grid>
+                  <Paper style={{ marginTop: '10px', borderRadius: '15px' }}>
+                    <ClickAwayListener onClickAway={handleClose}>
+                      <MenuList id='split-button-menu'>
+                        {options.map((option, index) => (
+                          <MenuItem
+                            key={option}
+                            selected={index === selectedIndex}
+                            onClick={(event) =>
+                              handleMenuItemClick(event, index)
+                            }
+                          >
+                            {option}
+                          </MenuItem>
+                        ))}
+                      </MenuList>
+                    </ClickAwayListener>
+                  </Paper>
+                </Grow>
+              )}
+            </Popper>
+          </Grid>
 
-              <Grid container item xs={9} sm={10} justify='center'>
-                <CssTextField
-                  variant='outlined'
-                  style={{ width: '100%' }}
-                  onInput={(e) => {
-                    setValue(e.target.value);
-                  }}
-                  InputProps={{
-                    style: {
-                      color: 'white',
-                    },
-                    classes: {
-                      notchedOutline: classes.textBoxRadius,
-                    },
-                    startAdornment: RenderIcon(selectedIndex),
-                    endAdornment: (
-                      <Button
-                        className={classes.searchButton}
-                        onClick={() => handleSearchClick()}
-                      >
-                        <Search style={{ color: 'white' }} />
-                      </Button>
-                    ),
-                  }}
-                  inputProps={{ style: { fontSize: 20 } }} // font size of input text
-                />
-              </Grid>
-            </Grid>
-          )}
-        </Sticky>
+          <Grid container item xs={9} sm={10} justify='center'>
+            <CssTextField
+              variant='outlined'
+              style={{ width: '100%' }}
+              onInput={(e) => {
+                setValue(e.target.value);
+              }}
+              InputProps={{
+                style: {
+                  color: 'white',
+                },
+                classes: {
+                  notchedOutline: classes.textBoxRadius,
+                },
+                startAdornment: RenderIcon(selectedIndex),
+                endAdornment: (
+                  <Button
+                    className={classes.searchButton}
+                    onClick={() => handleSearchClick()}
+                  >
+                    <Search style={{ color: 'white' }} />
+                  </Button>
+                ),
+              }}
+              inputProps={{ style: { fontSize: 20 } }} // font size of input text
+            />
+          </Grid>
+        </Grid>
 
         <hr
           style={{
@@ -388,20 +379,30 @@ const Home = ({ setAlert, performSearch }) => {
           <ScaleLoader size={35} color={colPrimary} loading={isLoading} />
         </Backdrop>
       </div>
-
-      {/* {Object.keys(searchResults).length !== 0 && ( */}
-      <div
-        className='results'
-        style={{
-          width: '80%',
-          margin: 'auto',
-          height: '70vh',
-        }}
-      >
-        <Results data={sampleIP} />
-      </div>
-      {/* )} */}
-    </StickyContainer>
+      {Object.keys(searchResults).length !== 0 && !isLoading && (
+        <div
+          className='results'
+          style={{
+            width: '80%',
+            margin: 'auto',
+            height: '70vh',
+          }}
+        >
+          <Typography
+            style={{
+              fontFamily: 'Quicksand',
+              color: 'white',
+              paddingTop: '200px',
+              textAlign: 'center',
+              fontSize: '40px',
+            }}
+          >
+            You Searched '{value}'
+          </Typography>
+          <ResultCards data={searchResults} />
+        </div>
+      )}
+    </div>
   );
 };
 
