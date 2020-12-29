@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import ScaleLoader from 'react-spinners/ScaleLoader';
 import { performSearch } from '../../actions/search';
 import { setAlert } from '../../actions/alert';
-import { StickyContainer, Sticky } from 'react-sticky';
 import { useDencrypt } from 'use-dencrypt-effect';
 import {
   makeStyles,
@@ -29,8 +28,8 @@ import {
   PinDrop,
   Description,
 } from '@material-ui/icons/';
-import { checkInput } from '../../helpers';
-import { colPrimary } from '../../helpers/colors';
+import { checkInput } from '../../helpers/regexHelpers';
+import { colPrimary, colSecondary } from '../../helpers/colors';
 import { ResultCards } from '../layout/ResultCards';
 
 /////////////////////
@@ -126,6 +125,16 @@ const useStyles = makeStyles(() => ({
       transform: 'scale(1.2)',
     },
   },
+  inputIcon: {
+    color: 'white',
+    paddingRight: '10px',
+  },
+  tooltip: {
+    color: colSecondary,
+    fontFamily: 'Quicksand',
+    fontSize: '12px',
+    marginTop: '10px',
+  },
 }));
 
 const CssTextField = withStyles({
@@ -141,22 +150,6 @@ const CssTextField = withStyles({
     },
   },
 })(TextField);
-
-const RenderIcon = (index) => {
-  switch (index) {
-    case 0:
-      return (
-        <InputAdornment>
-          <Language style={{ color: 'white', paddingRight: '10px' }} />
-          <i style={{ paddingRight: '5px', color: colPrimary }}>www.</i>
-        </InputAdornment>
-      );
-    case 1:
-      return <Description style={{ color: 'white', paddingRight: '10px' }} />;
-    case 2:
-      return <PinDrop style={{ color: 'white', paddingRight: '10px' }} />;
-  }
-};
 
 const options = ['Domain', 'Hash', 'IP'];
 const headerValues = ['FILE HASH', 'IP ADDRESS', 'DOMAIN'];
@@ -211,6 +204,45 @@ const Home = ({ setAlert, performSearch }) => {
       );
       setSearchResults(response);
       setIsLoading(false);
+    }
+  };
+
+  const RenderTooltip = ({ index }) => {
+    switch (index) {
+      case 0:
+        return (
+          <Typography className={classes.tooltip}>
+            <b>Note:</b> Only base domains are supported, not full URLs
+          </Typography>
+        );
+      case 1:
+        return (
+          <Typography className={classes.tooltip}>
+            <b>Note:</b> Hashes supported include SHA1, SHA256 and MD5
+          </Typography>
+        );
+      case 2:
+        return (
+          <Typography className={classes.tooltip}>
+            <b>Note:</b> Please provide only public IPV4 addresses
+          </Typography>
+        );
+    }
+  };
+
+  const RenderIcon = (index) => {
+    switch (index) {
+      case 0:
+        return (
+          <InputAdornment>
+            <Language className={classes.inputIcon} />
+            <i style={{ paddingRight: '5px', color: colPrimary }}>www.</i>
+          </InputAdornment>
+        );
+      case 1:
+        return <Description className={classes.inputIcon} />;
+      case 2:
+        return <PinDrop className={classes.inputIcon} />;
     }
   };
 
@@ -323,6 +355,7 @@ const Home = ({ setAlert, performSearch }) => {
               inputProps={{ style: { fontSize: 20 } }} // font size of input text
             />
           </Grid>
+          <RenderTooltip index={selectedIndex} />
         </Grid>
 
         <hr

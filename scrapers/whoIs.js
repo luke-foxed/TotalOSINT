@@ -11,7 +11,7 @@ const getWhoIs = async (type, query) => {
     if (type === 'ip') {
       return {
         details: {
-          network_range: data.WhoisRecord.registryData.customField1Value,
+          range: data.WhoisRecord.registryData.customField1Value,
           date_created: data.WhoisRecord.registryData.createdDate,
           registrar_name: data.WhoisRecord.registrarName,
           organization: data.WhoisRecord.registryData.registrant.organization,

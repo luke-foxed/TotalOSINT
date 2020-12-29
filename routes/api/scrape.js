@@ -14,7 +14,7 @@ const router = express.Router();
 // clean hash: e75717a75f2a35130bf7f7aee09dcb7d
 
 // clean IP: 43.250.192.22
-// malicious IP: 89.248.167.164
+// malicious IP:
 
 // clean domain: google.com
 // malicious domain: halifax-fraud-alert.com
@@ -56,6 +56,27 @@ router.post('/scrape-all', async (req, res) => {
   });
 
   switch (req.body.type) {
+    case 'hash': {
+      cluster.queue(async () => {
+        results['metadefender'] = await searchMetadefender(
+          req.body.type,
+          req.body.value
+        );
+      });
+
+      cluster.queue(async () => {
+        results['virustotal'] = await searchVT(req.body.type, req.body.value);
+      });
+
+      cluster.queue(async () => {
+        results['xforce'] = await searchXForce(req.body.type, req.body.value);
+      });
+
+      await cluster.idle();
+      await cluster.close();
+      break;
+    }
+
     case 'domain':
       cluster.queue(async () => {
         results['metadefender'] = await searchMetadefender(

@@ -19,8 +19,8 @@ const Alerter = ({ alerts }) =>
         severity={alert.alertType}
         style={
           alert.alertType === 'success'
-            ? { backgroundColor: colError }
-            : { backgroundColor: colSuccess }
+            ? { backgroundColor: colSuccess }
+            : { backgroundColor: colError }
         }
         key={alert.id}
       >
