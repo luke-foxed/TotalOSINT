@@ -133,8 +133,6 @@ router.post('/scrape-all', async (req, res) => {
       break;
   }
 
-  console.log(results);
-
   res.send(results);
 });
 

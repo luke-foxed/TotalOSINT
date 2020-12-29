@@ -16,6 +16,7 @@ const getWhoIs = async (type, query) => {
           registrar_name: data.WhoisRecord.registrarName,
           org: data.WhoisRecord.registryData.registrant.organization,
           country: data.WhoisRecord.registryData.registrant.country,
+          url: `https://whois.whoisxmlapi.com/lookup?q=${query}`,
         },
       };
     } else if (type === 'domain') {
@@ -26,6 +27,7 @@ const getWhoIs = async (type, query) => {
           country: data.WhoisRecord.registrant.country,
           registrar_name: data.WhoisRecord.registrarName,
           domain_name: data.WhoisRecord.domainName,
+          url: `https://whois.whoisxmlapi.com/lookup?q=${query}`,
         },
       };
     }

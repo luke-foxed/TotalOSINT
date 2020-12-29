@@ -1,9 +1,9 @@
 const puppeteer = require('puppeteer');
 
 const searchMetadefender = async (searchType, value) => {
-  const defaultTimeout = { timeout: 5000 };
+  const defaultTimeout = { timeout: 6000 };
   try {
-    let browser = await puppeteer.launch({ headless: false });
+    let browser = await puppeteer.launch({ headless: true });
     let page = await browser.newPage();
 
     await page.setViewport({ width: 1366, height: 768 });

@@ -39,13 +39,21 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     textAlign: 'center',
   },
-
   sticky: {
     flexGrow: 1,
     display: 'flex',
     justifyContent: 'flex-end',
     flexDirection: 'column',
     width: '100%',
+  },
+  link: {
+    width: '100%',
+    backgroundColor: colSecondary,
+    textDecoration: 'none',
+    transition: 'all .2s ease-in-out',
+    '&:hover': {
+      transform: 'scale(0.8)',
+    },
   },
 }));
 
@@ -173,15 +181,21 @@ export const ResultCards = ({ data }) => {
                 <RenderDetails values={value} />
 
                 <div className={classes.sticky}>
-                  <Button
-                    style={{
-                      backgroundColor: colSecondary,
-                      borderRadius: 0,
-                      color: 'white',
-                    }}
+                  <a
+                    href={value.details.url}
+                    target='_blank'
+                    className={classes.link}
                   >
-                    Visit Link
-                  </Button>
+                    <Button
+                      style={{
+                        backgroundColor: colSecondary,
+                        borderRadius: 0,
+                        color: 'white',
+                      }}
+                    >
+                      Visit Link
+                    </Button>
+                  </a>
                 </div>
               </Paper>
             </div>
