@@ -1,12 +1,10 @@
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Button,
   Chip,
   Grid,
   makeStyles,
   Paper,
+  Tooltip,
   Typography,
 } from '@material-ui/core';
 import React from 'react';
@@ -36,7 +34,7 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     flexDirection: 'column',
     borderRadius: '15px',
-    minHeight: '440px',
+    minHeight: '450px',
     maxWidth: '100%',
     alignItems: 'center',
     textAlign: 'center',
@@ -59,13 +57,24 @@ export const ResultCards = ({ data }) => {
       if (key !== 'url') {
         let formattedLabel = key
           .replace('_', ' ')
-          .split(' ')
-          .map((word) => word.charAt(0).toUpperCase() + word.substring(1));
+          .split('_')
+          .map((word) => word.charAt(0).toUpperCase() + word.substring(1))
+          .join(' ');
 
         return (
           <div className={classes.chipContainer}>
             <Chip style={{ margin: '2px' }} label={formattedLabel} />
-            <Chip label={value} variant='outlined' />
+            {/* z-index and pointer-events to fix flickering bug */}
+            <Tooltip
+              style={{ pointerEvents: 'none', zIndex: 9999 }}
+              title={value}
+            >
+              <Chip
+                style={{ maxWidth: '190px', margin: '2px' }}
+                label={value}
+                variant='outlined'
+              />
+            </Tooltip>
           </div>
         );
       }
@@ -82,7 +91,7 @@ export const ResultCards = ({ data }) => {
               style={{
                 fontSize: '80px',
                 fontFamily: 'Quicksand',
-                color: values.abuse_score !== '0%' ? colError : colSuccess,
+                color: values.risk === '1' ? colSuccess : colError,
               }}
             >
               {values.risk}
@@ -110,6 +119,7 @@ export const ResultCards = ({ data }) => {
             style={{
               fontSize: '30px',
               fontFamily: 'Quicksand',
+              paddingBottom: '20px',
             }}
           >
             WhoIs Information

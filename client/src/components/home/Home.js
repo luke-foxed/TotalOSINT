@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { scroller } from 'react-scroll';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ScaleLoader from 'react-spinners/ScaleLoader';
@@ -44,6 +45,8 @@ const sampleIP = {
       whois_server: 'whois.markmonitor.com',
       created_date: '1997-09-15 07:00:00 UTC',
       domain_ext: '.com',
+      testField1: '111',
+      testField2: '3535',
     },
   },
   virustotal: {
@@ -199,11 +202,16 @@ const Home = ({ setAlert, performSearch }) => {
     } else {
       setIsLoading(true);
       let response = await performSearch(
-        value,
+        value.trim(),
         options[selectedIndex].toLowerCase()
       );
       setSearchResults(response);
       setIsLoading(false);
+      scroller.scrollTo('results', {
+        duration: 1000,
+        smooth: true,
+        offset: 150,
+      });
     }
   };
 
@@ -407,11 +415,10 @@ const Home = ({ setAlert, performSearch }) => {
         </Grid>
 
         <Backdrop open={isLoading} className={classes.backdrop}>
-          {/* https://react-sticky.netlify.app/#/relative */}
-
           <ScaleLoader size={35} color={colPrimary} loading={isLoading} />
         </Backdrop>
       </div>
+
       {Object.keys(searchResults).length !== 0 && !isLoading && (
         <div
           className='results'
@@ -430,6 +437,10 @@ const Home = ({ setAlert, performSearch }) => {
               fontSize: '40px',
             }}
           >
+            <Search
+              fontSize='large'
+              style={{ color: colPrimary, paddingRight: '10px' }}
+            />
             You Searched '{value}'
           </Typography>
           <ResultCards data={searchResults} />

@@ -17,7 +17,7 @@ export const checkInput = (type, value) => {
       return (
         validMd5Regex.test(value) ||
         validSha256Regex.test(value) ||
-        validSha1Regex
+        validSha1Regex.test(value)
       );
   }
 };

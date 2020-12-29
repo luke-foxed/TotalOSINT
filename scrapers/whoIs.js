@@ -14,7 +14,7 @@ const getWhoIs = async (type, query) => {
           range: data.WhoisRecord.registryData.customField1Value,
           date_created: data.WhoisRecord.registryData.createdDate,
           registrar_name: data.WhoisRecord.registrarName,
-          organization: data.WhoisRecord.registryData.registrant.organization,
+          org: data.WhoisRecord.registryData.registrant.organization,
           country: data.WhoisRecord.registryData.registrant.country,
         },
       };
@@ -22,7 +22,7 @@ const getWhoIs = async (type, query) => {
       return {
         details: {
           date_created: data.WhoisRecord.createdDateNormalized,
-          organisation: data.WhoisRecord.registrant.organization,
+          org: data.WhoisRecord.registrant.organization,
           country: data.WhoisRecord.registrant.country,
           registrar_name: data.WhoisRecord.registrarName,
           domain_name: data.WhoisRecord.domainName,
@@ -30,6 +30,7 @@ const getWhoIs = async (type, query) => {
       };
     }
   } catch (error) {
+    // need more error handling
     console.log(error);
   }
 };
