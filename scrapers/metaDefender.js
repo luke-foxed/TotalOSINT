@@ -1,6 +1,7 @@
 const puppeteer = require('puppeteer');
 
 const searchMetadefender = async (searchType, value) => {
+  const defaultTimeout = { timeout: 5000 };
   try {
     let browser = await puppeteer.launch({ headless: false });
     let page = await browser.newPage();
@@ -15,7 +16,10 @@ const searchMetadefender = async (searchType, value) => {
           `https://metadefender.opswat.com/results/ip/${base64IP}`
         );
 
-        await page.waitForSelector('.row > .col-lg-3 > .scoreHeader .score');
+        await page.waitForSelector(
+          '.row > .col-lg-3 > .scoreHeader .score',
+          defaultTimeout
+        );
 
         let ipScore = await page.evaluate(() => {
           let text = Array.from(document.querySelectorAll('.score > p'));
@@ -42,7 +46,7 @@ const searchMetadefender = async (searchType, value) => {
           `https://metadefender.opswat.com/results/file/${value}/hash`
         );
 
-        await page.waitForSelector('.scoreHeader > .score');
+        await page.waitForSelector('.scoreHeader > .score', defaultTimeout);
 
         let hashScore = await page.evaluate(() => {
           let text = Array.from(
@@ -74,7 +78,7 @@ const searchMetadefender = async (searchType, value) => {
           `https://metadefender.opswat.com/results/domain/${base64Domain}`
         );
 
-        await page.waitForSelector('.scoreHeader > .score');
+        await page.waitForSelector('.scoreHeader > .score', defaultTimeout);
 
         let dominScore = await page.evaluate(() => {
           let text = Array.from(
@@ -99,9 +103,9 @@ const searchMetadefender = async (searchType, value) => {
 
         return domainScoreFormatted;
     }
-  } catch (error) {
-    console.log(error);
-    return 'Error Scraping MetaDefender: ' + error.msg;
+  } catch (err) {
+    console.error(err);
+    return { error: 'Error Scraping MetaDefender' };
   }
 };
 

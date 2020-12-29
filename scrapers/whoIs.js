@@ -29,9 +29,11 @@ const getWhoIs = async (type, query) => {
         },
       };
     }
-  } catch (error) {
-    // need more error handling
-    console.log(error);
+  } catch (err) {
+    console.error(err);
+    return {
+      error: 'Error Retrieving WhoIs Data',
+    };
   }
 };
 

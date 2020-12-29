@@ -14,7 +14,7 @@ const router = express.Router();
 // clean hash: e75717a75f2a35130bf7f7aee09dcb7d
 
 // clean IP: 43.250.192.22
-// malicious IP:
+// malicious IP: 118.193.41.84
 
 // clean domain: google.com
 // malicious domain: halifax-fraud-alert.com
@@ -132,6 +132,8 @@ router.post('/scrape-all', async (req, res) => {
     default:
       break;
   }
+
+  console.log(results);
 
   res.send(results);
 });

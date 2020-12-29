@@ -1,13 +1,15 @@
 const puppeteer = require('puppeteer');
 
 const searchIPVoid = async (value) => {
+  const defaultTimeout = { timeout: 5000 };
+
   try {
     let browser = await puppeteer.launch({ headless: false });
     let page = await browser.newPage();
 
     await page.setViewport({ width: 1366, height: 768 });
     await page.goto('https://www.ipvoid.com/ip-blacklist-check/');
-    await page.waitForSelector('.col-md-8 #ipAddr');
+    await page.waitForSelector('.col-md-8 #ipAddr', defaultTimeout);
 
     await page.evaluate(() => {
       window.scrollBy(0, 200);
@@ -19,12 +21,12 @@ const searchIPVoid = async (value) => {
 
     await page.waitForSelector(
       '.row > .col-md-8 > .articles-col > .form > .btn',
-      { timeout: 3000 }
+      defaultTimeout
     );
 
     await page.click('.row > .col-md-8 > .articles-col > .form > .btn');
 
-    await page.waitForSelector('.table-responsive');
+    await page.waitForSelector('.table-responsive', defaultTimeout);
 
     const tableData = await page.evaluate(() => {
       const tds = Array.from(document.querySelectorAll('table tr td'));
@@ -52,9 +54,9 @@ const searchIPVoid = async (value) => {
     await browser.close();
 
     return results;
-  } catch (error) {
-    console.log(error);
-    return 'Error Scraping IPVoid: ' + error.msg;
+  } catch (err) {
+    console.error(err);
+    return { error: 'Error Scraping IPVoid' };
   }
 };
 

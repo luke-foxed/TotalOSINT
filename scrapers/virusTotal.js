@@ -1,8 +1,10 @@
 const puppeteer = require('puppeteer');
 const { QueryHandler } = require('query-selector-shadow-dom/plugins/puppeteer');
 
+const defaultTimeout = { timeout: 5000 };
+
 const getDetections = async (page) => {
-  await page.waitForSelector('shadow/.engines .circle');
+  await page.waitForSelector('shadow/.engines .circle', defaultTimeout);
 
   let enginesDiv = await page.$('shadow/.engines .circle');
   let detections = await (
@@ -13,7 +15,7 @@ const getDetections = async (page) => {
 };
 
 const getDetails = async (page) => {
-  await page.waitForSelector('shadow/div[slot="body"]');
+  await page.waitForSelector('shadow/div[slot="body"]', defaultTimeout);
 
   let detailsDiv = await page.$('shadow/div[slot="body"]');
   let details = await (await detailsDiv.getProperty('innerText')).jsonValue();
@@ -114,8 +116,9 @@ const searchVT = async (searchType, value) => {
     await puppeteer.__experimental_unregisterCustomQueryHandler('shadow');
 
     return results;
-  } catch (error) {
-    return error;
+  } catch (err) {
+    console.error(err);
+    return { error: 'Error Scraping VirusTotal' };
   }
 };
 

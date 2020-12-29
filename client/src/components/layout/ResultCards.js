@@ -53,80 +53,97 @@ export const ResultCards = ({ data }) => {
   const classes = useStyles();
 
   const RenderDetails = ({ values }) => {
-    return Object.entries(values.details).map(([key, value]) => {
-      if (key !== 'url') {
-        let formattedLabel = key
-          .replace('_', ' ')
-          .split('_')
-          .map((word) => word.charAt(0).toUpperCase() + word.substring(1))
-          .join(' ');
+    if (values.error) {
+      return null;
+    } else {
+      return Object.entries(values.details).map(([key, value]) => {
+        if (key !== 'url') {
+          let formattedLabel = key
+            .replace('_', ' ')
+            .split('_')
+            .map((word) => word.charAt(0).toUpperCase() + word.substring(1))
+            .join(' ');
 
-        return (
-          <div className={classes.chipContainer}>
-            <Chip style={{ margin: '2px' }} label={formattedLabel} />
-            {/* z-index and pointer-events to fix flickering bug */}
-            <Tooltip
-              style={{ pointerEvents: 'none', zIndex: 9999 }}
-              title={value}
-            >
-              <Chip
-                style={{ maxWidth: '190px', margin: '2px' }}
-                label={value}
-                variant='outlined'
-              />
-            </Tooltip>
-          </div>
-        );
-      }
-    });
+          return (
+            <div className={classes.chipContainer}>
+              <Chip style={{ margin: '2px' }} label={formattedLabel} />
+              {/* z-index and pointer-events to fix flickering bug */}
+              <Tooltip
+                style={{ pointerEvents: 'none', zIndex: 9999 }}
+                title={value}
+              >
+                <Chip
+                  style={{ maxWidth: '190px', margin: '2px' }}
+                  label={value}
+                  variant='outlined'
+                />
+              </Tooltip>
+            </div>
+          );
+        }
+      });
+    }
   };
 
   const RenderScore = ({ source, values }) => {
-    switch (source) {
-      case 'xforce':
-        return (
-          <Typography style={{ fontFamily: 'Quicksand' }}>
-            Risk:
+    if (values.error) {
+      return (
+        <Typography
+          style={{
+            fontSize: '30px',
+            fontFamily: 'Quicksand',
+          }}
+        >
+          {values.error}
+        </Typography>
+      );
+    } else {
+      switch (source) {
+        case 'xforce':
+          return (
+            <Typography style={{ fontFamily: 'Quicksand' }}>
+              Risk:
+              <Typography
+                style={{
+                  fontSize: '80px',
+                  fontFamily: 'Quicksand',
+                  color: values.risk === '1' ? colSuccess : colError,
+                }}
+              >
+                {values.risk}
+              </Typography>
+            </Typography>
+          );
+        case 'abuseip':
+          return (
+            <Typography style={{ fontFamily: 'Quicksand' }}>
+              Confidence Of Abuse:
+              <Typography
+                style={{
+                  fontSize: '80px',
+                  fontFamily: 'Quicksand',
+                  color: values.abuse_score !== '0%' ? colError : colSuccess,
+                }}
+              >
+                {values.abuse_score}
+              </Typography>
+            </Typography>
+          );
+        case 'whois':
+          return (
             <Typography
               style={{
-                fontSize: '80px',
+                fontSize: '30px',
                 fontFamily: 'Quicksand',
-                color: values.risk === '1' ? colSuccess : colError,
+                paddingBottom: '20px',
               }}
             >
-              {values.risk}
+              WhoIs Information
             </Typography>
-          </Typography>
-        );
-      case 'abuseip':
-        return (
-          <Typography style={{ fontFamily: 'Quicksand' }}>
-            Confidence Of Abuse:
-            <Typography
-              style={{
-                fontSize: '80px',
-                fontFamily: 'Quicksand',
-                color: values.abuse_score !== '0%' ? colError : colSuccess,
-              }}
-            >
-              {values.abuse_score}
-            </Typography>
-          </Typography>
-        );
-      case 'whois':
-        return (
-          <Typography
-            style={{
-              fontSize: '30px',
-              fontFamily: 'Quicksand',
-              paddingBottom: '20px',
-            }}
-          >
-            WhoIs Information
-          </Typography>
-        );
-      default:
-        return <ScoreWidget score={values} />;
+          );
+        default:
+          return <ScoreWidget score={values} />;
+      }
     }
   };
 

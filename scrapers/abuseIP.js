@@ -1,6 +1,7 @@
 const puppeteer = require('puppeteer');
 
 const searchAbuseIP = async (value) => {
+  const defaultTimeout = { timeout: 5000 };
   try {
     let browser = await puppeteer.launch({ headless: false });
     let page = await browser.newPage();
@@ -10,19 +11,19 @@ const searchAbuseIP = async (value) => {
 
     await page.waitForSelector(
       '.content-wrapper > #report-wrapper > .row > .col-md-6 > .well',
-      { timeout: 6000 }
+      defaultTimeout
     );
 
     let reportData = '';
 
     try {
-      await page.waitForSelector('h3.text-primary', { timeout: 5000 });
+      await page.waitForSelector('h3.text-primary', defaultTimeout);
       reportData = await page.evaluate(() => {
         let text = document.querySelector('h3.text-primary');
         return text.innerText;
       });
     } catch (error) {
-      await page.waitForSelector('.well > p', { timeout: 5000 });
+      await page.waitForSelector('.well > p', defaultTimeout);
       const report = await page.evaluate(() => {
         let boldLabels = Array.from(document.querySelectorAll('.well > p > b'));
         return boldLabels.map((label) => label.innerText);
@@ -48,8 +49,9 @@ const searchAbuseIP = async (value) => {
     await browser.close();
 
     return reportData;
-  } catch (error) {
-    return 'Error Scraping AbuseIP: ' + error.msg;
+  } catch (err) {
+    console.error(err);
+    return { error: 'Error Scraping AbuseIP' };
   }
 };
 

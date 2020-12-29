@@ -1,7 +1,9 @@
 const puppeteer = require('puppeteer');
 
+const defaultTimeout = { timeout: 5000 };
+
 const getRisk = async (page) => {
-  await page.waitForSelector('.scorebackgroundfilter');
+  await page.waitForSelector('.scorebackgroundfilter', defaultTimeout);
 
   let scoreClass = await page.$('.scorebackgroundfilter');
   let score = await (await scoreClass.getProperty('innerText')).jsonValue();
@@ -10,7 +12,7 @@ const getRisk = async (page) => {
 };
 
 const getTableDetails = async (page) => {
-  await page.waitForSelector('.detailsline');
+  await page.waitForSelector('.detailsline', defaultTimeout);
   const tableData = await page.evaluate(() => {
     const tds = Array.from(document.querySelectorAll('.detailsline tr td'));
     return tds.map((td) => td.innerText);
@@ -105,7 +107,8 @@ const searchXForce = async (searchType, value) => {
         break;
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
+    return { error: 'Error Scraping X-Force' };
   }
 };
 module.exports = {
