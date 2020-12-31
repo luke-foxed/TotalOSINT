@@ -28,10 +28,13 @@ import {
   Language,
   PinDrop,
   Description,
+  Save,
+  TableChart,
 } from '@material-ui/icons/';
 import { checkInput } from '../../helpers/regexHelpers';
 import { colPrimary, colSecondary } from '../../helpers/colors';
 import { ResultCards } from '../layout/ResultCards';
+import { exportAsCSV } from '../../helpers/generalHelpers';
 
 /////////////////////
 
@@ -45,8 +48,6 @@ const sampleIP = {
       whois_server: 'whois.markmonitor.com',
       created_date: '1997-09-15 07:00:00 UTC',
       domain_ext: '.com',
-      testField1: '111',
-      testField2: '3535',
     },
   },
   virustotal: {
@@ -137,6 +138,13 @@ const useStyles = makeStyles(() => ({
     fontFamily: 'Quicksand',
     fontSize: '12px',
     marginTop: '10px',
+  },
+  actionButton: {
+    margin: '15px',
+    borderRadius: '15px',
+    width: '200px',
+    color: 'white',
+    border: 'solid 2px white',
   },
 }));
 
@@ -419,33 +427,57 @@ const Home = ({ setAlert, performSearch }) => {
         </Backdrop>
       </div>
 
-      {Object.keys(searchResults).length !== 0 && !isLoading && (
-        <div
-          className='results'
+      {/* {Object.keys(searchResults).length !== 0 && !isLoading && ( */}
+      <div
+        className='results'
+        style={{
+          width: '80%',
+          margin: 'auto',
+          height: '100vh',
+        }}
+      >
+        <Typography
           style={{
-            width: '80%',
-            margin: 'auto',
-            height: '70vh',
+            fontFamily: 'Quicksand',
+            color: 'white',
+            paddingTop: '200px',
+            textAlign: 'center',
+            fontSize: '40px',
           }}
         >
-          <Typography
-            style={{
-              fontFamily: 'Quicksand',
-              color: 'white',
-              paddingTop: '200px',
-              textAlign: 'center',
-              fontSize: '40px',
-            }}
+          <Search
+            fontSize='large'
+            style={{ color: colPrimary, paddingRight: '10px' }}
+          />
+          You Searched '{value}'
+        </Typography>
+        <ResultCards data={sampleIP} />
+
+        <Grid
+          container
+          direction='row'
+          justify='center'
+          style={{ marginTop: '20px' }}
+        >
+          <Button
+            variant='outlined'
+            className={classes.actionButton}
+            startIcon={<Save style={{ color: colPrimary }} />}
           >
-            <Search
-              fontSize='large'
-              style={{ color: colPrimary, paddingRight: '10px' }}
-            />
-            You Searched '{value}'
-          </Typography>
-          <ResultCards data={searchResults} />
-        </div>
-      )}
+            Save Results
+          </Button>
+          <Button
+            variant='outlined'
+            className={classes.actionButton}
+            startIcon={<TableChart style={{ color: colSecondary }} />}
+            onClick={() => exportAsCSV(sampleIP)}
+          >
+            Export To CSV
+          </Button>
+        </Grid>
+        <h1>Hello</h1>
+      </div>
+      {/* )} */}
     </div>
   );
 };

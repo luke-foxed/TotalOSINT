@@ -52,7 +52,9 @@ const useStyles = makeStyles(() => ({
     textDecoration: 'none',
     transition: 'all .2s ease-in-out',
     '&:hover': {
-      transform: 'scale(0.8)',
+      borderRadius: '15px',
+      transform: 'scale(0.9)',
+      marginBottom: '5px',
     },
   },
 }));
