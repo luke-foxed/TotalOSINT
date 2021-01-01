@@ -94,7 +94,30 @@ router.delete('/delete', auth, async (req, res) => {
     res.status(200).json({ msg: 'Account Deleted' });
   } catch (err) {
     console.error(err.message);
-    res.status(500).json({ msg: 'Delete Error' });
+    res.status(500).json({ msg: 'Error Deleting Account' });
+  }
+});
+
+/**
+ * @route    PUT api/users/save-search
+ * @desc     Save search results to DB
+ * @access   Private
+ */
+
+router.put('/save-search', auth, async (req, res) => {
+  try {
+    let user = await User.findById(req.user.id);
+
+    let results = req.body;
+
+    await user.update({ $push: { savedResults: results } });
+
+    await user.save();
+
+    res.status(200).json({ msg: 'Account Updated' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ msg: 'Error Saving Results' });
   }
 });
 

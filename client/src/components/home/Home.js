@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ScaleLoader from 'react-spinners/ScaleLoader';
 import { performSearch } from '../../actions/search';
+import { saveResults } from '../../actions/user';
 import { setAlert } from '../../actions/alert';
 import { useDencrypt } from 'use-dencrypt-effect';
 import {
@@ -166,7 +167,7 @@ const CssTextField = withStyles({
 const options = ['Domain', 'Hash', 'IP'];
 const headerValues = ['FILE HASH', 'IP ADDRESS', 'DOMAIN'];
 
-const Home = ({ setAlert, performSearch }) => {
+const Home = ({ setAlert, performSearch, saveResults }) => {
   const { result, dencrypt } = useDencrypt();
   const classes = useStyles();
   const anchorRef = useRef(null);
@@ -428,49 +429,50 @@ const Home = ({ setAlert, performSearch }) => {
         </Backdrop>
       </div>
 
-      {/* {Object.keys(searchResults).length !== 0 && !isLoading && ( */}
-      <div
-        className='results'
-        style={{
-          width: '80%',
-          margin: 'auto',
-          height: '100vh',
-        }}
-      >
-        <div style={{ paddingTop: '180px' }} />
-
-        <IconHeader
-          text={`You Searched ${value}`}
-          icon={Search}
-          color='white'
-        />
-
-        <ResultCards data={sampleIP} />
-
-        <Grid
-          container
-          direction='row'
-          justify='center'
-          style={{ marginTop: '20px' }}
+      {Object.keys(searchResults).length !== 0 && !isLoading && (
+        <div
+          className='results'
+          style={{
+            width: '80%',
+            margin: 'auto',
+            height: '100vh',
+          }}
         >
-          <Button
-            variant='outlined'
-            className={classes.actionButton}
-            startIcon={<Save style={{ color: colPrimary }} />}
+          <div style={{ paddingTop: '180px' }} />
+
+          <IconHeader
+            text={`You Searched ${value}`}
+            icon={Search}
+            color='white'
+          />
+
+          <ResultCards data={searchResults} />
+
+          <Grid
+            container
+            direction='row'
+            justify='center'
+            style={{ marginTop: '20px' }}
           >
-            Save Results
-          </Button>
-          <Button
-            variant='outlined'
-            className={classes.actionButton}
-            startIcon={<TableChart style={{ color: colSecondary }} />}
-            onClick={() => exportAsCSV(sampleIP)}
-          >
-            Export To CSV
-          </Button>
-        </Grid>
-      </div>
-      {/* )} */}
+            <Button
+              variant='outlined'
+              className={classes.actionButton}
+              startIcon={<Save style={{ color: colPrimary }} />}
+              onClick={() => saveResults(searchResults)}
+            >
+              Save Results
+            </Button>
+            <Button
+              variant='outlined'
+              className={classes.actionButton}
+              startIcon={<TableChart style={{ color: colSecondary }} />}
+              onClick={() => exportAsCSV(sampleIP)}
+            >
+              Export To CSV
+            </Button>
+          </Grid>
+        </div>
+      )}
     </div>
   );
 };
@@ -478,6 +480,7 @@ const Home = ({ setAlert, performSearch }) => {
 Home.propTypes = {
   setAlert: PropTypes.func.isRequired,
   performSearch: PropTypes.func.isRequired,
+  saveResults: PropTypes.func.isRequired,
 };
 
-export default connect(null, { setAlert, performSearch })(Home);
+export default connect(null, { setAlert, performSearch, saveResults })(Home);

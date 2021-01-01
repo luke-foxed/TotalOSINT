@@ -182,21 +182,23 @@ export const ResultCards = ({ data }) => {
                 <RenderDetails values={value} />
 
                 <div className={classes.sticky}>
-                  <a
-                    href={value.details.url}
-                    target='_blank'
-                    className={classes.link}
-                  >
-                    <Button
-                      style={{
-                        backgroundColor: colSecondary,
-                        borderRadius: 0,
-                        color: 'white',
-                      }}
+                  {value.details && value.details.url && (
+                    <a
+                      href={value.details.url}
+                      target='_blank'
+                      className={classes.link}
                     >
-                      Visit Link
-                    </Button>
-                  </a>
+                      <Button
+                        style={{
+                          backgroundColor: colSecondary,
+                          borderRadius: 0,
+                          color: 'white',
+                        }}
+                      >
+                        Visit Link
+                      </Button>
+                    </a>
+                  )}
                 </div>
               </Paper>
             </div>

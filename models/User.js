@@ -17,7 +17,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
   },
   savedResults: {
-    type: String,
+    type: Array,
   },
 });
 

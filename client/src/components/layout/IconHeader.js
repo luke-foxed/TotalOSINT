@@ -31,7 +31,7 @@ export const IconHeader = ({ icon, text, color }) => {
         </Grid>
         <Grid item>
           <Typography
-            variant={'h3'}
+            variant={'h4'}
             className={classes.paperHeader}
             style={{ color: color }}
           >

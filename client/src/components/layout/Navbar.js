@@ -43,6 +43,12 @@ const Navbar = ({ login, setAlert, user, isAuthenticated, logout }) => {
     await login(username, password);
   };
 
+  const handleLogout = async () => {
+    await logout();
+    setAlert('Logged Out!', 'success');
+    handleClose();
+  };
+
   return (
     <div className={classes.root} style={{ paddingBottom: '40px' }}>
       <AppBar
@@ -103,7 +109,7 @@ const Navbar = ({ login, setAlert, user, isAuthenticated, logout }) => {
               >
                 <MenuItem onClick={handleClose}>My account</MenuItem>
                 <MenuItem onClick={handleClose}>About</MenuItem>
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
+                <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
               </Menu>
             </Grid>
           </Grid>
