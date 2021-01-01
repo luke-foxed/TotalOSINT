@@ -11,8 +11,9 @@ import { connect } from 'react-redux';
 import { LogonModal } from '../auth/LogonModal';
 import { setAlert } from '../../actions/alert';
 import PropTypes from 'prop-types';
-import { Grid, Grow } from '@material-ui/core';
+import { Grid, Grow, MenuList } from '@material-ui/core';
 import { Spin as Hamburger } from 'hamburger-react';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -64,7 +65,9 @@ const Navbar = ({ login, setAlert, user, isAuthenticated, logout }) => {
             direction='row'
           >
             <Grid item xs={2}>
-              <img src={require('../../assets/logo.png')} height={80} />
+              <Link to='/'>
+                <img src={require('../../assets/logo.png')} height={80} />
+              </Link>
             </Grid>
 
             <Grid item xs={5} />
@@ -75,9 +78,6 @@ const Navbar = ({ login, setAlert, user, isAuthenticated, logout }) => {
                   <Typography style={{ padding: '10px' }}>
                     {user.username}
                   </Typography>
-                  <Button color='inherit' onClick={() => logout()}>
-                    Log Out
-                  </Button>
                 </Grid>
               ) : (
                 <Grid container justify='flex-end'>
@@ -101,8 +101,8 @@ const Navbar = ({ login, setAlert, user, isAuthenticated, logout }) => {
                 transitionDuration={500}
                 TransitionComponent={Grow}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleClose}>About</MenuItem>
                 <MenuItem onClick={handleClose}>Logout</MenuItem>
               </Menu>
             </Grid>

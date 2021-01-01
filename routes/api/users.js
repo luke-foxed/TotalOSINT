@@ -10,7 +10,7 @@ const User = require('../../models/User');
 
 // create user
 router.post(
-  '/create',
+  '/register',
   [
     check('username', 'Username is required').notEmpty(),
     check('email', 'Please provide a valid email').isEmail(),
@@ -51,7 +51,6 @@ router.post(
         username,
         email,
         password,
-        preferences,
         avatar,
       });
 
@@ -70,7 +69,7 @@ router.post(
       jwt.sign(
         payload,
         config.get('jwtSecret'),
-        { expiresIn: '5 days' },
+        { expiresIn: '2h' },
         (err, token) => {
           if (err) throw err;
           res.json({ token });

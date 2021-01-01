@@ -23,7 +23,6 @@ const useStyles = makeStyles(() => ({
     background:
       'linear-gradient(180deg, rgba(164,75,227,1) 10%, rgba(73,182,255,1) 90%);',
   },
-
   chipContainer: {
     display: 'flex',
     justifyContent: 'center',

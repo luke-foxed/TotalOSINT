@@ -16,8 +16,7 @@ const UserSchema = new mongoose.Schema({
   avatar: {
     type: String,
   },
-
-  comments: {
+  savedResults: {
     type: String,
   },
 });

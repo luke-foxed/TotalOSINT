@@ -35,6 +35,7 @@ import { checkInput } from '../../helpers/regexHelpers';
 import { colPrimary, colSecondary } from '../../helpers/colors';
 import { ResultCards } from '../layout/ResultCards';
 import { exportAsCSV } from '../../helpers/generalHelpers';
+import { IconHeader } from '../layout/IconHeader';
 
 /////////////////////
 
@@ -436,21 +437,14 @@ const Home = ({ setAlert, performSearch }) => {
           height: '100vh',
         }}
       >
-        <Typography
-          style={{
-            fontFamily: 'Quicksand',
-            color: 'white',
-            paddingTop: '200px',
-            textAlign: 'center',
-            fontSize: '40px',
-          }}
-        >
-          <Search
-            fontSize='large'
-            style={{ color: colPrimary, paddingRight: '10px' }}
-          />
-          You Searched '{value}'
-        </Typography>
+        <div style={{ paddingTop: '180px' }} />
+
+        <IconHeader
+          text={`You Searched ${value}`}
+          icon={Search}
+          color='white'
+        />
+
         <ResultCards data={sampleIP} />
 
         <Grid
@@ -475,7 +469,6 @@ const Home = ({ setAlert, performSearch }) => {
             Export To CSV
           </Button>
         </Grid>
-        <h1>Hello</h1>
       </div>
       {/* )} */}
     </div>
