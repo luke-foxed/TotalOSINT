@@ -57,6 +57,9 @@ router.post('/scrape-all', async (req, res) => {
 
   switch (req.body.type) {
     case 'hash': {
+      results['searchValue'] = req.body.value;
+      results['searchType'] = req.body.type;
+
       cluster.queue(async () => {
         results['metadefender'] = await searchMetadefender(
           req.body.type,
@@ -72,15 +75,15 @@ router.post('/scrape-all', async (req, res) => {
         results['xforce'] = await searchXForce(req.body.type, req.body.value);
       });
 
-      results['searchValue'] = req.body.value;
-      results['searchType'] = req.body.type;
-
       await cluster.idle();
       await cluster.close();
       break;
     }
 
     case 'domain':
+      results['searchValue'] = req.body.value;
+      results['searchType'] = req.body.type;
+
       cluster.queue(async () => {
         results['metadefender'] = await searchMetadefender(
           req.body.type,
@@ -98,14 +101,14 @@ router.post('/scrape-all', async (req, res) => {
 
       results['whois'] = await getWhoIs(req.body.type, req.body.value);
 
-      results['searchValue'] = req.body.value;
-      results['searchType'] = req.body.type;
-
       await cluster.idle();
       await cluster.close();
       break;
 
     case 'ip':
+      results['searchValue'] = req.body.value;
+      results['searchType'] = req.body.type;
+
       cluster.queue(async () => {
         results['metadefender'] = await searchMetadefender(
           req.body.type,
@@ -130,9 +133,6 @@ router.post('/scrape-all', async (req, res) => {
       });
 
       results['whois'] = await getWhoIs(req.body.type, req.body.value);
-
-      results['searchValue'] = req.body.value;
-      results['searchType'] = req.body.type;
 
       await cluster.idle();
       await cluster.close();

@@ -11,6 +11,7 @@ import { loadUser } from './actions/auth';
 import './App.css';
 import Profile from './components/profile/Profile';
 import PrivateRoute from './components/routing/PrivateRoute';
+import SavedResult from './components/profile/SavedResult';
 
 const App = () => {
   if (localStorage.token) {
@@ -30,6 +31,7 @@ const App = () => {
           <Switch>
             <Route exact path='/' component={Home} />
             <Route exact path='/register' component={Register} />
+            <PrivateRoute path='/saved/:value' component={SavedResult} />
             <PrivateRoute exact path='/profile' component={Profile} />
           </Switch>
         </Fragment>

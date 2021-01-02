@@ -51,8 +51,6 @@ const useStyles = makeStyles(() => ({
     textDecoration: 'none',
     transition: 'all .2s ease-in-out',
     '&:hover': {
-      borderRadius: '15px',
-      width: '150px',
       marginBottom: '5px',
     },
   },
@@ -62,9 +60,8 @@ export const ResultCards = ({ data }) => {
   const classes = useStyles();
 
   const RenderDetails = ({ values }) => {
-    if (values.error) {
-      return null;
-    } else {
+    if (values.error) return null;
+    else if (values.details) {
       return Object.entries(values.details).map(([key, value]) => {
         if (key !== 'url') {
           let formattedLabel = key
@@ -91,7 +88,7 @@ export const ResultCards = ({ data }) => {
           );
         }
       });
-    }
+    } else return null;
   };
 
   const RenderScore = ({ source, values }) => {

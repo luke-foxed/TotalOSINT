@@ -14,11 +14,11 @@ const searchAbuseIP = async (value) => {
       defaultTimeout
     );
 
-    let reportData = '';
+    let reportData = {};
 
     try {
       await page.waitForSelector('h3.text-primary', defaultTimeout);
-      reportData = await page.evaluate(() => {
+      reportData.error = await page.evaluate(() => {
         let text = document.querySelector('h3.text-primary');
         return text.innerText;
       });

@@ -441,7 +441,7 @@ const Home = ({ setAlert, performSearch, saveResults }) => {
           <div style={{ paddingTop: '180px' }} />
 
           <IconHeader
-            text={`You Searched ${value}`}
+            text={`You Searched '${value}'`}
             icon={Search}
             color='white'
           />
@@ -466,7 +466,7 @@ const Home = ({ setAlert, performSearch, saveResults }) => {
               variant='outlined'
               className={classes.actionButton}
               startIcon={<TableChart style={{ color: colSecondary }} />}
-              onClick={() => exportAsCSV(sampleIP)}
+              onClick={() => exportAsCSV(searchResults)}
             >
               Export To CSV
             </Button>

@@ -6,10 +6,10 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Button,
   IconButton,
 } from '@material-ui/core';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
   colError,
@@ -58,6 +58,7 @@ const useStyles = makeStyles(() => ({
 
 const Profile = ({ user, setAlert }) => {
   const classes = useStyles();
+  const history = useHistory();
 
   const RenderIcon = ({ type }) => {
     switch (type) {
@@ -68,6 +69,13 @@ const Profile = ({ user, setAlert }) => {
       case 'ip':
         return <PinDrop fontSize='large' style={{ color: colPrimary }} />;
     }
+  };
+
+  const handleViewClick = (result) => {
+    history.push({
+      pathname: `/saved/${result.searchValue}`,
+      state: result,
+    });
   };
 
   return (
@@ -99,7 +107,10 @@ const Profile = ({ user, setAlert }) => {
                 <TableCell align='center'>{result.searchValue}</TableCell>
                 <TableCell align='center'>{result.searchDate}</TableCell>
                 <TableCell align='center'>
-                  <IconButton style={{ color: colSecondary }}>
+                  <IconButton
+                    style={{ color: colSecondary }}
+                    onClick={() => handleViewClick(result)}
+                  >
                     <Visibility />
                   </IconButton>
                   <IconButton style={{ color: colError }}>
