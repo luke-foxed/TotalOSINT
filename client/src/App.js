@@ -9,6 +9,8 @@ import { Provider } from 'react-redux';
 import Alerter from './components/layout/Alerter';
 import { loadUser } from './actions/auth';
 import './App.css';
+import Profile from './components/profile/Profile';
+import PrivateRoute from './components/routing/PrivateRoute';
 
 const App = () => {
   if (localStorage.token) {
@@ -22,12 +24,13 @@ const App = () => {
   return (
     <Provider store={store}>
       <Router>
-        <Fragment >
+        <Fragment>
           <Navbar />
           <Alerter />
           <Switch>
             <Route exact path='/' component={Home} />
             <Route exact path='/register' component={Register} />
+            <PrivateRoute exact path='/profile' component={Profile} />
           </Switch>
         </Fragment>
       </Router>

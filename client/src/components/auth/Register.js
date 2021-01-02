@@ -10,16 +10,10 @@ import {
   makeStyles,
   Paper,
   TextField,
-  Typography,
   withStyles,
 } from '@material-ui/core';
-import { Link, Redirect } from 'react-router-dom';
-import {
-  Visibility,
-  VisibilityOff,
-  Home,
-  AccountCircle,
-} from '@material-ui/icons';
+import { Redirect } from 'react-router-dom';
+import { Visibility, VisibilityOff, PersonAdd } from '@material-ui/icons';
 import { colPrimary, colSecondary } from '../../helpers/colors';
 import { register } from '../../actions/auth';
 import { IconHeader } from '../layout/IconHeader';
@@ -44,7 +38,7 @@ const CssTextField = withStyles({
 })(TextField);
 
 const useStyles = makeStyles(() => ({
-  modal: {
+  frame: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -95,13 +89,9 @@ const Register = ({ setAlert, isAuthenticated, register }) => {
   }
 
   return (
-    <div className={classes.modal}>
+    <div className={classes.frame}>
       <Paper elevation={3} className={classes.paper}>
-        <IconHeader
-          text='Create An Account'
-          icon={AccountCircle}
-          color='black'
-        />
+        <IconHeader text='Create An Account' icon={PersonAdd} color='black' />
 
         <FormGroup onSubmit={(e) => e.preventDefault()}>
           <CssTextField

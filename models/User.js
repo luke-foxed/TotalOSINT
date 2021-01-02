@@ -19,6 +19,10 @@ const UserSchema = new mongoose.Schema({
   savedResults: {
     type: Array,
   },
+  dateCreated: {
+    type: Date,
+    default: Date.now(),
+  },
 });
 
 module.exports = mongoose.model('user', UserSchema);

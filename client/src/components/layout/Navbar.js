@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import { LogonModal } from '../auth/LogonModal';
 import { setAlert } from '../../actions/alert';
 import PropTypes from 'prop-types';
-import { Grid, Grow, MenuList } from '@material-ui/core';
+import { Grid, Grow } from '@material-ui/core';
 import { Spin as Hamburger } from 'hamburger-react';
 import { Link } from 'react-router-dom';
 
@@ -107,7 +107,15 @@ const Navbar = ({ login, setAlert, user, isAuthenticated, logout }) => {
                 transitionDuration={500}
                 TransitionComponent={Grow}
               >
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleClose}>
+                  <Link
+                    to='/profile'
+                    style={{ textDecoration: 'none', color: 'black' }}
+                  >
+                    My Profile
+                  </Link>
+                </MenuItem>
+
                 <MenuItem onClick={handleClose}>About</MenuItem>
                 <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
               </Menu>

@@ -72,6 +72,9 @@ router.post('/scrape-all', async (req, res) => {
         results['xforce'] = await searchXForce(req.body.type, req.body.value);
       });
 
+      results['searchValue'] = req.body.value;
+      results['searchType'] = req.body.type;
+
       await cluster.idle();
       await cluster.close();
       break;
@@ -94,6 +97,9 @@ router.post('/scrape-all', async (req, res) => {
       });
 
       results['whois'] = await getWhoIs(req.body.type, req.body.value);
+
+      results['searchValue'] = req.body.value;
+      results['searchType'] = req.body.type;
 
       await cluster.idle();
       await cluster.close();
@@ -124,6 +130,9 @@ router.post('/scrape-all', async (req, res) => {
       });
 
       results['whois'] = await getWhoIs(req.body.type, req.body.value);
+
+      results['searchValue'] = req.body.value;
+      results['searchType'] = req.body.type;
 
       await cluster.idle();
       await cluster.close();

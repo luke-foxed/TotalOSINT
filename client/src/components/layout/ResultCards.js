@@ -52,7 +52,7 @@ const useStyles = makeStyles(() => ({
     transition: 'all .2s ease-in-out',
     '&:hover': {
       borderRadius: '15px',
-      transform: 'scale(0.9)',
+      width: '150px',
       marginBottom: '5px',
     },
   },
@@ -159,51 +159,63 @@ export const ResultCards = ({ data }) => {
   return (
     <div style={{ marginTop: '50px' }}>
       <Grid container spacing={2} justify='center'>
-        {Object.entries(data).map(([key, value]) => (
-          <Grid item xs={12} sm={5} md={5} lg={4} xl={4}>
-            <div className={classes.frame}>
-              <Paper className={classes.paper} elevation={0}>
-                <div
-                  style={{
-                    backgroundColor: colPrimary,
-                    marginBottom: '10px',
-                    width: '100%',
-                  }}
-                >
-                  <img
-                    src={require(`../../assets/${key}.png`)}
-                    width={160}
-                    style={{ position: 'relative', top: '0', padding: '5px' }}
-                  />
-                </div>
-
-                <RenderScore source={key} values={value} />
-
-                <RenderDetails values={value} />
-
-                <div className={classes.sticky}>
-                  {value.details && value.details.url && (
-                    <a
-                      href={value.details.url}
-                      target='_blank'
-                      className={classes.link}
+        {Object.entries(data).map(([key, value]) => {
+          if (
+            key !== 'searchValue' &&
+            key !== 'searchType' &&
+            key !== 'searchDate'
+          ) {
+            return (
+              <Grid item xs={12} sm={5} md={5} lg={4} xl={4}>
+                <div className={classes.frame}>
+                  <Paper className={classes.paper} elevation={0}>
+                    <div
+                      style={{
+                        backgroundColor: colPrimary,
+                        marginBottom: '10px',
+                        width: '100%',
+                      }}
                     >
-                      <Button
+                      <img
+                        src={require(`../../assets/${key}.png`)}
+                        width={160}
                         style={{
-                          backgroundColor: colSecondary,
-                          borderRadius: 0,
-                          color: 'white',
+                          position: 'relative',
+                          top: '0',
+                          padding: '5px',
                         }}
-                      >
-                        Visit Link
-                      </Button>
-                    </a>
-                  )}
+                      />
+                    </div>
+
+                    <RenderScore source={key} values={value} />
+
+                    <RenderDetails values={value} />
+
+                    <div className={classes.sticky}>
+                      {value.details && value.details.url && (
+                        <a
+                          href={value.details.url}
+                          target='_blank'
+                          className={classes.link}
+                        >
+                          <Button
+                            style={{
+                              backgroundColor: colSecondary,
+                              borderRadius: 0,
+                              color: 'white',
+                            }}
+                          >
+                            Visit Link
+                          </Button>
+                        </a>
+                      )}
+                    </div>
+                  </Paper>
                 </div>
-              </Paper>
-            </div>
-          </Grid>
-        ))}
+              </Grid>
+            );
+          }
+        })}
       </Grid>
     </div>
   );
