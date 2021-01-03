@@ -37,6 +37,7 @@
     "puppeteer-cluster": "^0.22.0",
     "query-selector-shadow-dom": "^0.8.0",
     "request": "^2.88.2",
-    "use-dencrypt-effect": "^1.0.2"
+    "use-dencrypt-effect": "^1.0.2",
+    "uuid": "^8.3.2"
   }
 }

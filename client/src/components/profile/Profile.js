@@ -8,29 +8,28 @@ import {
   TableRow,
   IconButton,
   Grid,
+  TablePagination,
+  Chip,
 } from '@material-ui/core';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {
-  colError,
-  colPrimary,
-  colSecondary,
-  colSuccess,
-} from '../../helpers/colors';
+import { colError, colPrimary, colSecondary } from '../../helpers/colors';
+import { deleteResult } from '../../actions/user';
 import PropTypes from 'prop-types';
 import {
   AccountCircle,
   ArrowDownward,
   ArrowUpward,
+  DateRangeOutlined,
   DeleteForever,
   Description,
   Language,
+  LocalOfferOutlined,
   PinDrop,
   Visibility,
 } from '@material-ui/icons';
 import { IconHeader } from '../layout/IconHeader';
-import { setAlert } from '../../actions/alert';
 
 const useStyles = makeStyles(() => ({
   frame: {
@@ -59,11 +58,13 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Profile = ({ user, setAlert }) => {
+const Profile = ({ user, deleteResult }) => {
   const classes = useStyles();
   const history = useHistory();
   const [userResults, setUserResults] = useState(user.savedResults);
   const [sortDirection, setSortDirection] = useState('asc');
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const sorted = useMemo(() => {
     let sortedResults = userResults
@@ -76,6 +77,28 @@ const Profile = ({ user, setAlert }) => {
     }
   }, [userResults, sortDirection]);
 
+  const handleViewClick = (result) => {
+    let base64Result = btoa(result.searchValue);
+    history.push({
+      pathname: `/saved/${base64Result}`,
+      state: result,
+    });
+  };
+
+  const handleDeleteClick = (id) => {
+    setUserResults(userResults.filter((item) => item.id !== id));
+    deleteResult(id);
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   const RenderIcon = ({ type }) => {
     switch (type) {
       case 'domain':
@@ -87,13 +110,6 @@ const Profile = ({ user, setAlert }) => {
     }
   };
 
-  const handleViewClick = (result) => {
-    history.push({
-      pathname: `/saved/${result.searchValue}`,
-      state: result,
-    });
-  };
-
   return (
     <div className={classes.frame}>
       <IconHeader text='My Profile ' icon={AccountCircle} color='white' />
@@ -102,12 +118,27 @@ const Profile = ({ user, setAlert }) => {
         <Table style={{ minWidth: 700 }}>
           <TableHead style={{ backgroundColor: colPrimary }}>
             <TableRow>
-              <TableCell />
-              <TableCell align='center' className={classes.tableHeaderCell}>
+              <TableCell colSpan={1} />
+              <TableCell
+                align='center'
+                className={classes.tableHeaderCell}
+                colSpan={5}
+                style={{ width: '350px' }}
+              >
                 Search Value
               </TableCell>
-              <TableCell align='center' className={classes.tableHeaderCell}>
-                <Grid container direction='row' justify='center'>
+              <TableCell
+                align='center'
+                className={classes.tableHeaderCell}
+                colSpan={3}
+              >
+                <Grid
+                  container
+                  direction='row'
+                  justify='center'
+                  alignContent='center'
+                  alignItems='center'
+                >
                   Search Date
                   {sortDirection === 'desc' ? (
                     <IconButton
@@ -128,27 +159,56 @@ const Profile = ({ user, setAlert }) => {
                   )}
                 </Grid>
               </TableCell>
-              <TableCell align='center' className={classes.tableHeaderCell}>
+              <TableCell
+                align='center'
+                className={classes.tableHeaderCell}
+                colSpan={3}
+              >
                 Actions
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {sorted.map((result, index) => (
+            {(rowsPerPage > 0
+              ? sorted.slice(
+                  page * rowsPerPage,
+                  page * rowsPerPage + rowsPerPage
+                )
+              : sorted
+            ).map((result, index) => (
               <TableRow key={index}>
-                <TableCell align='center'>
+                <TableCell align='center' colSpan={1}>
                   <RenderIcon type={result.searchType} />
                 </TableCell>
-                <TableCell align='center'>{result.searchValue}</TableCell>
-                <TableCell align='center'>{result.searchDate}</TableCell>
-                <TableCell align='center'>
+                <TableCell
+                  align='center'
+                  colSpan={5}
+                  style={{ width: '350px' }}
+                >
+                  <Chip
+                    icon={<LocalOfferOutlined fontSize='small' />}
+                    label={result.searchValue}
+                    style={{ fontSize: '14px' }}
+                  />
+                </TableCell>
+                <TableCell align='center' colSpan={3}>
+                  <Chip
+                    icon={<DateRangeOutlined fontSize='small' />}
+                    label={result.searchDate}
+                    style={{ fontSize: '14px' }}
+                  />
+                </TableCell>
+                <TableCell align='center' colSpan={3}>
                   <IconButton
                     style={{ color: colSecondary }}
                     onClick={() => handleViewClick(result)}
                   >
                     <Visibility />
                   </IconButton>
-                  <IconButton style={{ color: colError }}>
+                  <IconButton
+                    style={{ color: colError }}
+                    onClick={() => handleDeleteClick(result.id)}
+                  >
                     <DeleteForever />
                   </IconButton>
                 </TableCell>
@@ -156,13 +216,22 @@ const Profile = ({ user, setAlert }) => {
             ))}
           </TableBody>
         </Table>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component='div'
+          count={sorted.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onChangePage={handleChangePage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+        />
       </Paper>
     </div>
   );
 };
 
 Profile.propTypes = {
-  setAlert: PropTypes.func.isRequired,
+  deleteResult: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
   user: PropTypes.object,
 };
@@ -172,4 +241,4 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
 });
 
-export default connect(mapStateToProps, { setAlert })(Profile);
+export default connect(mapStateToProps, { deleteResult })(Profile);

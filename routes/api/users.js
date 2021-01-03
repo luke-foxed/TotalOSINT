@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const config = require('config');
 const auth = require('../../middleware/auth');
 const jwt = require('jsonwebtoken');
+const uuid = require('uuid');
 const { check, validationResult } = require('express-validator');
 
 const User = require('../../models/User');
@@ -109,6 +110,7 @@ router.put('/save-search', auth, async (req, res) => {
     let user = await User.findById(req.user.id);
 
     let results = req.body;
+    results.id = uuid.v4();
 
     await user.update({ $push: { savedResults: results } });
 
@@ -117,7 +119,23 @@ router.put('/save-search', auth, async (req, res) => {
     res.status(200).json({ msg: 'Account Updated' });
   } catch (err) {
     console.error(err.message);
+    console.log(err);
     res.status(500).json({ msg: 'Error Saving Results' });
+  }
+});
+
+router.put('/delete-search', auth, async (req, res) => {
+  try {
+    let { searchID } = req.body;
+
+    await User.findByIdAndUpdate(req.user.id, {
+      $pull: { savedResults: { id: searchID } },
+    });
+
+    res.status(200).json({ msg: 'Search Deleted' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ msg: 'Delete Error' });
   }
 });
 

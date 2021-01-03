@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 
 const searchIPVoid = async (value) => {
-  const defaultTimeout = { timeout: 5000 };
+  const defaultTimeout = { timeout: 6000 };
 
   try {
     let browser = await puppeteer.launch({ headless: true });

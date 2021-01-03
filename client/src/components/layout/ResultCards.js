@@ -157,10 +157,12 @@ export const ResultCards = ({ data }) => {
     <div style={{ marginTop: '50px' }}>
       <Grid container spacing={2} justify='center'>
         {Object.entries(data).map(([key, value]) => {
+          // needs to be improved
           if (
             key !== 'searchValue' &&
             key !== 'searchType' &&
-            key !== 'searchDate'
+            key !== 'searchDate' &&
+            key !== 'id'
           ) {
             return (
               <Grid item xs={12} sm={5} md={5} lg={4} xl={4}>

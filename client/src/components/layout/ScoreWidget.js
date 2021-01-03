@@ -40,7 +40,7 @@ export const ScoreWidget = ({ score }) => {
           <Typography
             style={{
               color: color,
-              fontSize: '80px',
+              fontSize: '75px',
               fontFamily: 'Quicksand',
             }}
           >
