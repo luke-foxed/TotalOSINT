@@ -23,7 +23,7 @@ const getTableDetails = async (page) => {
 
 const searchXForce = async (searchType, value) => {
   try {
-    let browser = await puppeteer.launch({ headless: false });
+    let browser = await puppeteer.launch({ headless: true });
     let page = await browser.newPage();
 
     await page.setViewport({ width: 1366, height: 768 });

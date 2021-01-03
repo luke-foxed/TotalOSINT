@@ -57,9 +57,6 @@ router.post('/scrape-all', async (req, res) => {
 
   switch (req.body.type) {
     case 'hash': {
-      results['searchValue'] = req.body.value;
-      results['searchType'] = req.body.type;
-
       cluster.queue(async () => {
         results['metadefender'] = await searchMetadefender(
           req.body.type,
@@ -81,9 +78,6 @@ router.post('/scrape-all', async (req, res) => {
     }
 
     case 'domain':
-      results['searchValue'] = req.body.value;
-      results['searchType'] = req.body.type;
-
       cluster.queue(async () => {
         results['metadefender'] = await searchMetadefender(
           req.body.type,
@@ -106,9 +100,6 @@ router.post('/scrape-all', async (req, res) => {
       break;
 
     case 'ip':
-      results['searchValue'] = req.body.value;
-      results['searchType'] = req.body.type;
-
       cluster.queue(async () => {
         results['metadefender'] = await searchMetadefender(
           req.body.type,
@@ -141,6 +132,10 @@ router.post('/scrape-all', async (req, res) => {
     default:
       break;
   }
+
+  results['searchDate'] = new Date().toLocaleDateString();
+  results['searchValue'] = req.body.value;
+  results['searchType'] = req.body.type;
 
   res.send(results);
 });

@@ -4,8 +4,6 @@ import { loadUser } from './auth';
 
 export const saveResults = (results) => async (dispatch) => {
   try {
-    results.searchDate = new Date().toLocaleDateString();
-
     await axios.put('/api/users/save-search', results);
 
     dispatch(setAlert('Results Saved!', 'success'));

@@ -7,8 +7,9 @@ import {
   TableHead,
   TableRow,
   IconButton,
+  Grid,
 } from '@material-ui/core';
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
@@ -20,6 +21,8 @@ import {
 import PropTypes from 'prop-types';
 import {
   AccountCircle,
+  ArrowDownward,
+  ArrowUpward,
   DeleteForever,
   Description,
   Language,
@@ -59,6 +62,19 @@ const useStyles = makeStyles(() => ({
 const Profile = ({ user, setAlert }) => {
   const classes = useStyles();
   const history = useHistory();
+  const [userResults, setUserResults] = useState(user.savedResults);
+  const [sortDirection, setSortDirection] = useState('asc');
+
+  const sorted = useMemo(() => {
+    let sortedResults = userResults
+      .slice()
+      .sort((a, b) => new Date(b.searchDate) - new Date(a.searchDate));
+    if (sortDirection === 'asc') {
+      return sortedResults;
+    } else {
+      return sortedResults.reverse();
+    }
+  }, [userResults, sortDirection]);
 
   const RenderIcon = ({ type }) => {
     switch (type) {
@@ -91,7 +107,26 @@ const Profile = ({ user, setAlert }) => {
                 Search Value
               </TableCell>
               <TableCell align='center' className={classes.tableHeaderCell}>
-                Search Date
+                <Grid container direction='row' justify='center'>
+                  Search Date
+                  {sortDirection === 'desc' ? (
+                    <IconButton
+                      size='small'
+                      style={{ marginLeft: '10px', color: 'white' }}
+                      onClick={() => setSortDirection('asc')}
+                    >
+                      <ArrowUpward />
+                    </IconButton>
+                  ) : (
+                    <IconButton
+                      size='small'
+                      style={{ marginLeft: '10px', color: 'white' }}
+                      onClick={() => setSortDirection('desc')}
+                    >
+                      <ArrowDownward />
+                    </IconButton>
+                  )}
+                </Grid>
               </TableCell>
               <TableCell align='center' className={classes.tableHeaderCell}>
                 Actions
@@ -99,8 +134,8 @@ const Profile = ({ user, setAlert }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {user.savedResults.map((result) => (
-              <TableRow>
+            {sorted.map((result, index) => (
+              <TableRow key={index}>
                 <TableCell align='center'>
                   <RenderIcon type={result.searchType} />
                 </TableCell>
