@@ -14,6 +14,7 @@ import {
   Radio,
   RadioGroup,
   FormControlLabel,
+  Button,
 } from '@material-ui/core';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -31,22 +32,25 @@ import {
   Language,
   LocalOfferOutlined,
   PinDrop,
+  TableChart,
   Visibility,
 } from '@material-ui/icons';
 import { IconHeader } from '../layout/IconHeader';
 import { isMobile } from 'react-device-detect';
 
 const useStyles = makeStyles(() => ({
-  frame: {
+  profileView: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
-    width: '75%',
+    margin: '0 auto',
+  },
+  resultView: {
+    width: isMobile ? '100%' : '75%',
     margin: '0 auto',
   },
   paper: {
-    width: '100%',
     overflowX: 'auto',
     marginTop: '20px',
     borderRadius: '15px',
@@ -68,6 +72,10 @@ const useStyles = makeStyles(() => ({
   radioButton: {
     color: colSecondary,
     padding: '3px',
+  },
+  actionButton: {
+    width: '190px',
+    textAlign: 'center',
   },
 }));
 
@@ -135,188 +143,246 @@ const Profile = ({ user, deleteResult }) => {
   };
 
   return (
-    <div className={classes.frame}>
-      <IconHeader text='My Profile ' icon={AccountCircle} color='white' />
+    <div>
+      <div className={classes.profileView} style={{ width: '75%' }}>
+        <IconHeader text='My Profile ' icon={AccountCircle} color='white' />
 
-      <Paper className={classes.paper}>
-        <Table style={{ minWidth: 700 }}>
-          <TableHead style={{ backgroundColor: colPrimary }}>
-            <TableRow>
-              <TableCell colSpan={1} />
-              <TableCell
-                align='center'
-                className={classes.tableHeaderCell}
-                colSpan={5}
-                style={{ width: '350px' }}
-              >
-                Search Value
-              </TableCell>
-              <TableCell
-                align='center'
-                className={classes.tableHeaderCell}
-                colSpan={3}
-              >
-                <Grid
-                  container
-                  direction='row'
-                  justify='center'
-                  alignContent='center'
-                  alignItems='center'
-                >
-                  Search Date
-                  {sortDirection === 'desc' ? (
-                    <IconButton
-                      size='small'
-                      style={{ marginLeft: '10px', color: 'white' }}
-                      onClick={() => setSortDirection('asc')}
-                    >
-                      <ArrowUpward />
-                    </IconButton>
-                  ) : (
-                    <IconButton
-                      size='small'
-                      style={{ marginLeft: '10px', color: 'white' }}
-                      onClick={() => setSortDirection('desc')}
-                    >
-                      <ArrowDownward />
-                    </IconButton>
-                  )}
-                </Grid>
-              </TableCell>
-              <TableCell
-                align='center'
-                className={classes.tableHeaderCell}
-                colSpan={3}
-              >
-                Actions
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {(rowsPerPage > 0
-              ? sorted.slice(
-                  page * rowsPerPage,
-                  page * rowsPerPage + rowsPerPage
-                )
-              : sorted
-            ).map((result, index) => (
-              <TableRow key={index}>
-                <TableCell align='center' colSpan={1}>
-                  <RenderIcon type={result.searchType} />
-                </TableCell>
+        <img
+          src={user.avatar}
+          height={180}
+          style={{ borderRadius: '200px', margin: '20px' }}
+        />
+        <Typography
+          style={{ fontSize: '20px', color: 'white', fontFamily: 'Quicksand' }}
+        >
+          {user.username}
+        </Typography>
+        <Typography
+          style={{ fontSize: '10px', color: 'grey', fontFamily: 'Quicksand' }}
+        >
+          Member Since{' '}
+          {new Date(user.dateCreated).toLocaleString('default', {
+            month: 'long',
+          })}
+          , {new Date(user.dateCreated).getFullYear()}
+        </Typography>
+        <div
+          style={{
+            width: '50%',
+            borderBottom: '1px solid #474747',
+            margin: '10px',
+          }}
+        />
+
+        <Grid container justify='center' style={{ width: '75%' }} spacing={2}>
+          <Grid item md={3} xs={12} style={{ textAlign: 'center' }}>
+            <Button className={classes.actionButton} variant='contained'>
+              Edit Details
+            </Button>
+          </Grid>
+          <Grid item md={3} xs={12} style={{ textAlign: 'center' }}>
+            <Button className={classes.actionButton} variant='contained'>
+              Change Avatar
+            </Button>
+          </Grid>
+          <Grid item md={3} xs={12} style={{ textAlign: 'center' }}>
+            <Button className={classes.actionButton} variant='contained'>
+              Delete All Results
+            </Button>
+          </Grid>
+          <Grid item md={3} xs={12} style={{ textAlign: 'center' }}>
+            <Button className={classes.actionButton} variant='contained'>
+              Delete Account
+            </Button>
+          </Grid>
+        </Grid>
+      </div>
+
+      <div className={classes.resultView}>
+        <br />
+        <br />
+        <IconHeader text='Saved Results ' icon={TableChart} color='white' />
+
+        <Paper className={classes.paper}>
+          <Table style={{ minWidth: 700 }}>
+            <TableHead style={{ backgroundColor: colPrimary }}>
+              <TableRow>
+                <TableCell colSpan={1} />
                 <TableCell
                   align='center'
+                  className={classes.tableHeaderCell}
                   colSpan={5}
                   style={{ width: '350px' }}
                 >
-                  <Chip
-                    icon={<LocalOfferOutlined fontSize='small' />}
-                    label={result.searchValue}
-                    style={{ fontSize: '14px' }}
-                  />
+                  Search Value
                 </TableCell>
-                <TableCell align='center' colSpan={3}>
-                  <Chip
-                    icon={<DateRangeOutlined fontSize='small' />}
-                    label={result.searchDate}
-                    style={{ fontSize: '14px' }}
-                  />
+                <TableCell
+                  align='center'
+                  className={classes.tableHeaderCell}
+                  colSpan={3}
+                >
+                  <Grid
+                    container
+                    direction='row'
+                    justify='center'
+                    alignContent='center'
+                    alignItems='center'
+                  >
+                    Search Date
+                    {sortDirection === 'desc' ? (
+                      <IconButton
+                        size='small'
+                        style={{ marginLeft: '10px', color: 'white' }}
+                        onClick={() => setSortDirection('asc')}
+                      >
+                        <ArrowUpward />
+                      </IconButton>
+                    ) : (
+                      <IconButton
+                        size='small'
+                        style={{ marginLeft: '10px', color: 'white' }}
+                        onClick={() => setSortDirection('desc')}
+                      >
+                        <ArrowDownward />
+                      </IconButton>
+                    )}
+                  </Grid>
                 </TableCell>
-                <TableCell align='center' colSpan={3}>
-                  <IconButton
-                    style={{ color: colSecondary }}
-                    onClick={() => handleViewClick(result)}
-                  >
-                    <Visibility />
-                  </IconButton>
-                  <IconButton
-                    style={{ color: colError }}
-                    onClick={() => handleDeleteClick(result.id)}
-                  >
-                    <DeleteForever />
-                  </IconButton>
+                <TableCell
+                  align='center'
+                  className={classes.tableHeaderCell}
+                  colSpan={3}
+                >
+                  Actions
                 </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        <Grid container direction='row'>
-          <Grid item md={1} xs={0} />
-          <Grid
-            container
-            item
-            xs={12}
-            md={5}
-            justify={isMobile ? 'center' : 'flex-start'}
-            alignItems='center'
-          >
-            <Typography style={{ paddingRight: '20px', fontSize: '14px' }}>
-              Filter By:
-            </Typography>
-            <RadioGroup row onChange={handleRadioChange} value={sortBy}>
-              <FormControlLabel
-                classes={{
-                  label: classes.checkboxLabel,
-                }}
-                value='none'
-                control={
-                  <Radio style={{ color: colSecondary, padding: '3px' }} />
-                }
-                label='None'
+            </TableHead>
+            <TableBody>
+              {(rowsPerPage > 0
+                ? sorted.slice(
+                    page * rowsPerPage,
+                    page * rowsPerPage + rowsPerPage
+                  )
+                : sorted
+              ).map((result, index) => (
+                <TableRow key={index}>
+                  <TableCell align='center' colSpan={1}>
+                    <RenderIcon type={result.searchType} />
+                  </TableCell>
+                  <TableCell
+                    align='center'
+                    colSpan={5}
+                    style={{ width: '350px' }}
+                  >
+                    <Chip
+                      icon={<LocalOfferOutlined fontSize='small' />}
+                      label={result.searchValue}
+                      style={{ fontSize: '14px' }}
+                    />
+                  </TableCell>
+                  <TableCell align='center' colSpan={3}>
+                    <Chip
+                      icon={<DateRangeOutlined fontSize='small' />}
+                      label={result.searchDate}
+                      style={{ fontSize: '14px' }}
+                    />
+                  </TableCell>
+                  <TableCell align='center' colSpan={3}>
+                    <IconButton
+                      style={{ color: colSecondary }}
+                      onClick={() => handleViewClick(result)}
+                    >
+                      <Visibility />
+                    </IconButton>
+                    <IconButton
+                      style={{ color: colError }}
+                      onClick={() => handleDeleteClick(result.id)}
+                    >
+                      <DeleteForever />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <Grid container direction='row'>
+            <Grid item md={1} xs={0} />
+            <Grid
+              container
+              item
+              xs={12}
+              md={5}
+              justify={isMobile ? 'center' : 'flex-start'}
+              alignItems='center'
+            >
+              <Typography style={{ paddingRight: '20px', fontSize: '14px' }}>
+                Filter By:
+              </Typography>
+              <RadioGroup row onChange={handleRadioChange} value={sortBy}>
+                <FormControlLabel
+                  classes={{
+                    label: classes.checkboxLabel,
+                  }}
+                  value='none'
+                  control={
+                    <Radio style={{ color: colSecondary, padding: '3px' }} />
+                  }
+                  label='None'
+                />
+                <FormControlLabel
+                  classes={{
+                    label: classes.checkboxLabel,
+                  }}
+                  value='ip'
+                  control={
+                    <Radio style={{ color: colSecondary, padding: '3px' }} />
+                  }
+                  label='IP'
+                />
+                <FormControlLabel
+                  classes={{
+                    label: classes.checkboxLabel,
+                  }}
+                  value='hash'
+                  control={
+                    <Radio style={{ color: colSecondary, padding: '3px' }} />
+                  }
+                  label='Hash'
+                />
+                <FormControlLabel
+                  classes={{
+                    label: classes.checkboxLabel,
+                  }}
+                  value='domain'
+                  control={
+                    <Radio style={{ color: colSecondary, padding: '3px' }} />
+                  }
+                  label='Domain'
+                />
+              </RadioGroup>
+            </Grid>
+            <Grid
+              container
+              item
+              xs={12}
+              md={5}
+              justify={isMobile ? 'center' : 'flex-end'}
+            >
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                labelRowsPerPage='Rows Per Page'
+                component='div'
+                count={sorted.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
               />
-              <FormControlLabel
-                classes={{
-                  label: classes.checkboxLabel,
-                }}
-                value='ip'
-                control={
-                  <Radio style={{ color: colSecondary, padding: '3px' }} />
-                }
-                label='IP'
-              />
-              <FormControlLabel
-                classes={{
-                  label: classes.checkboxLabel,
-                }}
-                value='hash'
-                control={
-                  <Radio style={{ color: colSecondary, padding: '3px' }} />
-                }
-                label='Hash'
-              />
-              <FormControlLabel
-                classes={{
-                  label: classes.checkboxLabel,
-                }}
-                value='domain'
-                control={
-                  <Radio style={{ color: colSecondary, padding: '3px' }} />
-                }
-                label='Domain'
-              />
-            </RadioGroup>
+            </Grid>
+            <Grid item xs={0} md={1} />
           </Grid>
-          <Grid
-            container
-            item
-            xs={12}
-            md={5}
-            justify={isMobile ? 'center' : 'flex-end'}
-          >
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              labelRowsPerPage='Rows Per Page'
-              component='div'
-              count={sorted.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onChangePage={handleChangePage}
-              onChangeRowsPerPage={handleChangeRowsPerPage}
-            />
-          </Grid>
-          <Grid item xs={0} md={1} />
-        </Grid>
-      </Paper>
+        </Paper>
+      </div>
     </div>
   );
 };

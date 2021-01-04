@@ -46,7 +46,7 @@ router.post(
       let colors = ['63db83', '63c1db', 'db63ab', 'dbaf63'];
       let randCol = colors[Math.floor(Math.random() * colors.length)];
 
-      let avatar = `https://api.adorable.io/avatars/face/eyes${randNum}/nose${randNum}/mouth${randNum}/${randCol}/300`;
+      let avatar = `https://api.hello-avatar.com/adorables/face/eyes${randNum}/nose${randNum}/mouth${randNum}/${randCol}/300`;
 
       user = new User({
         username,

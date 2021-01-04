@@ -11,7 +11,7 @@ import { loadUser } from './actions/auth';
 import './App.css';
 import Profile from './components/profile/Profile';
 import PrivateRoute from './components/routing/PrivateRoute';
-import SavedResult from './components/profile/SavedResult';
+import SavedResult from './components/profile/ResultView';
 
 const App = () => {
   if (localStorage.token) {

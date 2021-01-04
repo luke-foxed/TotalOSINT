@@ -22,6 +22,7 @@ import {
   Typography,
   InputAdornment,
   Backdrop,
+  IconButton,
 } from '@material-ui/core';
 import {
   Search,
@@ -367,7 +368,12 @@ const Home = ({ setAlert, performSearch, saveResults }) => {
                 },
                 startAdornment: isMobile ? null : RenderIcon(selectedIndex),
                 endAdornment: isMobile ? (
-                  <Search style={{ color: 'white' }} />
+                  <IconButton
+                    style={{ color: colPrimary }}
+                    onClick={() => handleSearchClick()}
+                  >
+                    <Search style={{ color: 'white' }} />
+                  </IconButton>
                 ) : (
                   <Button
                     className={classes.searchButton}
