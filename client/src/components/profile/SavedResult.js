@@ -6,6 +6,9 @@ import { exportAsCSV } from '../../helpers/generalHelpers';
 import { IconHeader } from '../layout/IconHeader';
 import { ResultCards } from '../layout/ResultCards';
 import { Redirect, useLocation } from 'react-router-dom';
+import { deleteResult } from '../../actions/user';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles(() => ({
   actionButton: {
@@ -17,7 +20,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const SavedResult = () => {
+const SavedResult = ({ deleteResult }) => {
   const classes = useStyles();
 
   // pull result data from 'history.push'
@@ -55,7 +58,7 @@ const SavedResult = () => {
           variant='outlined'
           className={classes.actionButton}
           startIcon={<DeleteForever style={{ color: colError }} />}
-          onClick={() => alert('TO DELETE')}
+          onClick={() => deleteResult(result.id)}
         >
           Delete Results
         </Button>
@@ -72,4 +75,8 @@ const SavedResult = () => {
   );
 };
 
-export default SavedResult;
+SavedResult.propTypes = {
+  deleteResult: PropTypes.func.isRequired,
+};
+
+export default connect(null, { deleteResult })(SavedResult);

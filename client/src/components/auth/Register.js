@@ -17,6 +17,7 @@ import { Visibility, VisibilityOff, PersonAdd } from '@material-ui/icons';
 import { colPrimary, colSecondary } from '../../helpers/colors';
 import { register } from '../../actions/auth';
 import { IconHeader } from '../layout/IconHeader';
+import { isMobile } from 'react-device-detect';
 
 const CssTextField = withStyles({
   root: {
@@ -45,8 +46,8 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'column',
   },
   paper: {
-    padding: '50px',
-    width: '500px',
+    padding: '60px',
+    maxWidth: '500px',
     borderRadius: '15px',
   },
   registerButton: {

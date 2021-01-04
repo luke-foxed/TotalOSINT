@@ -10,6 +10,10 @@ import {
   Grid,
   TablePagination,
   Chip,
+  Typography,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
 } from '@material-ui/core';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -30,6 +34,7 @@ import {
   Visibility,
 } from '@material-ui/icons';
 import { IconHeader } from '../layout/IconHeader';
+import { isMobile } from 'react-device-detect';
 
 const useStyles = makeStyles(() => ({
   frame: {
@@ -56,6 +61,14 @@ const useStyles = makeStyles(() => ({
     color: 'white',
     fontSize: '20px',
   },
+  checkboxLabel: {
+    fontSize: '14px',
+    fontFamily: 'Quicksand',
+  },
+  radioButton: {
+    color: colSecondary,
+    padding: '3px',
+  },
 }));
 
 const Profile = ({ user, deleteResult }) => {
@@ -63,6 +76,7 @@ const Profile = ({ user, deleteResult }) => {
   const history = useHistory();
   const [userResults, setUserResults] = useState(user.savedResults);
   const [sortDirection, setSortDirection] = useState('asc');
+  const [sortBy, setSortBy] = useState('none');
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -97,6 +111,16 @@ const Profile = ({ user, deleteResult }) => {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+  };
+
+  const handleRadioChange = (event) => {
+    let sortType = event.target.value;
+    let sortedResults =
+      sortType === 'none'
+        ? user.savedResults
+        : user.savedResults.filter((item) => item.searchType === sortType);
+    setSortBy(event.target.value);
+    setUserResults(sortedResults);
   };
 
   const RenderIcon = ({ type }) => {
@@ -216,15 +240,82 @@ const Profile = ({ user, deleteResult }) => {
             ))}
           </TableBody>
         </Table>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component='div'
-          count={sorted.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
+        <Grid container direction='row'>
+          <Grid item md={1} xs={0} />
+          <Grid
+            container
+            item
+            xs={12}
+            md={5}
+            justify={isMobile ? 'center' : 'flex-start'}
+            alignItems='center'
+          >
+            <Typography style={{ paddingRight: '20px', fontSize: '14px' }}>
+              Filter By:
+            </Typography>
+            <RadioGroup row onChange={handleRadioChange} value={sortBy}>
+              <FormControlLabel
+                classes={{
+                  label: classes.checkboxLabel,
+                }}
+                value='none'
+                control={
+                  <Radio style={{ color: colSecondary, padding: '3px' }} />
+                }
+                label='None'
+              />
+              <FormControlLabel
+                classes={{
+                  label: classes.checkboxLabel,
+                }}
+                value='ip'
+                control={
+                  <Radio style={{ color: colSecondary, padding: '3px' }} />
+                }
+                label='IP'
+              />
+              <FormControlLabel
+                classes={{
+                  label: classes.checkboxLabel,
+                }}
+                value='hash'
+                control={
+                  <Radio style={{ color: colSecondary, padding: '3px' }} />
+                }
+                label='Hash'
+              />
+              <FormControlLabel
+                classes={{
+                  label: classes.checkboxLabel,
+                }}
+                value='domain'
+                control={
+                  <Radio style={{ color: colSecondary, padding: '3px' }} />
+                }
+                label='Domain'
+              />
+            </RadioGroup>
+          </Grid>
+          <Grid
+            container
+            item
+            xs={12}
+            md={5}
+            justify={isMobile ? 'center' : 'flex-end'}
+          >
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25]}
+              labelRowsPerPage='Rows Per Page'
+              component='div'
+              count={sorted.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onChangePage={handleChangePage}
+              onChangeRowsPerPage={handleChangeRowsPerPage}
+            />
+          </Grid>
+          <Grid item xs={0} md={1} />
+        </Grid>
       </Paper>
     </div>
   );

@@ -37,6 +37,7 @@ import { colPrimary, colSecondary } from '../../helpers/colors';
 import { ResultCards } from '../layout/ResultCards';
 import { exportAsCSV } from '../../helpers/generalHelpers';
 import { IconHeader } from '../layout/IconHeader';
+import { isMobile } from 'react-device-detect';
 
 /////////////////////
 
@@ -115,6 +116,7 @@ const useStyles = makeStyles(() => ({
   searchButton: {
     backgroundColor: colPrimary,
     height: '100%',
+    width: '10px !important',
     borderRadius: '15px',
     position: 'absolute',
     transition: 'all .2s ease-in-out',
@@ -133,7 +135,7 @@ const useStyles = makeStyles(() => ({
   },
   inputIcon: {
     color: 'white',
-    paddingRight: '10px',
+    padding: '5px',
   },
   tooltip: {
     color: colSecondary,
@@ -254,7 +256,9 @@ const Home = ({ setAlert, performSearch, saveResults }) => {
         return (
           <InputAdornment>
             <Language className={classes.inputIcon} />
-            <i style={{ paddingRight: '5px', color: colPrimary }}>www.</i>
+            {isMobile ? null : (
+              <i style={{ paddingRight: '5px', color: colPrimary }}>www.</i>
+            )}
           </InputAdornment>
         );
       case 1:
@@ -269,7 +273,7 @@ const Home = ({ setAlert, performSearch, saveResults }) => {
       <div
         className='home'
         style={{
-          width: '75%',
+          width: isMobile ? '100%' : '75%',
           margin: 'auto',
           maxHeight: `100vh`,
         }}
@@ -280,7 +284,7 @@ const Home = ({ setAlert, performSearch, saveResults }) => {
             margin: '80px',
             fontFamily: 'Yanone Kaffeesatz',
             color: 'white',
-            fontSize: '50px',
+            fontSize: isMobile ? '35px' : '50px',
           }}
         >
           ANY <b style={{ color: colPrimary }}>{result}</b>
@@ -291,9 +295,9 @@ const Home = ({ setAlert, performSearch, saveResults }) => {
           direction='row'
           alignItems='center'
           justify='center'
-          spacing={0}
+          spacing={isMobile ? 2 : 0}
         >
-          <Grid container item xs={3} sm={2} justify='center'>
+          <Grid container item xs={2} sm={2} justify='center'>
             <Button
               ref={anchorRef}
               color='primary'
@@ -301,13 +305,14 @@ const Home = ({ setAlert, performSearch, saveResults }) => {
               variant='contained'
               style={{
                 height: '55px',
-                width: '110px',
+                width: isMobile ? '80px' : '110px',
                 borderRadius: '15px',
                 backgroundColor: colPrimary,
+                fontSize: '15px',
               }}
               onClick={handleToggle}
             >
-              {options[selectedIndex]}
+              {isMobile ? RenderIcon(selectedIndex) : options[selectedIndex]}
               <ArrowDropDown />
             </Button>
             <Popper
@@ -360,8 +365,10 @@ const Home = ({ setAlert, performSearch, saveResults }) => {
                 classes: {
                   notchedOutline: classes.textBoxRadius,
                 },
-                startAdornment: RenderIcon(selectedIndex),
-                endAdornment: (
+                startAdornment: isMobile ? null : RenderIcon(selectedIndex),
+                endAdornment: isMobile ? (
+                  <Search style={{ color: 'white' }} />
+                ) : (
                   <Button
                     className={classes.searchButton}
                     onClick={() => handleSearchClick()}
