@@ -22,14 +22,17 @@ const useStyles = makeStyles(() => ({
 
 const SavedResult = ({ deleteResult }) => {
   const classes = useStyles();
-
-  // pull result data from 'history.push'
   const locationData = useLocation();
   const result = locationData.state;
 
   if (result === undefined) {
-    return <Redirect to='/' />;
+    return <Redirect to='/profile' />;
   }
+
+  const handleDeleteClick = (id) => {
+    deleteResult(id);
+    delete locationData.state;
+  };
 
   return (
     <div
@@ -58,7 +61,7 @@ const SavedResult = ({ deleteResult }) => {
           variant='outlined'
           className={classes.actionButton}
           startIcon={<DeleteForever style={{ color: colError }} />}
-          onClick={() => deleteResult(result.id)}
+          onClick={() => handleDeleteClick(result.id)}
         >
           Delete Results
         </Button>
