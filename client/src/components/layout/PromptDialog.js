@@ -42,9 +42,7 @@ export const PromptDialog = ({
           {title}
         </Typography>
       </DialogTitle>
-      <DialogContent dividers>
-        <Typography>{message}</Typography>
-      </DialogContent>
+      <DialogContent dividers>{message}</DialogContent>
       <DialogActions>
         <Button onClick={handleClose} style={{ color: colSecondary }}>
           Cancel

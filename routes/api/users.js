@@ -139,4 +139,19 @@ router.put('/delete-search', auth, async (req, res) => {
   }
 });
 
+router.put('/update-avatar', auth, async (req, res) => {
+  try {
+    let { newAvatar } = req.body;
+
+    await User.findByIdAndUpdate(req.user.id, {
+      $set: { avatar: newAvatar },
+    });
+
+    res.status(200).json({ msg: 'Avatar Updated' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ msg: 'Update Error' });
+  }
+});
+
 module.exports = router;

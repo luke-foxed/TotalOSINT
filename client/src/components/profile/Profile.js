@@ -15,12 +15,14 @@ import {
   RadioGroup,
   FormControlLabel,
   Button,
+  TextField,
+  Collapse,
 } from '@material-ui/core';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { colError, colPrimary, colSecondary } from '../../helpers/colors';
-import { deleteResult, deleteUser } from '../../actions/user';
+import { deleteResult, deleteUser, updateAvatar } from '../../actions/user';
 import PropTypes from 'prop-types';
 import {
   AccountCircle,
@@ -82,14 +84,19 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Profile = ({ user, deleteResult, deleteUser }) => {
+const Profile = ({ user, deleteResult, deleteUser, updateAvatar }) => {
   const classes = useStyles();
   const history = useHistory();
   const [userResults, setUserResults] = useState(user.savedResults);
+
   const [sortDirection, setSortDirection] = useState('asc');
   const [sortBy, setSortBy] = useState('none');
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [tempAvatar, setTempAvatar] = useState({
+    value: '',
+    isOpen: false,
+  });
   const [dialogParams, setDialogParams] = useState({
     open: false,
     title: '',
@@ -108,14 +115,22 @@ const Profile = ({ user, deleteResult, deleteUser }) => {
     }
   }, [userResults, sortDirection]);
 
+  const handleChangeAvatarClick = () => {
+    setTempAvatar({ isOpen: !tempAvatar.isOpen });
+  };
+
+  const handleAvatarSaveClick = () => {
+    updateAvatar(tempAvatar.value);
+    setTempAvatar({ isOpen: false });
+  };
+
   const handleDeleteAccountClick = () => {
     setDialogParams({
-      type: 'account',
       open: true,
       title: 'Delete Account',
-      message: 'Are you sure? This cannot be undone!',
+      message: <Typography>Are you sure? This cannot be undone!</Typography>,
       callback: () => {
-        alert('Deleting Account');
+        deleteUser();
       },
     });
   };
@@ -124,7 +139,11 @@ const Profile = ({ user, deleteResult, deleteUser }) => {
     setDialogParams({
       open: true,
       title: 'Delete All Results',
-      message: 'Are you sure? This cannot be undone!',
+      message: (
+        <Typography>
+          Are you sure? All below results will be deleted!
+        </Typography>
+      ),
       callback: () => {
         alert('Deleting Saves');
       },
@@ -210,18 +229,22 @@ const Profile = ({ user, deleteResult, deleteUser }) => {
           }}
         />
 
-        <Grid container justify='center' style={{ width: '75%' }} spacing={2}>
-          <Grid item md={3} xs={12} style={{ textAlign: 'center' }}>
-            <Button className={classes.actionButton} variant='outlined'>
-              Edit Details
-            </Button>
-          </Grid>
-          <Grid item md={3} xs={12} style={{ textAlign: 'center' }}>
-            <Button className={classes.actionButton} variant='outlined'>
+        <Grid
+          container
+          justify='center'
+          style={{ width: isMobile ? '100%' : '60%' }}
+          spacing={2}
+        >
+          <Grid item md={4} xs={12} style={{ textAlign: 'center' }}>
+            <Button
+              className={classes.actionButton}
+              variant='outlined'
+              onClick={() => handleChangeAvatarClick()}
+            >
               Change Avatar
             </Button>
           </Grid>
-          <Grid item md={3} xs={12} style={{ textAlign: 'center' }}>
+          <Grid item md={4} xs={12} style={{ textAlign: 'center' }}>
             <Button
               className={classes.actionButton}
               variant='outlined'
@@ -230,7 +253,7 @@ const Profile = ({ user, deleteResult, deleteUser }) => {
               Delete All Saves
             </Button>
           </Grid>
-          <Grid item md={3} xs={12} style={{ textAlign: 'center' }}>
+          <Grid item md={4} xs={12} style={{ textAlign: 'center' }}>
             <Button
               className={classes.actionButton}
               onClick={() => handleDeleteAccountClick()}
@@ -239,6 +262,45 @@ const Profile = ({ user, deleteResult, deleteUser }) => {
               Delete Account
             </Button>
           </Grid>
+
+          <Collapse
+            in={tempAvatar.isOpen}
+            style={{ width: '100%', margin: '20px' }}
+          >
+            <Grid item md={12} xs={12} style={{ textAlign: 'center' }}>
+              <Paper
+                style={{
+                  borderRadius: '15px',
+                  padding: '10px',
+                  borderBottom: '4px solid ' + colPrimary,
+                }}
+              >
+                <Typography
+                  style={{
+                    fontFamily: 'Quicksand',
+                    padding: '10px',
+                    fontSize: '20px',
+                  }}
+                >
+                  Enter URL
+                </Typography>
+                <TextField
+                  variant='outlined'
+                  size='small'
+                  fullWidth
+                  onChange={(e) =>
+                    setTempAvatar({ ...tempAvatar, value: e.target.value })
+                  }
+                />
+                <Button
+                  style={{ margin: '5px', color: colSecondary }}
+                  onClick={() => handleAvatarSaveClick()}
+                >
+                  Save
+                </Button>
+              </Paper>
+            </Grid>
+          </Collapse>
         </Grid>
       </div>
       <div className={classes.resultView}>
@@ -441,6 +503,7 @@ const Profile = ({ user, deleteResult, deleteUser }) => {
 Profile.propTypes = {
   deleteResult: PropTypes.func.isRequired,
   deleteUser: PropTypes.func.isRequired,
+  updateAvatar: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
   user: PropTypes.object,
 };
@@ -450,4 +513,8 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
 });
 
-export default connect(mapStateToProps, { deleteResult, deleteUser })(Profile);
+export default connect(mapStateToProps, {
+  deleteResult,
+  deleteUser,
+  updateAvatar,
+})(Profile);
