@@ -332,7 +332,7 @@ const Home = ({ setAlert, performSearch, saveResults }) => {
                 >
                   <Paper style={{ marginTop: '10px', borderRadius: '15px' }}>
                     <ClickAwayListener onClickAway={handleClose}>
-                      <MenuList id='split-button-menu'>
+                      <MenuList>
                         {options.map((option, index) => (
                           <MenuItem
                             key={option}

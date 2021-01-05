@@ -20,7 +20,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { colError, colPrimary, colSecondary } from '../../helpers/colors';
-import { deleteResult } from '../../actions/user';
+import { deleteResult, deleteUser } from '../../actions/user';
 import PropTypes from 'prop-types';
 import {
   AccountCircle,
@@ -37,6 +37,7 @@ import {
 } from '@material-ui/icons';
 import { IconHeader } from '../layout/IconHeader';
 import { isMobile } from 'react-device-detect';
+import { PromptDialog } from '../layout/PromptDialog';
 
 const useStyles = makeStyles(() => ({
   profileView: {
@@ -74,12 +75,14 @@ const useStyles = makeStyles(() => ({
     padding: '3px',
   },
   actionButton: {
-    width: '190px',
-    textAlign: 'center',
+    borderRadius: '15px',
+    width: '200px',
+    color: 'white',
+    border: 'solid 2px white',
   },
 }));
 
-const Profile = ({ user, deleteResult }) => {
+const Profile = ({ user, deleteResult, deleteUser }) => {
   const classes = useStyles();
   const history = useHistory();
   const [userResults, setUserResults] = useState(user.savedResults);
@@ -87,6 +90,12 @@ const Profile = ({ user, deleteResult }) => {
   const [sortBy, setSortBy] = useState('none');
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [dialogParams, setDialogParams] = useState({
+    open: false,
+    title: '',
+    message: '',
+    callback: () => {},
+  });
 
   const sorted = useMemo(() => {
     let sortedResults = userResults
@@ -99,6 +108,33 @@ const Profile = ({ user, deleteResult }) => {
     }
   }, [userResults, sortDirection]);
 
+  const handleDeleteAccountClick = () => {
+    setDialogParams({
+      type: 'account',
+      open: true,
+      title: 'Delete Account',
+      message: 'Are you sure? This cannot be undone!',
+      callback: () => {
+        alert('Deleting Account');
+      },
+    });
+  };
+
+  const handleDeleteAllResultsClick = () => {
+    setDialogParams({
+      open: true,
+      title: 'Delete All Results',
+      message: 'Are you sure? This cannot be undone!',
+      callback: () => {
+        alert('Deleting Saves');
+      },
+    });
+  };
+
+  const handleDialogClose = () => {
+    setDialogParams({ ...dialogParams, open: false });
+  };
+
   const handleViewClick = (result) => {
     let base64Result = btoa(result.searchValue);
     history.push({
@@ -107,7 +143,7 @@ const Profile = ({ user, deleteResult }) => {
     });
   };
 
-  const handleDeleteClick = (id) => {
+  const handleDeleteResultClick = (id) => {
     setUserResults(userResults.filter((item) => item.id !== id));
     deleteResult(id);
   };
@@ -176,28 +212,35 @@ const Profile = ({ user, deleteResult }) => {
 
         <Grid container justify='center' style={{ width: '75%' }} spacing={2}>
           <Grid item md={3} xs={12} style={{ textAlign: 'center' }}>
-            <Button className={classes.actionButton} variant='contained'>
+            <Button className={classes.actionButton} variant='outlined'>
               Edit Details
             </Button>
           </Grid>
           <Grid item md={3} xs={12} style={{ textAlign: 'center' }}>
-            <Button className={classes.actionButton} variant='contained'>
+            <Button className={classes.actionButton} variant='outlined'>
               Change Avatar
             </Button>
           </Grid>
           <Grid item md={3} xs={12} style={{ textAlign: 'center' }}>
-            <Button className={classes.actionButton} variant='contained'>
-              Delete All Results
+            <Button
+              className={classes.actionButton}
+              variant='outlined'
+              onClick={() => handleDeleteAllResultsClick()}
+            >
+              Delete All Saves
             </Button>
           </Grid>
           <Grid item md={3} xs={12} style={{ textAlign: 'center' }}>
-            <Button className={classes.actionButton} variant='contained'>
+            <Button
+              className={classes.actionButton}
+              onClick={() => handleDeleteAccountClick()}
+              variant='outlined'
+            >
               Delete Account
             </Button>
           </Grid>
         </Grid>
       </div>
-
       <div className={classes.resultView}>
         <br />
         <br />
@@ -296,7 +339,7 @@ const Profile = ({ user, deleteResult }) => {
                     </IconButton>
                     <IconButton
                       style={{ color: colError }}
-                      onClick={() => handleDeleteClick(result.id)}
+                      onClick={() => handleDeleteResultClick(result.id)}
                     >
                       <DeleteForever />
                     </IconButton>
@@ -383,12 +426,21 @@ const Profile = ({ user, deleteResult }) => {
           </Grid>
         </Paper>
       </div>
+
+      <PromptDialog
+        open={dialogParams.open}
+        title={dialogParams.title}
+        message={dialogParams.message}
+        onConfirm={dialogParams.callback}
+        handleClose={handleDialogClose}
+      />
     </div>
   );
 };
 
 Profile.propTypes = {
   deleteResult: PropTypes.func.isRequired,
+  deleteUser: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
   user: PropTypes.object,
 };
@@ -398,4 +450,4 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
 });
 
-export default connect(mapStateToProps, { deleteResult })(Profile);
+export default connect(mapStateToProps, { deleteResult, deleteUser })(Profile);
