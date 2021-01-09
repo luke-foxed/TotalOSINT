@@ -7,6 +7,11 @@ const config = require('config');
 const { check, validationResult } = require('express-validator');
 const User = require('../../models/User');
 
+require('dotenv').config();
+
+// const jwtSecret = config.get('jwtSecret')
+const jwtSecret = process.env.jwtSecret;
+
 /**
  * @route    GET api/auth/
  * @desc     Authenticates user
@@ -67,18 +72,12 @@ router.post(
         },
       };
 
-      jwt.sign(
-        payload,
-        config.get('jwtSecret'),
-        { expiresIn: 360000 },
-        (err, token) => {
-          if (err) throw err;
-          res.json(token);
-        }
-      );
+      jwt.sign(payload, jwtSecret, { expiresIn: 360000 }, (err, token) => {
+        if (err) throw err;
+        res.json(token);
+      });
     } catch (err) {
       console.error(err.message);
-      console.log('HERE');
       return res.status(500).send('Server error');
     }
   }

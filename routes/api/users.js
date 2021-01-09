@@ -6,8 +6,12 @@ const auth = require('../../middleware/auth');
 const jwt = require('jsonwebtoken');
 const uuid = require('uuid');
 const { check, validationResult } = require('express-validator');
-
 const User = require('../../models/User');
+
+require('dotenv').config();
+
+// const jwtSecret = config.get('jwtSecret')
+const jwtSecret = process.env.jwtSecret;
 
 // create user
 router.post(
@@ -69,7 +73,7 @@ router.post(
 
       jwt.sign(
         payload,
-        config.get('jwtSecret'),
+        jwtSecret
         { expiresIn: '2h' },
         (err, token) => {
           if (err) throw err;

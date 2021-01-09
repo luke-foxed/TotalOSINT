@@ -1,6 +1,9 @@
 const axios = require('axios');
 const config = require('config');
-const apiKey = config.get('whoisKey');
+require('dotenv').config();
+
+// const apiKey = config.get('whoisKey');
+const apiKey = process.env.whoisKey;
 
 const getWhoIs = async (type, query) => {
   try {

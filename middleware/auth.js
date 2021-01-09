@@ -1,6 +1,9 @@
 const jwt = require('jsonwebtoken');
 const config = require('config');
+require('dotenv').config();
 
+// const jwtSecret = config.get('jwtSecret')
+const jwtSecret = process.env.jwtSecret;
 /**
  * Middleware to authenticate user, if token exists then contiue with request
  */
@@ -13,7 +16,7 @@ module.exports = async function (req, res, next) {
   }
 
   try {
-    let decoded = jwt.verify(authToken, config.get('jwtSecret'));
+    let decoded = jwt.verify(authToken, jwtSecret);
     req.user = decoded.user;
     next();
   } catch (err) {
