@@ -1,21 +1,7 @@
 import React from 'react';
-import { Grid, Button, makeStyles, Typography } from '@material-ui/core';
-import {
-  Search,
-  DeleteForever,
-  TableChart,
-  Done,
-  Help,
-  Build,
-} from '@material-ui/icons';
-import { colError, colSecondary } from '../../helpers/colors';
-import { exportAsCSV } from '../../helpers/generalHelpers';
+import { makeStyles, Typography } from '@material-ui/core';
+import { Done, Help, Build } from '@material-ui/icons';
 import { IconHeader } from '../layout/IconHeader';
-import { ResultCards } from '../layout/ResultCards';
-import { Redirect, useLocation } from 'react-router-dom';
-import { deleteResult } from '../../actions/user';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 
 const useStyles = makeStyles(() => ({
   actionButton: {

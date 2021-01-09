@@ -14,10 +14,9 @@ import {
 } from '@material-ui/core';
 import { Redirect } from 'react-router-dom';
 import { Visibility, VisibilityOff, PersonAdd } from '@material-ui/icons';
-import { colPrimary, colSecondary } from '../../helpers/colors';
+import { colPrimary } from '../../helpers/colors';
 import { register } from '../../actions/auth';
 import { IconHeader } from '../layout/IconHeader';
-import { isMobile } from 'react-device-detect';
 
 const CssTextField = withStyles({
   root: {
@@ -44,6 +43,7 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
+    height: '75vh',
   },
   paper: {
     padding: '60px',

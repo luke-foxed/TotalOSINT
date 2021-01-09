@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { Grid, Grow } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { FavoriteOutlined } from '@material-ui/icons';
 import { colPrimary } from '../../helpers/colors';
 import { Link } from 'react-router-dom';
