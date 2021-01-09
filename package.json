@@ -1,5 +1,5 @@
 {
-  "name": "gamecatch",
+  "name": "totalosint",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Foxyf76/GameCatch.git"
+    "url": "git+https://github.com/Foxyf76/TotalOSINT.git"
   },
   "author": "Luke Fox",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Foxyf76/GameCatch/issues"
+    "url": "https://github.com/Foxyf76/TotalOSINT/issues"
   },
-  "homepage": "https://github.com/Foxyf76/GameCatch#readme",
+  "homepage": "https://github.com/Foxyf76/TotalOSINT#readme",
   "dependencies": {
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",

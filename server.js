@@ -21,6 +21,8 @@ app.use('/api/users', require('./routes/api/users'));
 app.use('/api/scrape', require('./routes/api/scrape'));
 
 if (process.env.NODE_ENV === 'production') {
+  console.log('USING STATIC');
+
   // Set static folder
   app.use(express.static('client/build'));
 
