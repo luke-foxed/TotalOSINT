@@ -22,7 +22,12 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { colError, colPrimary, colSecondary } from '../../helpers/colors';
-import { deleteResult, deleteUser, updateAvatar } from '../../actions/user';
+import {
+  deleteAllResults,
+  deleteResult,
+  deleteUser,
+  updateAvatar,
+} from '../../actions/user';
 import PropTypes from 'prop-types';
 import {
   AccountCircle,
@@ -84,7 +89,13 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Profile = ({ user, deleteResult, deleteUser, updateAvatar }) => {
+const Profile = ({
+  user,
+  deleteResult,
+  deleteAllResults,
+  deleteUser,
+  updateAvatar,
+}) => {
   const classes = useStyles();
   const history = useHistory();
   const [userResults, setUserResults] = useState(user.savedResults);
@@ -145,7 +156,8 @@ const Profile = ({ user, deleteResult, deleteUser, updateAvatar }) => {
         </Typography>
       ),
       callback: () => {
-        alert('Deleting Saves');
+        deleteAllResults();
+        setUserResults([]);
       },
     });
   };
@@ -198,7 +210,7 @@ const Profile = ({ user, deleteResult, deleteUser, updateAvatar }) => {
   };
 
   return (
-    <div>
+    <div style={{ minHeight: '75vh' }}>
       <div className={classes.profileView} style={{ width: '75%' }}>
         <IconHeader text='My Profile ' icon={AccountCircle} color='white' />
 
@@ -502,6 +514,7 @@ const Profile = ({ user, deleteResult, deleteUser, updateAvatar }) => {
 
 Profile.propTypes = {
   deleteResult: PropTypes.func.isRequired,
+  deleteAllResults: PropTypes.func.isRequired,
   deleteUser: PropTypes.func.isRequired,
   updateAvatar: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
@@ -515,6 +528,7 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
   deleteResult,
+  deleteAllResults,
   deleteUser,
   updateAvatar,
 })(Profile);

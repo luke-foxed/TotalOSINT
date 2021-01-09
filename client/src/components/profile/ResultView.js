@@ -39,7 +39,7 @@ const SavedResult = ({ deleteResult }) => {
       style={{
         width: '80%',
         margin: 'auto',
-
+        height: '75vh',
         paddingTop: '20px',
       }}
     >

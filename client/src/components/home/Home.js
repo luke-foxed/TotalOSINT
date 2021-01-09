@@ -330,7 +330,7 @@ const Home = ({ setAlert, performSearch, saveResults }) => {
             border: '1px solid #d1d1d1',
             backgroundColor: '#d1d1d1',
             width: '100px',
-            marginTop: '220px',
+            marginTop: '120px',
           }}
         />
         <Grid

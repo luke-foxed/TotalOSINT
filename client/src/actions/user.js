@@ -17,8 +17,19 @@ export const saveResults = (results) => async (dispatch) => {
 
 export const deleteResult = (id) => async (dispatch) => {
   try {
-    await axios.put('/api/users/delete-search', { searchID: id });
-    dispatch(setAlert('Search Deleted', 'success'));
+    let res = await axios.put('/api/users/delete-search', { searchID: id });
+    dispatch(setAlert(res.data.msg, 'success'));
+    dispatch(loadUser());
+  } catch (err) {
+    console.error(err);
+    dispatch(setAlert(err.response.data.msg, 'error'));
+  }
+};
+
+export const deleteAllResults = () => async (dispatch) => {
+  try {
+    let res = await axios.put('/api/users/delete-all-searches');
+    dispatch(setAlert(res.data.msg, 'success'));
     dispatch(loadUser());
   } catch (err) {
     console.error(err);
