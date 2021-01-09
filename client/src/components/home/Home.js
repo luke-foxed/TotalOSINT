@@ -276,7 +276,7 @@ const Home = ({ setAlert, performSearch, saveResults }) => {
         style={{
           width: isMobile ? '100%' : '75%',
           margin: 'auto',
-          maxHeight: `100vh`,
+          height: `70vh`,
         }}
       >
         <Typography
@@ -441,14 +441,12 @@ const Home = ({ setAlert, performSearch, saveResults }) => {
           <ScaleLoader size={35} color={colPrimary} loading={isLoading} />
         </Backdrop>
       </div>
-
       {Object.keys(searchResults).length !== 0 && !isLoading && (
         <div
           className='results'
           style={{
             width: '80%',
             margin: 'auto',
-            height: '100vh',
           }}
         >
           <div style={{ paddingTop: '180px' }} />

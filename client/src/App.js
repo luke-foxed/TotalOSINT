@@ -12,6 +12,7 @@ import './App.css';
 import Profile from './components/profile/Profile';
 import PrivateRoute from './components/routing/PrivateRoute';
 import SavedResult from './components/profile/ResultView';
+import Footer from './components/layout/Footer';
 
 const App = () => {
   if (localStorage.token) {
@@ -34,6 +35,7 @@ const App = () => {
             <PrivateRoute path='/saved/:value' component={SavedResult} />
             <PrivateRoute exact path='/profile' component={Profile} />
           </Switch>
+          <Footer />
         </Fragment>
       </Router>
     </Provider>
