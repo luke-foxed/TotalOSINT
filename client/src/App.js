@@ -13,6 +13,7 @@ import Profile from './components/profile/Profile';
 import PrivateRoute from './components/routing/PrivateRoute';
 import SavedResult from './components/profile/ResultView';
 import Footer from './components/layout/Footer';
+import About from './components/about/About';
 
 const App = () => {
   if (localStorage.token) {
@@ -32,6 +33,7 @@ const App = () => {
           <Switch>
             <Route exact path='/' component={Home} />
             <Route exact path='/register' component={Register} />
+            <Route exact path='/about' component={About} />
             <PrivateRoute path='/saved/:value' component={SavedResult} />
             <PrivateRoute exact path='/profile' component={Profile} />
           </Switch>

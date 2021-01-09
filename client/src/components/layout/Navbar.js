@@ -14,10 +14,16 @@ import PropTypes from 'prop-types';
 import { Grid, Grow } from '@material-ui/core';
 import { Spin as Hamburger } from 'hamburger-react';
 import { Link } from 'react-router-dom';
+import { isMobile } from 'react-device-detect';
 
 const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
+  },
+  username: {
+    fontFamily: 'Yanone Kaffeesatz',
+    fontSize: '25px',
+    textTransform: 'uppercase',
   },
 }));
 
@@ -59,7 +65,7 @@ const Navbar = ({ login, setAlert, user, isAuthenticated, logout }) => {
       >
         <Toolbar
           style={{
-            width: '70%',
+            width: isMobile ? '100%' : '70%',
             margin: 'auto',
           }}
         >
@@ -70,18 +76,21 @@ const Navbar = ({ login, setAlert, user, isAuthenticated, logout }) => {
             justify='center'
             direction='row'
           >
-            <Grid item xs={2}>
+            <Grid item xs={2} sm={2}>
               <Link to='/'>
-                <img src={require('../../assets/logo.png')} height={80} />
+                <img
+                  src={require('../../assets/logo.png')}
+                  height={isMobile ? 60 : 80}
+                />
               </Link>
             </Grid>
 
-            <Grid item xs={5} />
+            <Grid item xs={4} sm={5} />
 
-            <Grid item xs={4}>
+            <Grid item xs={1} sm={4}>
               {isAuthenticated & (user != null) ? (
                 <Grid container justify='flex-end'>
-                  <Typography style={{ padding: '10px' }}>
+                  <Typography className={classes.username}>
                     {user.username}
                   </Typography>
                 </Grid>
@@ -93,7 +102,13 @@ const Navbar = ({ login, setAlert, user, isAuthenticated, logout }) => {
                 </Grid>
               )}
             </Grid>
-            <Grid container xs={1} justify='center'>
+            <Grid
+              container
+              xs={4}
+              sm={1}
+              justify='center'
+              style={{ marginRight: isMobile ? '10px' : 0 }}
+            >
               <Button size='small' onClick={handleClick}>
                 <Hamburger size={25} toggled={open} color='white' />
               </Button>
@@ -116,7 +131,14 @@ const Navbar = ({ login, setAlert, user, isAuthenticated, logout }) => {
                   </Link>
                 </MenuItem>
 
-                <MenuItem onClick={handleClose}>About</MenuItem>
+                <MenuItem onClick={handleClose}>
+                  <Link
+                    to='/about'
+                    style={{ textDecoration: 'none', color: 'black' }}
+                  >
+                    About
+                  </Link>
+                </MenuItem>
                 <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
               </Menu>
             </Grid>
