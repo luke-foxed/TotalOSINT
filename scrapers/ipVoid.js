@@ -4,7 +4,10 @@ const searchIPVoid = async (value) => {
   const defaultTimeout = { timeout: 6000 };
 
   try {
-    let browser = await puppeteer.launch({ headless: true });
+    let browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox'],
+    });
     let page = await browser.newPage();
 
     await page.setViewport({ width: 1366, height: 768 });

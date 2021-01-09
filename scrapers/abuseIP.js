@@ -3,7 +3,10 @@ const puppeteer = require('puppeteer');
 const searchAbuseIP = async (value) => {
   const defaultTimeout = { timeout: 5000 };
   try {
-    let browser = await puppeteer.launch({ headless: true });
+    let browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox'],
+    });
     let page = await browser.newPage();
 
     await page.setViewport({ width: 1366, height: 768 });
