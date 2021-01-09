@@ -86,7 +86,7 @@ const searchXForce = async (searchType, value) => {
             details: {
               url: page.url(),
               family: tableData[3],
-              firstSeen: tableData[1],
+              first_seen: tableData[1],
               type: tableData[4],
             },
           };
