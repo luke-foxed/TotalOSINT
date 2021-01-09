@@ -227,13 +227,7 @@ const Home = ({ setAlert, performSearch, saveResults }) => {
           ANY <b style={{ color: colPrimary }}>{result}</b>
         </Typography>
 
-        <Grid
-          container
-          direction='row'
-          alignItems='center'
-          justify='center'
-          spacing={isMobile ? 2 : 0}
-        >
+        <Grid container direction='row' alignItems='center' justify='center'>
           <Grid container item xs={2} sm={2} justify='center'>
             <Button
               ref={anchorRef}
@@ -242,7 +236,6 @@ const Home = ({ setAlert, performSearch, saveResults }) => {
               variant='contained'
               style={{
                 height: '55px',
-                width: isMobile ? '80px' : '110px',
                 borderRadius: '15px',
                 backgroundColor: colPrimary,
                 fontSize: '15px',
@@ -290,8 +283,9 @@ const Home = ({ setAlert, performSearch, saveResults }) => {
 
           <Grid container item xs={9} sm={10} justify='center'>
             <CssTextField
+              // style={{ width: isMobile ? '100%' : '100%' }}
+              fullWidth
               variant='outlined'
-              style={{ width: '100%' }}
               onInput={(e) => {
                 setValue(e.target.value);
               }}
@@ -339,7 +333,6 @@ const Home = ({ setAlert, performSearch, saveResults }) => {
           alignContent='center'
           alignItems='center'
           justify='center'
-          spacing={4}
           style={{ marginTop: '5px' }}
         >
           <img

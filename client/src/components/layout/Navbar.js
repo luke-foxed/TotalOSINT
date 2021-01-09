@@ -65,13 +65,14 @@ const Navbar = ({ login, setAlert, user, isAuthenticated, logout }) => {
       >
         <Toolbar
           style={{
-            width: isMobile ? '100%' : '70%',
+            width: isMobile ? '90%' : '70%',
             margin: 'auto',
+            textAlign: 'center',
           }}
         >
           <Grid
             container
-            spacing={0}
+            spacing={1}
             alignItems='center'
             justify='center'
             direction='row'
@@ -85,7 +86,7 @@ const Navbar = ({ login, setAlert, user, isAuthenticated, logout }) => {
               </Link>
             </Grid>
 
-            <Grid item xs={4} sm={5} />
+            <Grid item xs={5} sm={4} />
 
             <Grid item xs={1} sm={4}>
               {isAuthenticated & (user != null) ? (
@@ -104,10 +105,10 @@ const Navbar = ({ login, setAlert, user, isAuthenticated, logout }) => {
             </Grid>
             <Grid
               container
-              xs={4}
-              sm={1}
+              xs={3}
+              sm={2}
               justify='center'
-              style={{ marginRight: isMobile ? '10px' : 0 }}
+              style={{ marginRight: isMobile ? '0px' : 0 }}
             >
               <Button size='small' onClick={handleClick}>
                 <Hamburger size={25} toggled={open} color='white' />

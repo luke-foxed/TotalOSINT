@@ -71,7 +71,7 @@ const useStyles = makeStyles(() => ({
   tableHeaderCell: {
     fontFamily: 'Quicksand',
     color: 'white',
-    fontSize: '20px',
+    fontSize: '16px',
   },
   checkboxLabel: {
     fontSize: '14px',
@@ -352,7 +352,7 @@ const Profile = ({
                         style={{ marginLeft: '10px', color: 'white' }}
                         onClick={() => setSortDirection('asc')}
                       >
-                        <ArrowUpward />
+                        <ArrowUpward fontSize='small' />
                       </IconButton>
                     ) : (
                       <IconButton

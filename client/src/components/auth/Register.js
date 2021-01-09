@@ -17,6 +17,7 @@ import { Visibility, VisibilityOff, PersonAdd } from '@material-ui/icons';
 import { colPrimary } from '../../helpers/colors';
 import { register } from '../../actions/auth';
 import { IconHeader } from '../layout/IconHeader';
+import { isMobile } from 'react-device-detect';
 
 const CssTextField = withStyles({
   root: {
@@ -46,8 +47,8 @@ const useStyles = makeStyles(() => ({
     height: '75vh',
   },
   paper: {
-    padding: '60px',
-    maxWidth: '500px',
+    padding: '30px',
+
     borderRadius: '15px',
   },
   registerButton: {
@@ -91,7 +92,11 @@ const Register = ({ setAlert, isAuthenticated, register }) => {
 
   return (
     <div className={classes.frame}>
-      <Paper elevation={3} className={classes.paper}>
+      <Paper
+        elevation={3}
+        className={classes.paper}
+        style={{ width: isMobile ? '300px' : '500px' }}
+      >
         <IconHeader text='Create An Account' icon={PersonAdd} color='black' />
 
         <FormGroup onSubmit={(e) => e.preventDefault()}>

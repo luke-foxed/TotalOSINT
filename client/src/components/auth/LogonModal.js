@@ -16,6 +16,7 @@ import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { colPrimary, colSecondary } from '../../helpers/colors';
 import { Close } from '@material-ui/icons';
+import { isMobile } from 'react-device-detect';
 
 const useStyles = makeStyles(() => ({
   modal: {
@@ -25,7 +26,6 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'column',
   },
   paper: {
-    width: '500px',
     position: 'relative',
     outline: 'none',
     textAlign: 'center',
@@ -67,7 +67,11 @@ export const LogonModal = ({ onCloseClick, onLogonClick, onSetAlert }) => {
       }}
     >
       <Fade in={true}>
-        <Paper className={classes.paper} elevation={2}>
+        <Paper
+          className={classes.paper}
+          elevation={2}
+          style={{ width: isMobile ? '300px' : '500px' }}
+        >
           <FontAwesomeIcon
             icon={faLock}
             style={{
