@@ -13,7 +13,11 @@ This returned information can then be saved and viewed at any time.
 
 Give it a try here: https://totalosint.herokuapp.com/
 
-Screenshots:
+## Notes
+- The scrapers used in this app are prone to failing, sometimes just retrying a search is enough to fix this. If any of these scrapers break due to changes in page structure/HTML, I will try to fix them as soon as possible.
+- Saved results from the scraped websites in this app are not and should not be used for commercial purposes. The save functionality only exists as a means of gathering a history on search artifacts (e.g. the search results returned on the same IP a few months apart may be different if this IP was engaged in malicious activity.
+
+## Screenshots:
 
 ![](https://i.imgur.com/KIrdVhw.png)
 
@@ -22,3 +26,5 @@ Screenshots:
 ![](https://i.imgur.com/0k8oOZR.png)
 
 ![](https://i.imgur.com/trDyXvn.jpg)
+
+
