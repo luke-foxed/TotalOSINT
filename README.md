@@ -14,3 +14,11 @@ This returned information can then be saved and viewed at any time.
 Give it a try here: https://totalosint.herokuapp.com/
 
 Screenshots:
+
+![](https://i.imgur.com/KIrdVhw.png)
+
+![](https://i.imgur.com/0tcgzHv.png)
+
+![](https://i.imgur.com/0k8oOZR.png)
+
+![](https://i.imgur.com/trDyXvn.jpg)
