@@ -67,20 +67,44 @@ router.post('/scrape-all', async (req, res) => {
 
   switch (req.body.type) {
     case 'hash': {
-      cluster.queue(async () => {
+      // cluster.queue(() => {
+      //   results['metadefender'] = searchMetadefender(
+      //     req.body.type,
+      //     req.body.value
+      //   );
+      // });
+
+      cluster.queue(async ({ page }) => {
         results['metadefender'] = await searchMetadefender(
+          page,
           req.body.type,
           req.body.value
         );
       });
 
-      cluster.queue(async () => {
-        results['virustotal'] = await searchVT(req.body.type, req.body.value);
+      cluster.queue(async ({ page }) => {
+        results['virustotal'] = await searchVT(
+          page,
+          req.body.type,
+          req.body.value
+        );
       });
 
-      cluster.queue(async () => {
-        results['xforce'] = await searchXForce(req.body.type, req.body.value);
+      cluster.queue(async ({ page }) => {
+        results['xforce'] = await searchXForce(
+          page,
+          req.body.type,
+          req.body.value
+        );
       });
+
+      // cluster.queue(async () => {
+      //   results['virustotal'] = await searchVT(req.body.type, req.body.value);
+      // });
+
+      // cluster.queue(async () => {
+      //   results['xforce'] = await searchXForce(req.body.type, req.body.value);
+      // });
 
       await cluster.idle();
       await cluster.close();

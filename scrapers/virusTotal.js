@@ -35,7 +35,7 @@ const getDetails = async (page) => {
   }
 };
 
-const searchVT = async (searchType, value) => {
+const searchVT = async (page, searchType, value) => {
   // setup custom handler for accessing shadow dom
   await puppeteer.__experimental_registerCustomQueryHandler(
     'shadow',
@@ -43,17 +43,6 @@ const searchVT = async (searchType, value) => {
   );
 
   try {
-    let browser = await puppeteer.launch({
-      headless: true,
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--no-zygote',
-        '--disable-dev-shm-usage',
-        // '--single-process',
-      ],
-    });
-    let page = await browser.newPage();
     await page.setViewport({ width: 1366, height: 768 });
 
     // data to be returned
@@ -100,7 +89,6 @@ const searchVT = async (searchType, value) => {
           },
         };
 
-        await browser.close();
         break;
 
       case 'domain':

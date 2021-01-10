@@ -1,20 +1,8 @@
 const puppeteer = require('puppeteer');
 
-const searchMetadefender = async (searchType, value) => {
+const searchMetadefender = async (page, searchType, value) => {
   const defaultTimeout = { timeout: 6000 };
   try {
-    let browser = await puppeteer.launch({
-      headless: true,
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--no-zygote',
-        '--disable-dev-shm-usage',
-        // '--single-process',
-      ],
-    });
-    let page = await browser.newPage();
-
     await page.setViewport({ width: 1366, height: 768 });
 
     switch (searchType) {
@@ -38,8 +26,6 @@ const searchMetadefender = async (searchType, value) => {
           }
           return labels.split('\n')[0].replace(',', '');
         });
-
-        await browser.close();
 
         let ipScoreFormatted = {
           detections: ipScore.split('/')[0],
@@ -68,7 +54,7 @@ const searchMetadefender = async (searchType, value) => {
           return labels.split('\n')[0].replace(',', '');
         });
 
-        await browser.close();
+        // await browser.close();
 
         let hashScoreFormatted = {
           detections: hashScore.split('/')[0],
