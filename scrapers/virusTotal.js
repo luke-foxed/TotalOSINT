@@ -45,7 +45,13 @@ const searchVT = async (searchType, value) => {
   try {
     let browser = await puppeteer.launch({
       headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox', '--no-zygote'],
+      args: [
+        // '--no-sandbox',
+        // '--disable-setuid-sandbox',
+        // '--no-zygote',
+        // '--disable-dev-shm-usage',
+        // '--single-process',
+      ],
     });
     let page = await browser.newPage();
     await page.setViewport({ width: 1366, height: 768 });

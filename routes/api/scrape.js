@@ -55,7 +55,13 @@ router.post('/scrape-all', async (req, res) => {
     maxConcurrency: 5,
     puppeteerOptions: {
       headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox', '--no-zygote'],
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--no-zygote',
+        '--disable-dev-shm-usage',
+        // '--single-process',
+      ],
     },
   });
 
