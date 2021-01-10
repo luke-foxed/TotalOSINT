@@ -239,6 +239,7 @@ const Home = ({ setAlert, performSearch, saveResults }) => {
                 borderRadius: '15px',
                 backgroundColor: colPrimary,
                 fontSize: '15px',
+                width: '100px',
               }}
               onClick={handleToggle}
             >

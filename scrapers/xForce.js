@@ -90,6 +90,8 @@ const searchXForce = async (page, searchType, value) => {
           };
         }
 
+        return hashResults;
+
       default:
         break;
     }

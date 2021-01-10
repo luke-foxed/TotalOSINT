@@ -46,6 +46,7 @@ import {
 import { IconHeader } from '../layout/IconHeader';
 import { isMobile } from 'react-device-detect';
 import { PromptDialog } from '../layout/PromptDialog';
+import { setAlert } from '../../actions/alert';
 
 const useStyles = makeStyles(() => ({
   profileView: {
@@ -95,6 +96,7 @@ const Profile = ({
   deleteResult,
   deleteAllResults,
   deleteUser,
+  setAlert,
   updateAvatar,
 }) => {
   const classes = useStyles();
@@ -128,12 +130,21 @@ const Profile = ({
   }, [userResults, sortDirection]);
 
   const handleChangeAvatarClick = () => {
-    setTempAvatar({ isOpen: !tempAvatar.isOpen });
+    setTempAvatar({ ...tempAvatar, isOpen: !tempAvatar.isOpen });
   };
 
+  console.log(tempAvatar.value);
+
   const handleAvatarSaveClick = () => {
-    updateAvatar(tempAvatar.value);
-    setTempAvatar({ isOpen: false });
+    if (
+      tempAvatar.value !== '' &&
+      tempAvatar.value.match(/\.(jpeg|jpg|gif|png)$/) != null
+    ) {
+      updateAvatar(tempAvatar.value);
+      setTempAvatar({ isOpen: false });
+    } else {
+      setAlert('Please enter a valid image URL!', 'error');
+    }
   };
 
   const handleDeleteAccountClick = () => {
@@ -392,7 +403,7 @@ const Profile = ({
                     colSpan={5}
                     style={{ width: '350px' }}
                   >
-                    <Tooltip title={result.value}>
+                    <Tooltip title={result.searchValue}>
                       <Chip
                         icon={<LocalOfferOutlined fontSize='small' />}
                         label={result.searchValue}
@@ -519,6 +530,7 @@ Profile.propTypes = {
   deleteResult: PropTypes.func.isRequired,
   deleteAllResults: PropTypes.func.isRequired,
   deleteUser: PropTypes.func.isRequired,
+  setAlert: PropTypes.func.isRequired,
   updateAvatar: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
   user: PropTypes.object,
@@ -534,4 +546,5 @@ export default connect(mapStateToProps, {
   deleteAllResults,
   deleteUser,
   updateAvatar,
+  setAlert,
 })(Profile);
