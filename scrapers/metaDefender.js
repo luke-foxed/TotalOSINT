@@ -1,5 +1,3 @@
-const puppeteer = require('puppeteer');
-
 const searchMetadefender = async (page, searchType, value) => {
   const defaultTimeout = { timeout: 6000 };
   try {
@@ -54,8 +52,6 @@ const searchMetadefender = async (page, searchType, value) => {
           return labels.split('\n')[0].replace(',', '');
         });
 
-        // await browser.close();
-
         let hashScoreFormatted = {
           detections: hashScore.split('/')[0],
           engines: hashScore.split('/')[1],
@@ -85,8 +81,6 @@ const searchMetadefender = async (page, searchType, value) => {
           }
           return labels.split('\n')[0].replace(',', '');
         });
-
-        await browser.close();
 
         let domainScoreFormatted = {
           detections: dominScore.split('/')[0],

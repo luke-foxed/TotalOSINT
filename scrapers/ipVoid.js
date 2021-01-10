@@ -1,21 +1,7 @@
-const puppeteer = require('puppeteer');
-
-const searchIPVoid = async (value) => {
+const searchIPVoid = async (page, value) => {
   const defaultTimeout = { timeout: 6000 };
 
   try {
-    let browser = await puppeteer.launch({
-      headless: true,
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--no-zygote',
-        '--disable-dev-shm-usage',
-        // '--single-process',
-      ],
-    });
-    let page = await browser.newPage();
-
     await page.setViewport({ width: 1366, height: 768 });
     await page.goto('https://www.ipvoid.com/ip-blacklist-check/');
     await page.waitForSelector('.col-md-8 #ipAddr', defaultTimeout);
@@ -59,8 +45,6 @@ const searchIPVoid = async (value) => {
         country: tableData[19],
       },
     };
-
-    await browser.close();
 
     return results;
   } catch (err) {

@@ -12,7 +12,7 @@ module.exports = async function (req, res, next) {
   const authToken = req.header('x-auth-token');
 
   if (!authToken) {
-    return res.status(401).json({ msg: 'No token, auth denied' });
+    return res.status(401).json({ msg: 'Please Login' });
   }
 
   try {

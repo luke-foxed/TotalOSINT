@@ -67,13 +67,6 @@ router.post('/scrape-all', async (req, res) => {
 
   switch (req.body.type) {
     case 'hash': {
-      // cluster.queue(() => {
-      //   results['metadefender'] = searchMetadefender(
-      //     req.body.type,
-      //     req.body.value
-      //   );
-      // });
-
       cluster.queue(async ({ page }) => {
         results['metadefender'] = await searchMetadefender(
           page,
@@ -98,33 +91,34 @@ router.post('/scrape-all', async (req, res) => {
         );
       });
 
-      // cluster.queue(async () => {
-      //   results['virustotal'] = await searchVT(req.body.type, req.body.value);
-      // });
-
-      // cluster.queue(async () => {
-      //   results['xforce'] = await searchXForce(req.body.type, req.body.value);
-      // });
-
       await cluster.idle();
       await cluster.close();
       break;
     }
 
     case 'domain':
-      cluster.queue(async () => {
+      cluster.queue(async ({ page }) => {
         results['metadefender'] = await searchMetadefender(
+          page,
           req.body.type,
           req.body.value
         );
       });
 
-      cluster.queue(async () => {
-        results['virustotal'] = await searchVT(req.body.type, req.body.value);
+      cluster.queue(async ({ page }) => {
+        results['virustotal'] = await searchVT(
+          page,
+          req.body.type,
+          req.body.value
+        );
       });
 
-      cluster.queue(async () => {
-        results['xforce'] = await searchXForce(req.body.type, req.body.value);
+      cluster.queue(async ({ page }) => {
+        results['xforce'] = await searchXForce(
+          page,
+          req.body.type,
+          req.body.value
+        );
       });
 
       results['whois'] = await getWhoIs(req.body.type, req.body.value);
@@ -134,27 +128,36 @@ router.post('/scrape-all', async (req, res) => {
       break;
 
     case 'ip':
-      cluster.queue(async () => {
+      cluster.queue(async ({ page }) => {
         results['metadefender'] = await searchMetadefender(
+          page,
           req.body.type,
           req.body.value
         );
       });
 
-      cluster.queue(async () => {
-        results['virustotal'] = await searchVT(req.body.type, req.body.value);
+      cluster.queue(async ({ page }) => {
+        results['virustotal'] = await searchVT(
+          page,
+          req.body.type,
+          req.body.value
+        );
       });
 
-      cluster.queue(async () => {
-        results['xforce'] = await searchXForce(req.body.type, req.body.value);
+      cluster.queue(async ({ page }) => {
+        results['xforce'] = await searchXForce(
+          page,
+          req.body.type,
+          req.body.value
+        );
       });
 
-      cluster.queue(async () => {
-        results['ipvoid'] = await searchIPVoid(req.body.value);
+      cluster.queue(async ({ page }) => {
+        results['ipvoid'] = await searchIPVoid(page, req.body.value);
       });
 
-      cluster.queue(async () => {
-        results['abuseip'] = await searchAbuseIP(req.body.value);
+      cluster.queue(async ({ page }) => {
+        results['abuseip'] = await searchAbuseIP(page, req.body.value);
       });
 
       results['whois'] = await getWhoIs(req.body.type, req.body.value);

@@ -1,5 +1,3 @@
-const puppeteer = require('puppeteer');
-
 const defaultTimeout = { timeout: 5000 };
 
 const getRisk = async (page) => {
@@ -40,8 +38,6 @@ const searchXForce = async (page, searchType, value) => {
           },
         };
 
-        await browser.close();
-
         return ipResults;
 
       case 'domain':
@@ -57,8 +53,6 @@ const searchXForce = async (page, searchType, value) => {
             category: urlDetails[0],
           },
         };
-
-        await browser.close();
 
         return urlResults;
 
@@ -95,8 +89,6 @@ const searchXForce = async (page, searchType, value) => {
             },
           };
         }
-
-        return hashResults;
 
       default:
         break;

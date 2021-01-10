@@ -36,13 +36,13 @@ const getDetails = async (page) => {
 };
 
 const searchVT = async (page, searchType, value) => {
-  // setup custom handler for accessing shadow dom
-  await puppeteer.__experimental_registerCustomQueryHandler(
-    'shadow',
-    QueryHandler
-  );
-
   try {
+    // setup custom handler for accessing shadow dom
+    await puppeteer.__experimental_registerCustomQueryHandler(
+      'shadow',
+      QueryHandler
+    );
+
     await page.setViewport({ width: 1366, height: 768 });
 
     // data to be returned
@@ -68,7 +68,6 @@ const searchVT = async (page, searchType, value) => {
           },
         };
 
-        await browser.close();
         break;
 
       case 'hash':
@@ -106,7 +105,6 @@ const searchVT = async (page, searchType, value) => {
           },
         };
 
-        await browser.close();
         break;
     }
 
