@@ -1,4 +1,7 @@
 # TotalOSINT
+
+<img src="https://raw.githubusercontent.com/Foxyf76/TotalOSINT/master/client/src/assets/logo.png" width="400">
+
 TotalOSINT provides a centralised location for quickly retrieving the reputation of any IP address, domain or file hash using open source intelligence. 
 This app will quickly retrieve a complete OSINT profile for the searched item - returning information from:
 
