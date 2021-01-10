@@ -6,10 +6,10 @@ const searchMetadefender = async (searchType, value) => {
     let browser = await puppeteer.launch({
       headless: true,
       args: [
-        // '--no-sandbox',
-        // '--disable-setuid-sandbox',
-        // '--no-zygote',
-        // '--disable-dev-shm-usage',
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--no-zygote',
+        '--disable-dev-shm-usage',
         // '--single-process',
       ],
     });

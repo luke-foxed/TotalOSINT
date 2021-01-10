@@ -10,7 +10,7 @@ const searchIPVoid = async (value) => {
         '--no-sandbox',
         '--disable-setuid-sandbox',
         '--no-zygote',
-        // '--disable-dev-shm-usage',
+        '--disable-dev-shm-usage',
         // '--single-process',
       ],
     });
