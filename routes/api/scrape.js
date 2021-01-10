@@ -53,6 +53,10 @@ router.post('/scrape-all', async (req, res) => {
   const cluster = await Cluster.launch({
     concurrency: Cluster.CONCURRENCY_CONTEXT,
     maxConcurrency: 5,
+    puppeteerOptions: {
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    },
   });
 
   switch (req.body.type) {
