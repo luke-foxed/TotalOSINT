@@ -133,8 +133,6 @@ const Profile = ({
     setTempAvatar({ ...tempAvatar, isOpen: !tempAvatar.isOpen });
   };
 
-  console.log(tempAvatar.value);
-
   const handleAvatarSaveClick = () => {
     if (
       tempAvatar.value !== '' &&
