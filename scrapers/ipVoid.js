@@ -6,7 +6,7 @@ const searchIPVoid = async (value) => {
   try {
     let browser = await puppeteer.launch({
       headless: true,
-      args: ['--no-sandbox'],
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
     let page = await browser.newPage();
 
