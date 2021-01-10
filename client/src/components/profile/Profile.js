@@ -17,6 +17,7 @@ import {
   Button,
   TextField,
   Collapse,
+  Tooltip,
 } from '@material-ui/core';
 import React, { useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -321,7 +322,7 @@ const Profile = ({
         <IconHeader text='Saved Results ' icon={TableChart} color='white' />
 
         <Paper className={classes.paper}>
-          <Table style={{ minWidth: 700 }}>
+          <Table style={{ minWidth: isMobile ? '800px' : '600px' }}>
             <TableHead style={{ backgroundColor: colPrimary }}>
               <TableRow>
                 <TableCell colSpan={1} />
@@ -336,7 +337,7 @@ const Profile = ({
                 <TableCell
                   align='center'
                   className={classes.tableHeaderCell}
-                  colSpan={3}
+                  colSpan={4}
                 >
                   <Grid
                     container
@@ -368,7 +369,7 @@ const Profile = ({
                 <TableCell
                   align='center'
                   className={classes.tableHeaderCell}
-                  colSpan={3}
+                  colSpan={2}
                 >
                   Actions
                 </TableCell>
@@ -391,11 +392,13 @@ const Profile = ({
                     colSpan={5}
                     style={{ width: '350px' }}
                   >
-                    <Chip
-                      icon={<LocalOfferOutlined fontSize='small' />}
-                      label={result.searchValue}
-                      style={{ fontSize: '14px' }}
-                    />
+                    <Tooltip title={result.value}>
+                      <Chip
+                        icon={<LocalOfferOutlined fontSize='small' />}
+                        label={result.searchValue}
+                        style={{ fontSize: '14px', maxWidth: '300px' }}
+                      />
+                    </Tooltip>
                   </TableCell>
                   <TableCell align='center' colSpan={3}>
                     <Chip
