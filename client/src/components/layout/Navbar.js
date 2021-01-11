@@ -88,12 +88,19 @@ const Navbar = ({ login, setAlert, user, isAuthenticated, logout }) => {
 
             <Grid item xs={5} sm={4} />
 
-            <Grid item xs={1} sm={4}>
+            <Grid item xs={1} sm={5}>
               {isAuthenticated & (user != null) ? (
-                <Grid container justify='flex-end'>
-                  <Typography className={classes.username}>
-                    {user.username}
-                  </Typography>
+                <Grid
+                  container
+                  justify='flex-end'
+                  alignContent='center'
+                  alignItems='center'
+                >
+                  <img
+                    src={user.avatar}
+                    height={50}
+                    style={{ borderRadius: '200px' }}
+                  />
                 </Grid>
               ) : (
                 <Grid container justify='flex-end'>
@@ -103,13 +110,7 @@ const Navbar = ({ login, setAlert, user, isAuthenticated, logout }) => {
                 </Grid>
               )}
             </Grid>
-            <Grid
-              container
-              xs={3}
-              sm={2}
-              justify='center'
-              style={{ marginRight: isMobile ? '0px' : 0 }}
-            >
+            <Grid container xs={3} sm={1} justify='center'>
               <Button size='small' onClick={handleClick}>
                 <Hamburger size={25} toggled={open} color='white' />
               </Button>

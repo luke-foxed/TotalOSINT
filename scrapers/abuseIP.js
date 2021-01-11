@@ -1,20 +1,6 @@
-const puppeteer = require('puppeteer');
-
-const searchAbuseIP = async (value) => {
+const searchAbuseIP = async (page, value) => {
   const defaultTimeout = { timeout: 5000 };
   try {
-    let browser = await puppeteer.launch({
-      headless: true,
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--no-zygote',
-        '--disable-dev-shm-usage',
-        // '--single-process',
-      ],
-    });
-    let page = await browser.newPage();
-
     await page.setViewport({ width: 1366, height: 768 });
     await page.goto(`https://www.abuseipdb.com/check/${value}`);
 
@@ -54,8 +40,6 @@ const searchAbuseIP = async (value) => {
         },
       };
     }
-
-    await browser.close();
 
     return reportData;
   } catch (err) {

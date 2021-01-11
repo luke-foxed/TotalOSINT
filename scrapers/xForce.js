@@ -1,5 +1,3 @@
-const puppeteer = require('puppeteer');
-
 const defaultTimeout = { timeout: 5000 };
 
 const getRisk = async (page) => {
@@ -21,20 +19,8 @@ const getTableDetails = async (page) => {
   return tableData;
 };
 
-const searchXForce = async (searchType, value) => {
+const searchXForce = async (page, searchType, value) => {
   try {
-    let browser = await puppeteer.launch({
-      headless: true,
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--no-zygote',
-        '--disable-dev-shm-usage',
-        // '--single-process',
-      ],
-    });
-    let page = await browser.newPage();
-
     await page.setViewport({ width: 1366, height: 768 });
 
     switch (searchType) {
@@ -52,8 +38,6 @@ const searchXForce = async (searchType, value) => {
           },
         };
 
-        await browser.close();
-
         return ipResults;
 
       case 'domain':
@@ -69,8 +53,6 @@ const searchXForce = async (searchType, value) => {
             category: urlDetails[0],
           },
         };
-
-        await browser.close();
 
         return urlResults;
 
@@ -107,8 +89,6 @@ const searchXForce = async (searchType, value) => {
             },
           };
         }
-
-        await browser.close();
 
         return hashResults;
 

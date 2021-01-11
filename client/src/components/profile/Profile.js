@@ -17,6 +17,7 @@ import {
   Button,
   TextField,
   Collapse,
+  Tooltip,
 } from '@material-ui/core';
 import React, { useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -45,6 +46,7 @@ import {
 import { IconHeader } from '../layout/IconHeader';
 import { isMobile } from 'react-device-detect';
 import { PromptDialog } from '../layout/PromptDialog';
+import { setAlert } from '../../actions/alert';
 
 const useStyles = makeStyles(() => ({
   profileView: {
@@ -71,7 +73,7 @@ const useStyles = makeStyles(() => ({
   tableHeaderCell: {
     fontFamily: 'Quicksand',
     color: 'white',
-    fontSize: '16px',
+    fontSize: '15px',
   },
   checkboxLabel: {
     fontSize: '14px',
@@ -94,6 +96,7 @@ const Profile = ({
   deleteResult,
   deleteAllResults,
   deleteUser,
+  setAlert,
   updateAvatar,
 }) => {
   const classes = useStyles();
@@ -127,12 +130,19 @@ const Profile = ({
   }, [userResults, sortDirection]);
 
   const handleChangeAvatarClick = () => {
-    setTempAvatar({ isOpen: !tempAvatar.isOpen });
+    setTempAvatar({ ...tempAvatar, isOpen: !tempAvatar.isOpen });
   };
 
   const handleAvatarSaveClick = () => {
-    updateAvatar(tempAvatar.value);
-    setTempAvatar({ isOpen: false });
+    if (
+      tempAvatar.value !== '' &&
+      tempAvatar.value.match(/\.(jpeg|jpg|gif|png)$/) != null
+    ) {
+      updateAvatar(tempAvatar.value);
+      setTempAvatar({ isOpen: false });
+    } else {
+      setAlert('Please enter a valid image URL!', 'error');
+    }
   };
 
   const handleDeleteAccountClick = () => {
@@ -321,7 +331,7 @@ const Profile = ({
         <IconHeader text='Saved Results ' icon={TableChart} color='white' />
 
         <Paper className={classes.paper}>
-          <Table style={{ minWidth: 700 }}>
+          <Table style={{ minWidth: isMobile ? '800px' : '600px' }}>
             <TableHead style={{ backgroundColor: colPrimary }}>
               <TableRow>
                 <TableCell colSpan={1} />
@@ -336,7 +346,7 @@ const Profile = ({
                 <TableCell
                   align='center'
                   className={classes.tableHeaderCell}
-                  colSpan={3}
+                  colSpan={4}
                 >
                   <Grid
                     container
@@ -360,7 +370,7 @@ const Profile = ({
                         style={{ marginLeft: '10px', color: 'white' }}
                         onClick={() => setSortDirection('desc')}
                       >
-                        <ArrowDownward />
+                        <ArrowDownward fontSize='small' />
                       </IconButton>
                     )}
                   </Grid>
@@ -368,7 +378,7 @@ const Profile = ({
                 <TableCell
                   align='center'
                   className={classes.tableHeaderCell}
-                  colSpan={3}
+                  colSpan={2}
                 >
                   Actions
                 </TableCell>
@@ -391,11 +401,13 @@ const Profile = ({
                     colSpan={5}
                     style={{ width: '350px' }}
                   >
-                    <Chip
-                      icon={<LocalOfferOutlined fontSize='small' />}
-                      label={result.searchValue}
-                      style={{ fontSize: '14px' }}
-                    />
+                    <Tooltip title={result.searchValue}>
+                      <Chip
+                        icon={<LocalOfferOutlined fontSize='small' />}
+                        label={result.searchValue}
+                        style={{ fontSize: '14px', maxWidth: '300px' }}
+                      />
+                    </Tooltip>
                   </TableCell>
                   <TableCell align='center' colSpan={3}>
                     <Chip
@@ -516,6 +528,7 @@ Profile.propTypes = {
   deleteResult: PropTypes.func.isRequired,
   deleteAllResults: PropTypes.func.isRequired,
   deleteUser: PropTypes.func.isRequired,
+  setAlert: PropTypes.func.isRequired,
   updateAvatar: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
   user: PropTypes.object,
@@ -531,4 +544,5 @@ export default connect(mapStateToProps, {
   deleteAllResults,
   deleteUser,
   updateAvatar,
+  setAlert,
 })(Profile);
