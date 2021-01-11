@@ -1,21 +1,9 @@
 import React from 'react';
-import { makeStyles, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import { Done, Help, Build } from '@material-ui/icons';
 import { IconHeader } from '../layout/IconHeader';
 
-const useStyles = makeStyles(() => ({
-  actionButton: {
-    margin: '15px',
-    borderRadius: '15px',
-    width: '200px',
-    color: 'white',
-    border: 'solid 2px white',
-  },
-}));
-
 const About = () => {
-  const classes = useStyles();
-
   return (
     <div
       style={{

@@ -11,7 +11,7 @@ const User = require('../../models/User');
 require('dotenv').config();
 
 // const jwtSecret = config.get('jwtSecret')
-const jwtSecret = process.env.jwtSecret;
+const jwtSecret = process.env.JWT_SECRET;
 
 // create user
 router.post(

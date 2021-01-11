@@ -108,8 +108,8 @@ export const ResultCards = ({ data }) => {
         case 'xforce':
           return (
             <Typography style={{ fontFamily: 'Quicksand' }}>
-              Risk:
-              <Typography
+              Risk: <br />
+              <span
                 style={{
                   fontSize: '80px',
                   fontFamily: 'Quicksand',
@@ -117,7 +117,7 @@ export const ResultCards = ({ data }) => {
                 }}
               >
                 {values.risk}
-              </Typography>
+              </span>
             </Typography>
           );
         case 'abuseip':
@@ -165,7 +165,7 @@ export const ResultCards = ({ data }) => {
             key !== 'id'
           ) {
             return (
-              <Grid item xs={12} sm={5} md={5} lg={4} xl={4}>
+              <Grid item xs={12} sm={5} md={5} lg={4} xl={4} key={key}>
                 <div className={classes.frame}>
                   <Paper className={classes.paper} elevation={0}>
                     <div
@@ -176,6 +176,7 @@ export const ResultCards = ({ data }) => {
                       }}
                     >
                       <img
+                        alt={`${key}_logo`}
                         src={require(`../../assets/${key}.png`)}
                         width={160}
                         style={{
@@ -195,6 +196,7 @@ export const ResultCards = ({ data }) => {
                         <a
                           href={value.details.url}
                           target='_blank'
+                          rel='noopener noreferrer'
                           className={classes.link}
                         >
                           <Button

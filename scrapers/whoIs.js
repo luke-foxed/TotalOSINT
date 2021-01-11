@@ -3,7 +3,7 @@ const config = require('config');
 require('dotenv').config();
 
 // const apiKey = config.get('whoisKey');
-const apiKey = process.env.whoisKey;
+const apiKey = process.env.WHOIS_KEY;
 
 const getWhoIs = async (type, query) => {
   try {

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { login, logout } from '../../actions/auth';
 import Menu from '@material-ui/core/Menu';
@@ -15,6 +14,8 @@ import { Grid, Grow } from '@material-ui/core';
 import { Spin as Hamburger } from 'hamburger-react';
 import { Link } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
+import { createBrowserHistory } from 'history';
+import ReactGA from 'react-ga';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -55,6 +56,17 @@ const Navbar = ({ login, setAlert, user, isAuthenticated, logout }) => {
     handleClose();
   };
 
+  // google analytics
+
+  const history = createBrowserHistory();
+  const trackingId = process.env.TRACKING_ID;
+  ReactGA.initialize(trackingId);
+
+  history.listen((location) => {
+    ReactGA.set({ page: location.pathname });
+    ReactGA.pageview(location.pathname);
+  });
+
   return (
     <div className={classes.root} style={{ paddingBottom: '40px' }}>
       <AppBar
@@ -80,6 +92,7 @@ const Navbar = ({ login, setAlert, user, isAuthenticated, logout }) => {
             <Grid item xs={2} sm={2}>
               <Link to='/'>
                 <img
+                  alt='logo'
                   src={require('../../assets/logo.png')}
                   height={isMobile ? 60 : 80}
                 />
@@ -97,6 +110,7 @@ const Navbar = ({ login, setAlert, user, isAuthenticated, logout }) => {
                   alignItems='center'
                 >
                   <img
+                    alt='user_avatar'
                     src={user.avatar}
                     height={50}
                     style={{ borderRadius: '200px' }}
@@ -110,7 +124,7 @@ const Navbar = ({ login, setAlert, user, isAuthenticated, logout }) => {
                 </Grid>
               )}
             </Grid>
-            <Grid container xs={3} sm={1} justify='center'>
+            <Grid container item xs={3} sm={1} justify='center'>
               <Button size='small' onClick={handleClick}>
                 <Hamburger size={25} toggled={open} color='white' />
               </Button>

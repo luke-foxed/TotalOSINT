@@ -216,6 +216,8 @@ const Profile = ({
         return <Description fontSize='large' style={{ color: colPrimary }} />;
       case 'ip':
         return <PinDrop fontSize='large' style={{ color: colPrimary }} />;
+      default:
+        return null;
     }
   };
 
@@ -225,6 +227,7 @@ const Profile = ({
         <IconHeader text='My Profile ' icon={AccountCircle} color='white' />
 
         <img
+          alt='user_avatar'
           src={user.avatar}
           height={180}
           style={{ borderRadius: '200px', margin: '20px' }}
@@ -435,7 +438,7 @@ const Profile = ({
             </TableBody>
           </Table>
           <Grid container direction='row'>
-            <Grid item md={1} xs={0} />
+            <Grid item md={1} />
             <Grid
               container
               item
@@ -508,7 +511,7 @@ const Profile = ({
                 onChangeRowsPerPage={handleChangeRowsPerPage}
               />
             </Grid>
-            <Grid item xs={0} md={1} />
+            <Grid item md={1} />
           </Grid>
         </Paper>
       </div>

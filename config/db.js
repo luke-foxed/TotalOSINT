@@ -3,7 +3,7 @@ const config = require('config');
 require('dotenv').config();
 
 // const db = config.get('mongoURI');
-const db = process.env.mongoURI;
+const db = process.env.MONGO_URI;
 
 const connectDB = async () => {
   try {

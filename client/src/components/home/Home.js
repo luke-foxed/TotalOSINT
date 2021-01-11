@@ -127,7 +127,7 @@ const Home = ({ setAlert, performSearch, saveResults }) => {
     }, 3000);
 
     return () => clearInterval(action);
-  }, []);
+  }, [dencrypt]);
 
   const handleMenuItemClick = (_, index) => {
     setSelectedIndex(index);
@@ -184,6 +184,8 @@ const Home = ({ setAlert, performSearch, saveResults }) => {
             <b>Note:</b> Please provide only public IPV4 addresses
           </Typography>
         );
+      default:
+        return null;
     }
   };
 
@@ -202,6 +204,8 @@ const Home = ({ setAlert, performSearch, saveResults }) => {
         return <Description className={classes.inputIcon} />;
       case 2:
         return <PinDrop className={classes.inputIcon} />;
+      default:
+        return null;
     }
   };
 
@@ -337,30 +341,35 @@ const Home = ({ setAlert, performSearch, saveResults }) => {
           style={{ marginTop: '5px' }}
         >
           <img
+            alt='virus_total_logo'
             src={require('../../assets/virustotal.png')}
             width={100}
             className={classes.siteImage}
           />
 
           <img
+            alt='abuse_ip_logo'
             src={require('../../assets/abuseip.png')}
             width={100}
             className={classes.siteImage}
           />
 
           <img
+            alt='metadefender_logo'
             src={require('../../assets/metadefender.png')}
             width={100}
             className={classes.siteImage}
           />
 
           <img
+            alt='ip_void_logo'
             src={require('../../assets/ipvoid.png')}
             width={100}
             className={classes.siteImage}
           />
 
           <img
+            alt='xforce_logo'
             src={require('../../assets/xforce.png')}
             width={120}
             className={classes.siteImage}

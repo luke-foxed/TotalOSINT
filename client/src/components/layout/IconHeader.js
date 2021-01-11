@@ -1,8 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Grid } from '@material-ui/core';
-
-import { colSecondary, colPrimary } from '../../helpers/colors';
+import { colPrimary } from '../../helpers/colors';
 
 const useStyles = makeStyles({
   paperHeader: {
