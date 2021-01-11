@@ -56,17 +56,6 @@ const Navbar = ({ login, setAlert, user, isAuthenticated, logout }) => {
     handleClose();
   };
 
-  // google analytics
-
-  const history = createBrowserHistory();
-  const trackingId = process.env.TRACKING_ID;
-  ReactGA.initialize(trackingId);
-
-  history.listen((location) => {
-    ReactGA.set({ page: location.pathname });
-    ReactGA.pageview(location.pathname);
-  });
-
   return (
     <div className={classes.root} style={{ paddingBottom: '40px' }}>
       <AppBar

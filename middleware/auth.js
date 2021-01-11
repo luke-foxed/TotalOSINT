@@ -3,7 +3,7 @@ const config = require('config');
 require('dotenv').config();
 
 // const jwtSecret = config.get('jwtSecret')
-const jwtSecret = process.env.jwtSecret;
+const jwtSecret = process.env.JWT_SECRET;
 /**
  * Middleware to authenticate user, if token exists then contiue with request
  */

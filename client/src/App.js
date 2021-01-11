@@ -1,5 +1,10 @@
 import React, { Fragment, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Home from './components/home/Home';
 import store from './store';
@@ -14,6 +19,18 @@ import PrivateRoute from './components/routing/PrivateRoute';
 import SavedResult from './components/profile/ResultView';
 import Footer from './components/layout/Footer';
 import About from './components/about/About';
+import { createBrowserHistory } from 'history';
+import ReactGA from 'react-ga';
+
+// google analytics
+const history = createBrowserHistory();
+const trackingId = process.env.TRACKING_ID;
+ReactGA.initialize(trackingId);
+
+history.listen((location) => {
+  ReactGA.set({ page: location.pathname });
+  ReactGA.pageview(location.pathname);
+});
 
 const App = () => {
   if (localStorage.token) {
@@ -26,16 +43,18 @@ const App = () => {
 
   return (
     <Provider store={store}>
-      <Router>
+      <Router history={history}>
         <Fragment>
           <Navbar />
           <Alerter />
           <Switch>
             <Route exact path='/' component={Home} />
+            <Route path='/search/:value' component={Home} />
             <Route exact path='/register' component={Register} />
             <Route exact path='/about' component={About} />
             <PrivateRoute path='/saved/:value' component={SavedResult} />
             <PrivateRoute exact path='/profile' component={Profile} />
+            <Route path='/*' render={() => <Redirect to='/' />} />
           </Switch>
           <Footer />
         </Fragment>

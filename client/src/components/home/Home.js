@@ -39,6 +39,7 @@ import { ResultCards } from '../layout/ResultCards';
 import { exportAsCSV } from '../../helpers/generalHelpers';
 import { IconHeader } from '../layout/IconHeader';
 import { isMobile } from 'react-device-detect';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles(() => ({
   textBoxRadius: {
@@ -108,6 +109,7 @@ const headerValues = ['FILE HASH', 'IP ADDRESS', 'DOMAIN'];
 
 const Home = ({ setAlert, performSearch, saveResults }) => {
   const { result, dencrypt } = useDencrypt();
+  const history = useHistory();
   const classes = useStyles();
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
@@ -156,6 +158,12 @@ const Home = ({ setAlert, performSearch, saveResults }) => {
       );
       setSearchResults(response);
       setIsLoading(false);
+
+      let base64Result = btoa(result.searchValue);
+      history.push({
+        pathname: `/search/${base64Result}`,
+      });
+
       scroller.scrollTo('results', {
         duration: 1000,
         smooth: true,
