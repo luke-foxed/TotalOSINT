@@ -296,7 +296,7 @@ const Home = ({ setAlert, performSearch, saveResults }) => {
 
           <Grid container item xs={9} sm={10} justify='center'>
             <CssTextField
-              // style={{ width: isMobile ? '100%' : '100%' }}
+              placeholder={selectedIndex === 0 ? 'google.com' : null}
               fullWidth
               variant='outlined'
               onInput={(e) => {

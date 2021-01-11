@@ -22,9 +22,12 @@ import About from './components/about/About';
 import { createBrowserHistory } from 'history';
 import ReactGA from 'react-ga';
 
+require('dotenv').config();
+
 // google analytics
 const history = createBrowserHistory();
-const trackingId = process.env.TRACKING_ID;
+const trackingId = process.env.REACT_APP_TRACKING_ID;
+
 ReactGA.initialize(trackingId);
 
 history.listen((location) => {
