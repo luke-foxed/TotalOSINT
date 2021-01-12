@@ -21,7 +21,7 @@ const searchIPVoid = async (page, value) => {
 
     await page.click('.row > .col-md-8 > .articles-col > .form > .btn');
 
-    await page.waitForSelector('.table-responsive', defaultTimeout);
+    await page.waitForSelector('.table-responsive', 8000);
 
     const tableData = await page.evaluate(() => {
       const tds = Array.from(document.querySelectorAll('table tr td'));

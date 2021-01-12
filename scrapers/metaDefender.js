@@ -69,7 +69,7 @@ const searchMetadefender = async (page, searchType, value) => {
           `https://metadefender.opswat.com/results/domain/${base64Domain}`
         );
 
-        await page.waitForSelector('.scoreHeader > .score', defaultTimeout);
+        await page.waitForSelector('.scoreHeader > .score', 7000);
 
         let dominScore = await page.evaluate(() => {
           let text = Array.from(

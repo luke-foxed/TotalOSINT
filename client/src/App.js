@@ -1,10 +1,5 @@
 import React, { Fragment, useEffect } from 'react';
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  Switch,
-} from 'react-router-dom';
+import { Router, Redirect, Route, Switch } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Home from './components/home/Home';
 import store from './store';
@@ -24,18 +19,12 @@ import ReactGA from 'react-ga';
 
 require('dotenv').config();
 
-// google analytics
-const history = createBrowserHistory();
 const trackingId = process.env.REACT_APP_TRACKING_ID;
-
 ReactGA.initialize(trackingId);
 
-history.listen((location) => {
-  ReactGA.set({ page: location.pathname });
-  ReactGA.pageview(location.pathname);
-});
-
 const App = () => {
+  const history = createBrowserHistory();
+
   if (localStorage.token) {
     setAuthToken(localStorage.token);
   }
@@ -43,6 +32,15 @@ const App = () => {
   useEffect(() => {
     store.dispatch(loadUser());
   }, []);
+
+  history.listen((location) => {
+    ReactGA.set({ page: location.pathname });
+    ReactGA.pageview(location.pathname);
+  });
+
+  useEffect(() => {
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }, [history]);
 
   return (
     <Provider store={store}>

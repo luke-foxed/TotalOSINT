@@ -113,6 +113,7 @@ const searchVT = async (page, searchType, value) => {
     return results;
   } catch (err) {
     console.error(err);
+    await puppeteer.__experimental_unregisterCustomQueryHandler('shadow');
     return { error: 'Error Scraping VirusTotal' };
   }
 };

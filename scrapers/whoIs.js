@@ -11,17 +11,34 @@ const getWhoIs = async (type, query) => {
       `https://www.whoisxmlapi.com/whoisserver/WhoisService?apiKey=${apiKey}&domainName=${query}&outputFormat=JSON`
     );
 
+    const {
+      WhoisRecord: { registryData },
+    } = data;
+
     if (type === 'ip') {
-      return {
-        details: {
-          range: data.WhoisRecord.registryData.customField1Value,
-          date_created: data.WhoisRecord.registryData.createdDate,
-          registrar_name: data.WhoisRecord.registrarName,
-          org: data.WhoisRecord.registryData.registrant.organization,
-          country: data.WhoisRecord.registryData.registrant.country,
-          url: `https://whois.whoisxmlapi.com/lookup?q=${query}`,
-        },
-      };
+      if (data.WhoisRecord.subRecords) {
+        return {
+          details: {
+            range: data.WhoisRecord.subRecords[0].customField1Value,
+            date_created: data.WhoisRecord.subRecords[0].createdDate,
+            org: data.WhoisRecord.subRecords[0].registrant.organization,
+            registrar_name: data.WhoisRecord.registrarName,
+            country: data.WhoisRecord.subRecords[0].registrant.country,
+            url: `https://whois.whoisxmlapi.com/lookup?q=${query}`,
+          },
+        };
+      } else {
+        return {
+          details: {
+            range: registryData.customField1Value,
+            date_created: registryData.createdDate,
+            org: registryData.registrant.organization,
+            registrar_name: data.WhoisRecord.registrarName,
+            country: registryData.registrant.country,
+            url: `https://whois.whoisxmlapi.com/lookup?q=${query}`,
+          },
+        };
+      }
     } else if (type === 'domain') {
       return {
         details: {
